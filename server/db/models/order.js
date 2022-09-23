@@ -4,7 +4,7 @@ const db = require('../db')
 const Order = db.define('order', {
   checkout: {
     type: Sequelize.BOOLEAN,
-    defaultValue: true,
+    defaultValue: false,
     allowNull: false
   }
 })
