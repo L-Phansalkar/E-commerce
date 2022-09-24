@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getOneProduct} from '../store/product'
+import {getOneProduct} from '../store/singleProduct'
 
 export class SingleProduct extends React.Component {
   componentDidMount() {
@@ -26,7 +26,7 @@ export class SingleProduct extends React.Component {
 }
 const mapState = state => {
   return {
-    product: state.products
+    singleProduct: state.product
   }
 }
 

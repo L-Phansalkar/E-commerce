@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 
 export class AllProducts extends React.Component {
   componentDidMount() {
+    console.log(this.props)
     this.props.getProducts()
   }
 
