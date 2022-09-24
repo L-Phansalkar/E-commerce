@@ -5,7 +5,6 @@ import {getOneProduct} from '../store/product'
 export class SingleProduct extends React.Component {
   componentDidMount() {
     var id = window.location.href.split('/')[4]
-    console.log(id)
     this.props.getProduct(id)
   }
 
