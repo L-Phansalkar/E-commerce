@@ -9,16 +9,20 @@ export class SingleProduct extends React.Component {
   }
 
   render() {
-    const {product} = this.props
+    const {singleProduct} = this.props
     console.log(this.props)
     return (
       <div id="singleProduct">
-        <h1 id="singleProductTitle">{product.name}</h1>
-        <div className="card" key={product.id}>
-          <img id="productImage" src={product.image} alt={product.name} />
-          <h2 className="description">{product.description}</h2>
-          <h2 className="price">{product.price}</h2>
-          <h2 className="inventory">{product.inventory}</h2>
+        <h1 id="singleProductTitle">{singleProduct.name}</h1>
+        <div className="card" key={singleProduct.id}>
+          <img
+            id="productImage"
+            src={singleProduct.image}
+            alt={singleProduct.name}
+          />
+          <h2 className="description">{singleProduct.description}</h2>
+          <h2 className="price">{singleProduct.price}</h2>
+          <h2 className="inventory">{singleProduct.inventory}</h2>
         </div>
       </div>
     )
