@@ -4,18 +4,20 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const currentOrder = await Order.findAll({
+    const [currentOrder, created] = await Order.findOrCreate({
       where: {
         userId: req.user.id,
         checkout: false
       },
-      include: productOrder
+      attributes: ['id']
     })
+
     res.json(currentOrder)
   } catch (err) {
     next(err)
   }
 })
+
 router.get('/history', async (req, res, next) => {
   try {
     const allOrders = await Order.findAll({

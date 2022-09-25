@@ -15,6 +15,7 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
+    console.log('routeprops', this.props)
 
     return (
       <Switch>
@@ -27,6 +28,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
+            <Route exact path="/products/:id" component={SingleProduct} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}s
