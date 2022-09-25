@@ -5,13 +5,16 @@ import {Link} from 'react-router-dom'
 
 export class Cart extends React.Component {
   componentDidMount() {
-    this.props.getCurrentOrder()
+    var userId = this.props.id
+    if (userId) {
+      this.props.getCurrentOrder()
+    }
   }
 
   render() {
     const {openOrder} = this.props
     const productList = openOrder.productOrders
-
+    var existing = JSON.parse(localStorage.getItem('cart'))
     return (
       <div id="cart">
         <h1>CART</h1>
@@ -28,12 +31,23 @@ export class Cart extends React.Component {
             ))}
           </div>
         ) : (
-          <div />
+          <div className="outerContainer">
+            {existing.map(item => (
+              <div className="card" key={item.name}>
+                <Link to={`/products/${item.productId}`} as="/products/:id">
+                  {item.name}
+                </Link>
+                <h2 className="price">{item.price}</h2>
+                <h2 className="quantity">{item.quantity}</h2>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     )
   }
 }
+
 const mapState = state => {
   return {
     openOrder: state.order
