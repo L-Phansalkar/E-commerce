@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order, productOrder} = require('../db/models')
+const {Order, productOrder, Product} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -9,7 +9,15 @@ router.get('/', async (req, res, next) => {
         userId: req.user.id,
         checkout: false
       },
-      attributes: ['id']
+      attributes: ['id'],
+      include: {
+        model: productOrder,
+        attributes: ['quantity'],
+        include: {
+          model: Product,
+          attributes: ['name', 'price', 'id']
+        }
+      }
     })
 
     res.json(currentOrder)
