@@ -13,16 +13,56 @@ export class SingleProduct extends React.Component {
   productId = window.location.href.split('/')[4]
   componentDidMount() {
     this.props.getProduct(this.productId)
-    this.props.getOpenOrder()
+    var userId = this.props.id
+    if (userId) {
+      this.props.getOpenOrder()
+    }
   }
   updateInventory() {
-    this.props.updateProductInventory(this.productId)
-    this.props.updateCurrentOrder(this.productId, this.props.openOrder.id)
+    var userId = this.props.id
+    if (userId) {
+      this.props.updateProductInventory(this.productId)
+      this.props.updateCurrentOrder(this.productId, this.props.openOrder.id)
+    } else {
+      console.log(this.props.id)
+      var existing = JSON.parse(localStorage.getItem('cart'))
+      if (existing) {
+        var [updateQuant] = existing.filter(
+          e => e.productId === this.props.singleProduct.id
+        )
+        //need to check if the posterId already exists, if it does just update quantit
+        if (updateQuant) {
+          updateQuant.quantity++
+          localStorage.setItem('cart', JSON.stringify(existing))
+        } else {
+          existing.push({
+            productId: this.props.singleProduct.id,
+            name: this.props.singleProduct.name,
+            quantity: 1,
+            price: this.props.singleProduct.price
+          })
+          localStorage.setItem('cart', JSON.stringify(existing))
+        }
+      } else {
+        localStorage.setItem(
+          'cart',
+          JSON.stringify([
+            {
+              productId: this.props.singleProduct.id,
+              name: this.props.singleProduct.name,
+              quantity: 1,
+              price: this.props.singleProduct.price
+            }
+          ])
+        )
+      }
+      console.log(localStorage.getItem('cart'))
+    }
   }
 
   render() {
     const {singleProduct} = this.props
-    console.log(this.props)
+
     return (
       <div id="singleProduct">
         <h1 id="singleProductTitle">{singleProduct.name}</h1>
@@ -65,7 +105,8 @@ const mapDispatch = dispatch => {
     updateProductInventory: id => dispatch(updateProductInv(id)),
     updateCurrentOrder: (productId, openOrderid) =>
       dispatch(updateCurrOrder(productId, openOrderid)),
-    getOpenOrder: () => dispatch(getCurrOrder())
+    getOpenOrder: () => dispatch(getCurrOrder()),
+    getGuestOrder: id => dispatch(getGstOrder(id))
   }
 }
 

@@ -5,13 +5,12 @@ import {Link} from 'react-router-dom'
 
 export class AllProducts extends React.Component {
   componentDidMount() {
-    console.log(this.props)
     this.props.getProducts()
   }
 
   render() {
     const {products} = this.props
-    console.log(this.props)
+
     return (
       <div id="allProducts">
         <h1 id="allProductsTitle">products</h1>

@@ -11,7 +11,7 @@ export class Cart extends React.Component {
   render() {
     const {openOrder} = this.props
     const productList = openOrder.productOrders
-    console.log('render', this.props, 'open', openOrder, 'list', productList)
+
     return (
       <div id="cart">
         <h1>CART</h1>

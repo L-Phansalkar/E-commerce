@@ -25,6 +25,29 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+// router.get('/:guestId', async (req, res, next) => {
+//   try {
+//     const [currentOrder, created] = await Order.findOrCreate({
+//       where: {
+//         userId: req.params.guestId,
+//         checkout: false
+//       },
+//       attributes: ['id'],
+//       include: {
+//         model: productOrder,
+//         attributes: ['quantity'],
+//         include: {
+//           model: Product,
+//           attributes: ['name', 'price', 'id']
+//         }
+//       }
+//     })
+
+//     res.json(currentOrder)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 router.get('/history', async (req, res, next) => {
   try {

@@ -18,7 +18,6 @@ export const getOneProduct = id => {
     try {
       const {data} = await axios.get(`/api/products/${id}`)
       dispatch(fetchSingleProduct(data))
-      console.log('here')
     } catch (err) {
       console.log(err)
     }
