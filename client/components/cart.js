@@ -6,14 +6,17 @@ import {Link} from 'react-router-dom'
 export class Cart extends React.Component {
   componentDidMount() {
     var userId = this.props.id
+    console.log(this.props)
     if (userId) {
       this.props.getCurrentOrder()
     }
+    this.props.getCurrentOrder()
   }
 
   render() {
     const {openOrder} = this.props
     const productList = openOrder.productOrders
+    console.log(openOrder)
     var existing = JSON.parse(localStorage.getItem('cart'))
     return (
       <div id="cart">
@@ -31,6 +34,9 @@ export class Cart extends React.Component {
             ))}
           </div>
         ) : (
+          <div />
+        )}
+        {existing ? (
           <div className="outerContainer">
             {existing.map(item => (
               <div className="card" key={item.name}>
@@ -42,7 +48,10 @@ export class Cart extends React.Component {
               </div>
             ))}
           </div>
+        ) : (
+          <div />
         )}
+        {!productList && !existing ? <div>add something</div> : <div />}
       </div>
     )
   }
