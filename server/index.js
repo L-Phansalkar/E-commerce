@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
 module.exports = app
+const stripe = require('stripe')(
+  'sk_test_51LlxulLVr6OUxlRlR91VhHOpLdssn3R0ECRPZs2H3QkB8RSlfYnHeiW606Mo7611ihw2turybvzBWAPHL26JqYp500QQhr3A8F'
+)
 
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
@@ -41,6 +44,22 @@ passport.deserializeUser(async (id, done) => {
 })
 
 const createApp = () => {
+  app.post('/create-checkout-session', async (req, res) => {
+    const stripeSession = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+          price: 'price_1LmIe2LVr6OUxlRl2og22IW4',
+          quantity: 1
+        }
+      ],
+      mode: 'payment',
+      success_url: `http://localhost:8080/?success=true`,
+      cancel_url: `http://localhost:8080/checkout`
+    })
+
+    res.redirect(303, stripeSession.url)
+  })
   // logging middleware
   app.use(morgan('dev'))
 
