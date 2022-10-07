@@ -97,8 +97,19 @@ export class SingleProduct extends React.Component {
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
                   <Typography gutterBottom variant="subtitle1" component="div">
-                    {singleProduct.name}
+                    <h2> {singleProduct.name} </h2>
                   </Typography>
+                  <Typography variant="subtitle1" component="div">
+                    {singleProduct.description}
+                  </Typography>
+                  <br />
+                  <Typography variant="subtitle1" component="div">
+                    Songs: {singleProduct.songs}
+                  </Typography>
+                  <Typography variant="subtitle1" component="div">
+                    Year Created: {singleProduct.year}
+                  </Typography>
+                  <br />
                   <Typography variant="body2" color="text.secondary">
                     In stock: {singleProduct.inventory}
                   </Typography>
@@ -118,7 +129,7 @@ export class SingleProduct extends React.Component {
               </Grid>
               <Grid item>
                 <Typography variant="subtitle1" component="div">
-                  $19.00
+                  {singleProduct.price}
                 </Typography>
               </Grid>
             </Grid>
