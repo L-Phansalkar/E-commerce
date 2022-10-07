@@ -3,31 +3,75 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import appTheme from '../app'
+
+// import MenuIcon from '@mui/icons-material';
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>Big Mouth Billy Bass</h1>
-    <nav>
-      <Link to="/products">PRODUCTS</Link>
-      <Link to="/cart">CART</Link>
-      <Link to="/home">Home</Link>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
+    <Box sx={{flexGrow: 1}}>
+      <AppBar position="static">
+        {isLoggedIn ? (
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+              <h2>Big Mouth Billy Bass Pro Shop</h2>
+            </Typography>
+            <Button color="secondary">
+              {' '}
+              <Link to="/products">Products</Link>
+            </Button>
+            <Button color="inherit">
+              {' '}
+              <Link to="/cart">Cart</Link>
+            </Button>
+            <Button color="inherit">
+              {' '}
+              <Link to="/home">Home</Link>
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                handleClick()
+              }}
+            >
+              {' '}
+              Logout
+            </Button>
+          </Toolbar>
+        ) : (
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+              <h2>Big Mouth Billy Bass Pro Shop</h2>
+            </Typography>
+            <Button color="inherit">
+              {' '}
+              <Link to="/products">Products</Link>
+            </Button>
+            <Button color="inherit">
+              {' '}
+              <Link to="/cart">Cart</Link>
+            </Button>
+            <Button color="inherit">
+              {' '}
+              <Link to="/home">Home</Link>
+            </Button>
+            <Button color="inherit">
+              {' '}
+              <Link to="/login">Login</Link>
+            </Button>
+            <Button color="inherit">
+              {' '}
+              <Link to="/signup">Sign Up</Link>
+            </Button>
+          </Toolbar>
+        )}
+      </AppBar>
+    </Box>
   </div>
 )
 

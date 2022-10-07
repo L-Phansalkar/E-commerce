@@ -43,7 +43,7 @@ export class Cart extends React.Component {
     return (
       <div id="cart">
         {productList ? (
-          <List sx={{width: '100%', bgcolor: 'background.paper'}}>
+          <List sx={{bgcolor: 'background.paper'}}>
             {productList.map(item => (
               <ListItem alignItems="flex-start" key={item.product.name}>
                 <ListItemAvatar>
@@ -52,17 +52,15 @@ export class Cart extends React.Component {
                 <ListItemText
                   primary={item.product.name}
                   secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{display: 'inline'}}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {item.quantity}
-                      </Typography>
+                    <Typography
+                      sx={{display: 'inline'}}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {item.quantity}
                       {`    at  $${item.product.price} each`}
-                    </React.Fragment>
+                    </Typography>
                   }
                 />
               </ListItem>
@@ -72,9 +70,7 @@ export class Cart extends React.Component {
           <div />
         )}
         {existing ? (
-          <List
-            sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
-          >
+          <List sx={{bgcolor: 'background.paper'}}>
             {existing.map(item => (
               <ListItem alignItems="flex-start" key={item.name}>
                 <ListItemAvatar>

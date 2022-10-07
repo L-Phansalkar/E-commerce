@@ -16,9 +16,8 @@ export class AllProducts extends React.Component {
 
     return (
       <div id="allProducts">
-        <h1 id="allProductsTitle">products</h1>
         <div className="outerContainer">
-          <ImageList sx={{width: 500, height: 450}}>
+          <ImageList>
             {products.map(product => (
               <ImageListItem key={product.id}>
                 <img

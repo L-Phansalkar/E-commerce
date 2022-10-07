@@ -83,10 +83,8 @@ export class SingleProduct extends React.Component {
           sx={{
             p: 2,
             margin: 'auto',
-            maxWidth: 500,
             flexGrow: 1,
-            backgroundColor: theme =>
-              theme.palette.mode === 'dark' ? '#1A2027' : '#fff'
+            bgcolor: 'background.paper'
           }}
         >
           <Grid container spacing={1}>
