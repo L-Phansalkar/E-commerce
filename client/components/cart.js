@@ -5,6 +5,13 @@ import {updateProductInv} from '../store/singleProduct'
 import {updateCurrOrder} from '../store/productOrders'
 import Stripe from './Stripe'
 import {Link} from 'react-router-dom'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import Divider from '@mui/material/Divider'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import Avatar from '@mui/material/Avatar'
+import Typography from '@mui/material/Typography'
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -35,38 +42,66 @@ export class Cart extends React.Component {
 
     return (
       <div id="cart">
-        <h1>CART</h1>
         {productList ? (
-          <div className="outerContainer">
+          <List sx={{width: '100%', bgcolor: 'background.paper'}}>
             {productList.map(item => (
-              <div className="card" key={item.product.name}>
-                <Link to={`/products/${item.product.id}`} as="/products/:id">
-                  {item.product.name}
-                </Link>
-                <h2 className="price">{item.product.price}</h2>
-                <h2 className="quantity">{item.quantity}</h2>
-              </div>
+              <ListItem alignItems="flex-start" key={item.product.name}>
+                <ListItemAvatar>
+                  <Avatar alt={item.product.name} src={item.product.image} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={item.product.name}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{display: 'inline'}}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {item.quantity}
+                      </Typography>
+                      {`    at  $${item.product.price} each`}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
             ))}
-          </div>
+          </List>
         ) : (
           <div />
         )}
         {existing ? (
-          <div className="outerContainer">
+          <List
+            sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
+          >
             {existing.map(item => (
-              <div className="card" key={item.name}>
-                <Link to={`/products/${item.productId}`} as="/products/:id">
-                  {item.name}
-                </Link>
-                <h2 className="price">{item.price}</h2>
-                <h2 className="quantity">{item.quantity}</h2>
-              </div>
+              <ListItem alignItems="flex-start" key={item.name}>
+                <ListItemAvatar>
+                  <Avatar alt={item.name} src={item.image} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={item.name}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{display: 'inline'}}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {item.quantity}
+                      </Typography>
+                      {`    at  $${item.price} each`}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
             ))}
-          </div>
+          </List>
         ) : (
           <div />
         )}
-        {/* {!productList && !existing ? (<div>add something</div> ): (<Stripe/>) } */}
       </div>
     )
   }

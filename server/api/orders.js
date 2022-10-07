@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
         attributes: ['quantity'],
         include: {
           model: Product,
-          attributes: ['name', 'price', 'id']
+          attributes: ['name', 'price', 'id', 'image']
         }
       }
     })

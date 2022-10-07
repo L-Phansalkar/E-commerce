@@ -52,7 +52,8 @@ export class SingleProduct extends React.Component {
             productId: this.props.singleProduct.id,
             name: this.props.singleProduct.name,
             quantity: 1,
-            price: this.props.singleProduct.price
+            price: this.props.singleProduct.price,
+            image: this.props.singleProduct.image
           })
           localStorage.setItem('cart', JSON.stringify(existing))
         }
@@ -64,7 +65,8 @@ export class SingleProduct extends React.Component {
               productId: this.props.singleProduct.id,
               name: this.props.singleProduct.name,
               quantity: 1,
-              price: this.props.singleProduct.price
+              price: this.props.singleProduct.price,
+              image: this.props.singleProduct.image
             }
           ])
         )
