@@ -3,6 +3,19 @@ import {connect} from 'react-redux'
 import {getOneProduct, updateProductInv} from '../store/singleProduct'
 import {getCurrOrder} from '../store/orders'
 import {updateCurrOrder} from '../store/productOrders'
+import {Button} from '@mui/material'
+import {styled} from '@mui/material/styles'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
+import ButtonBase from '@mui/material/ButtonBase'
+
+const Img = styled('img')({
+  margin: 'auto',
+  display: 'block',
+  maxWidth: '100%',
+  maxHeight: '100%'
+})
 
 export class SingleProduct extends React.Component {
   constructor(props) {
@@ -13,14 +26,14 @@ export class SingleProduct extends React.Component {
   productId = window.location.href.split('/')[4]
   componentDidMount() {
     this.props.getProduct(this.productId)
+    this.props.getOpenOrder()
+  }
+  updateInventory() {
+    console.log(this.props)
     var userId = this.props.id
     if (userId) {
       this.props.getOpenOrder()
-    }
-  }
-  updateInventory() {
-    var userId = this.props.id
-    if (userId) {
+      console.log(this.props.openOrder)
       this.props.updateProductInventory(this.productId)
       this.props.updateCurrentOrder(this.productId, this.props.openOrder.id)
     } else {
@@ -62,31 +75,55 @@ export class SingleProduct extends React.Component {
 
   render() {
     const {singleProduct} = this.props
-
     return (
       <div id="singleProduct">
-        <h1 id="singleProductTitle">{singleProduct.name}</h1>
-        <div className="card" key={singleProduct.id}>
-          <img
-            id="productImage"
-            src={singleProduct.image}
-            alt={singleProduct.name}
-          />
-          <h2 className="description">{singleProduct.description}</h2>
-          <h2 className="price">{singleProduct.price}</h2>
-          <h2 className="inventory">{singleProduct.inventory}</h2>
-          <div className="cart">
-            <a className="add">
-              {/*  */}
-              <input
-                type="button"
-                value="ADD TO CART"
-                onClick={this.updateInventory}
-              />
-              {/*  */}
-            </a>
-          </div>
-        </div>
+        <Paper
+          sx={{
+            p: 2,
+            margin: 'auto',
+            maxWidth: 500,
+            flexGrow: 1,
+            backgroundColor: theme =>
+              theme.palette.mode === 'dark' ? '#1A2027' : '#fff'
+          }}
+        >
+          <Grid container spacing={1}>
+            <Grid item>
+              <ButtonBase sx={{width: 300, height: 300}}>
+                <Img alt={singleProduct.name} src={singleProduct.image} />
+              </ButtonBase>
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {singleProduct.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    In stock: {singleProduct.inventory}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography sx={{cursor: 'pointer'}} variant="body2">
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        this.updateInventory()
+                      }}
+                    >
+                      ADD TO CART
+                    </Button>
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography variant="subtitle1" component="div">
+                  $19.00
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
       </div>
     )
   }

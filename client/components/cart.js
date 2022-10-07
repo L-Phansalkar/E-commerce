@@ -1,15 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getCurrOrder} from '../store/orders'
+import {updateProductInv} from '../store/singleProduct'
+import {updateCurrOrder} from '../store/productOrders'
+import Stripe from './Stripe'
 import {Link} from 'react-router-dom'
 
 export class Cart extends React.Component {
   componentDidMount() {
-    var userId = this.props.id
     console.log(this.props)
-    if (userId) {
-      this.props.getCurrentOrder()
-    }
     this.props.getCurrentOrder()
   }
 
@@ -18,6 +17,22 @@ export class Cart extends React.Component {
     const productList = openOrder.productOrders
     console.log(openOrder)
     var existing = JSON.parse(localStorage.getItem('cart'))
+    // if (openOrder && existing){
+    //   console.log("i got both")
+    //   console.log(this.props.openOrder)
+    //   console.log(existing)
+    //   existing.forEach(item => {
+    //     var quantity = item.quantity
+    //     console.log(quantity)
+    //     while (quantity >0){
+    //     this.props.updateProductInventory(item.productId)
+    //     this.props.updateCurrentOrder(item.productId, this.props.openOrder.id)
+    //     quantity = quantity-1
+    //     console.log(quantity)
+    //     }
+    // })
+    // localStorage.removeItem("cart")
+
     return (
       <div id="cart">
         <h1>CART</h1>
@@ -51,7 +66,7 @@ export class Cart extends React.Component {
         ) : (
           <div />
         )}
-        {!productList && !existing ? <div>add something</div> : <div />}
+        {/* {!productList && !existing ? (<div>add something</div> ): (<Stripe/>) } */}
       </div>
     )
   }
@@ -65,7 +80,10 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getCurrentOrder: () => dispatch(getCurrOrder())
+    getCurrentOrder: () => dispatch(getCurrOrder()),
+    updateProductInventory: id => dispatch(updateProductInv(id)),
+    updateCurrentOrder: (productId, openOrderid) =>
+      dispatch(updateCurrOrder(productId, openOrderid))
   }
 }
 
