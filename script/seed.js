@@ -57,17 +57,6 @@ async function seed() {
       songs: "Take Me To The River, Don't Worry Be Happy"
     }),
     Product.create({
-      name: 'World Record Billy Bass',
-      image:
-        'https://www.nhm.ac.uk/content/dam/nhmwww/discover/frog-eyes-evolution/frog-eyes-chubby-frog-flower-full-width.jpg',
-      description:
-        ' A giant 28" lunker singing fish sold exclusively at KayBee Toys. The fish comes with an extra nameplate that reads "WORLD RECORD BILLY BASS" that can be placed via peel off tape over the existing "BIG MOUTH BILLY BASS" nameplate.',
-      price: '9.99',
-      inventory: '26',
-      year: '2000',
-      songs: "Take Me To The River, Don't Worry Be Happy"
-    }),
-    Product.create({
       name: 'Big Mouth Billy Bones',
       image:
         'https://www.nhm.ac.uk/content/dam/nhmwww/discover/frog-eyes-evolution/frog-eyes-chubby-frog-flower-full-width.jpg',
@@ -182,7 +171,7 @@ async function seed() {
       image:
         'https://www.nhm.ac.uk/content/dam/nhmwww/discover/frog-eyes-evolution/frog-eyes-chubby-frog-flower-full-width.jpg',
       description:
-        "A special version of Billy Bass that is compatible with Alexa via Bluetooth to an Amazon Echo device. He moves his mouth in sync with Alexa's voice and turns his head outward when saying the wake word. He also dances to music by moving his head and tail to the beat. This version includes a power adaptor.",
+        "A special version of Billy Bass that is compatible with Alexa via Bluetooth to an Amazon Echo device. He moves his mouth in sync with Alexa's voice, turns his head outward when saying the wake word,and dances to music.",
       price: '9.99',
       inventory: '26',
       year: '2018',
