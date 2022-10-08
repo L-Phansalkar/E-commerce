@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {getCurrOrder} from '../store/orders';
+import {getCurrOrder, stripeCheckout} from '../store/orders';
 import {updateProductInv} from '../store/singleProduct';
 import {
   updateCurrOrder,
@@ -35,6 +35,11 @@ const CartFunctional = ({openOrder, dispatch}) => {
 
   const deleteItem = (item) => {
     dispatch(deleteCurrProd(item.product.id, openOrder.id));
+  };
+
+  const checkoutOrder = (id) => {
+    console.log(id);
+    dispatch(stripeCheckout(id));
   };
 
   return (
@@ -104,6 +109,14 @@ const CartFunctional = ({openOrder, dispatch}) => {
               </ListItem>
             );
           })}
+          <Button
+            variant="contained"
+            onClick={() => {
+              checkoutOrder(openOrder.id);
+            }}
+          >
+            Checkout With Stripe
+          </Button>
         </List>
       ) : null}
 

@@ -20,6 +20,7 @@ async function seed() {
       inventory: '26',
       year: '1998',
       songs: "Take Me To The River, Don't Worry Be Happy",
+      stripe: 'price_1LqiVwLVr6OUxlRlXarYijRo',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Sings For The Holidays V1',
@@ -32,6 +33,7 @@ async function seed() {
       year: '1999',
       songs:
         'Blues version of Twas The Night Before Christmas (which is a parody of Trouble by Elvis Presley)',
+      stripe: 'price_1LqiW9LVr6OUxlRlJkfcX62N',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Sings For The Holidays V2',
@@ -43,6 +45,7 @@ async function seed() {
       inventory: '26',
       year: '2000',
       songs: 'Country versions of Jingle Bells and Up On A Housetop',
+      stripe: 'price_1LqiWPLVr6OUxlRlrPqJ0FRz',
     }),
     Product.create({
       name: 'World Record Billy Bass',
@@ -54,6 +57,7 @@ async function seed() {
       inventory: '26',
       year: '2000',
       songs: "Take Me To The River, Don't Worry Be Happy",
+      stripe: 'price_1LqiWcLVr6OUxlRlwZ7nawjX',
     }),
     Product.create({
       name: 'Big Mouth Billy Bones',
@@ -65,6 +69,7 @@ async function seed() {
       inventory: '26',
       year: '2000',
       songs: 'Bad To The Bone',
+      stripe: 'price_1LqiWlLVr6OUxlRl3JgqBl4l',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Musical Keychain',
@@ -75,6 +80,7 @@ async function seed() {
       inventory: '26',
       year: '2000',
       songs: "Take Me To The River, Don't Worry Be Happy",
+      stripe: 'price_1LqiWzLVr6OUxlRlPUzF5mJU',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Cupholder',
@@ -85,6 +91,7 @@ async function seed() {
       inventory: '26',
       year: '2000',
       songs: "Take Me To The River, Don't Worry Be Happy",
+      stripe: 'price_1LqiXPLVr6OUxlRltifWwAUh',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Superstar',
@@ -95,6 +102,7 @@ async function seed() {
       inventory: '26',
       year: '2001',
       songs: 'Act Naturally and a parody of I Will Survive',
+      stripe: 'price_1LqiXbLVr6OUxlRlJtSHbsJk',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Jr',
@@ -105,6 +113,7 @@ async function seed() {
       inventory: '26',
       year: '2004',
       songs: 'parody of I Will Survive and Take Me To The River',
+      stripe: 'price_1LqiXoLVr6OUxlRlbRCAaCPw',
     }),
     Product.create({
       name: 'Mini Big Mouth Billy Bass REC+PLAY',
@@ -115,6 +124,7 @@ async function seed() {
       inventory: '26',
       year: '2009',
       songs: 'Recorded message (up to 9 seconds) and Take Me To The River',
+      stripe: 'price_1LqiY3LVr6OUxlRlPs9axvYl',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass 15th Anniversary Edition',
@@ -125,6 +135,7 @@ async function seed() {
       inventory: '26',
       year: '2014',
       songs: "Don't Worry Be Happy and a parody of I Will Survive",
+      stripe: 'price_1LqiYELVr6OUxlRlDw34J6te',
     }),
     Product.create({
       name: 'Big Mouth Billy Bones 15th Anniversary Edition',
@@ -135,6 +146,7 @@ async function seed() {
       inventory: '26',
       year: '2015',
       songs: 'Bad To The Bone',
+      stripe: 'price_1LqiYSLVr6OUxlRlKUsdjd4s',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass 15th Anniversary Christmas Edition',
@@ -145,6 +157,7 @@ async function seed() {
       year: '2015',
       songs:
         'Billy Bass themed parody of Jingle Bells and a parody of I Will Survive',
+      stripe: 'price_1LqiYeLVr6OUxlRluTJKJbSN',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Survivor Edition',
@@ -155,6 +168,7 @@ async function seed() {
       inventory: '26',
       year: '2018',
       songs: 'Parody of I Will Survive and Dont Worry Be Happy',
+      stripe: 'price_1LqiYoLVr6OUxlRlhaqwPdfW',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass The Speaking Sensation',
@@ -166,6 +180,7 @@ async function seed() {
       inventory: '26',
       year: '2018',
       songs: "exclusive song called Fishin' Time",
+      stripe: 'price_1LqiZ2LVr6OUxlRlAyXG0OhL',
     }),
     Product.create({
       name: 'Classic Plaque Big Mouth Billy Bass',
@@ -175,6 +190,7 @@ async function seed() {
       inventory: '26',
       year: '2021',
       songs: 'Take Me to the River and Huntin’, Fishin’, and Lovin’ Every Day',
+      stripe: 'price_1LqiZALVr6OUxlRlgI4OPXYP',
     }),
   ]);
   const orders = await Promise.all([Order.create({userId: '1'})]);

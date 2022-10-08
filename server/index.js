@@ -10,9 +10,6 @@ const sessionStore = new SequelizeStore({db});
 const PORT = process.env.PORT || 8080;
 const app = express();
 const socketio = require('socket.io');
-const stripe = require('stripe')(
-  'sk_test_51LlxulLVr6OUxlRlR91VhHOpLdssn3R0ECRPZs2H3QkB8RSlfYnHeiW606Mo7611ihw2turybvzBWAPHL26JqYp500QQhr3A8F'
-);
 
 module.exports = app;
 
@@ -51,22 +48,6 @@ passport.deserializeUser(async (id, done) => {
 // };
 
 const createApp = () => {
-  app.post('/create-payment-intent', async (req, res) => {
-    const {items} = req.body;
-    console.log(items);
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: calculateOrderAmount(items),
-      currency: 'usd',
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
-
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  });
   // logging middleware
   app.use(morgan('dev'));
 

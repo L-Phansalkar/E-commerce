@@ -28,6 +28,9 @@ const Product = db.define('product', {
   songs: {
     type: Sequelize.STRING,
   },
+  stripe: {
+    type: Sequelize.STRING,
+  },
 });
 
 module.exports = Product;
