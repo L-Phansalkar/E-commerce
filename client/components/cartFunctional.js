@@ -46,67 +46,73 @@ const CartFunctional = ({openOrder, dispatch}) => {
 
       {openOrder.productOrders ? (
         <List sx={{bgcolor: 'background.paper', p: 2}}>
-          {openOrder.productOrders.map(item => (
-            <ListItem alignItems="center" key={item.product.name}>
-              <ListItemAvatar>
-                <Avatar
-                  sx={{width: 200, height: 200}}
-                  alt={item.product.name}
-                  src={item.product.image}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                sx={{display: 'inline', p: 3}}
-                primary={<h3>{item.product.name}</h3>}
-                secondary={
-                  <Typography
-                    sx={{display: 'inline', alignItems: 'flex-end'}}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {item.quantity}
-                    {`    at  $${item.product.price} each`}
-                    <br />
-                    {item.quantity > 1 ? (
+          {openOrder.productOrders.map(item => {
+            const {quantity, product} = item
+
+            const showMinus = quantity > 1
+
+            return (
+              <ListItem alignItems="center" key={product.name}>
+                <ListItemAvatar>
+                  <Avatar
+                    sx={{width: 200, height: 200}}
+                    alt={product.name}
+                    src={product.image}
+                  />
+                </ListItemAvatar>
+                <ListItemText
+                  sx={{display: 'inline', p: 3}}
+                  primary={<h3>{product.name}</h3>}
+                  secondary={
+                    <Typography
+                      sx={{display: 'inline', alignItems: 'flex-end'}}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {quantity}
+                      {`    at  $${product.price} each`}
+                      <br />
+                      {showMinus && (
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            subtractItem(item)
+                          }}
+                        >
+                          MINUS
+                        </Button>
+                      )}
+
                       <Button
                         variant="contained"
                         onClick={() => {
-                          subtractItem(item)
+                          addItem(item)
                         }}
                       >
-                        MINUS
+                        PLUS
                       </Button>
-                    ) : null}
 
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        addItem(item)
-                      }}
-                    >
-                      PLUS
-                    </Button>
-
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        deleteItem(item)
-                      }}
-                    >
-                      REMOVE FROM CART
-                    </Button>
-                  </Typography>
-                }
-              />
-            </ListItem>
-          ))}
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          deleteItem(item)
+                        }}
+                      >
+                        REMOVE FROM CART
+                      </Button>
+                    </Typography>
+                  }
+                />
+              </ListItem>
+            )
+          })}
         </List>
       ) : null}
 
       {/* this is for not logged in guest  */}
 
-      {existing ? (
+      {existing && (
         <List sx={{bgcolor: 'background.paper'}}>
           {existing.map(item => (
             <ListItem alignItems="flex-start" key={item.name}>
@@ -132,8 +138,6 @@ const CartFunctional = ({openOrder, dispatch}) => {
             </ListItem>
           ))}
         </List>
-      ) : (
-        <div />
       )}
     </div>
   )
