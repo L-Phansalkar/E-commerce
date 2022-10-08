@@ -9,7 +9,8 @@ import {
   AllProducts,
   SingleProduct,
   Cart,
-  Stripe
+  Stripe,
+  Home
 } from './components'
 import {me} from './store'
 

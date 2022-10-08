@@ -55,7 +55,7 @@ async function seed() {
     Product.create({
       name: 'Big Mouth Billy Bones',
       image:
-        'https://static.wikia.nocookie.net/theallaboutsingingfish/images/a/ad/Big_Mouth_Billy_Bones_.jpg/revision/latest?cb=20150619235354',
+        'https://i.ebayimg.com/thumbs/images/g/TbkAAOSwHVNjI6mg/s-l225.jpg',
       description:
         'A singing skeleton fish made for Halloween. Billy Bones appears to be the deceased brother of Billy Bass. His bones also glow in the dark.',
       price: '9.99',
@@ -85,8 +85,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Superstar',
-      image:
-        'https://static.wikia.nocookie.net/animatronic/images/f/f0/IMG_0282.jpg/revision/latest/scale-to-width-down/225?cb=20140525204023',
+      image: 'https://i.ytimg.com/vi/l7EEtPn4TFs/maxresdefault.jpg',
       description:
         'A special edition of Billy Bass. He stands on his tail on a stage (Black round base) and holds a microphone. He taps his tail, sways his body and sings into the microphone.',
       price: '9.99',
@@ -126,8 +125,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bones 15th Anniversary Edition',
-      image:
-        'https://static.wikia.nocookie.net/gemmy/images/a/a0/Big_Mouth_Billy_Bones.jpg/revision/latest?cb=20150708104458',
+      image: 'https://i.ytimg.com/vi/Nm-xl4CmqIY/maxresdefault.jpg',
       description:
         ' This Billy Bones is mounted on a black oval shaped plaque, has red LEDs on his eyes and mouth, and lacks a nameplate. ',
       price: '9.99',

@@ -17,7 +17,7 @@ export const appTheme = createTheme({
     },
     background: {
       default: pink,
-      paper: '#78909c'
+      paper: '#ffb74d'
     }
   },
   typography: {

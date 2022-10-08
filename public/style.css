@@ -1,5 +1,13 @@
 body {
-  font-family: sans-serif;
+  font-family: 'PT Sans Caption';
+  background-image: url('./flish.gif');
+
+  /* https://im4.ezgif.com/tmp/ezgif-4-b14586f806.gif */
+
+  /* https://im4.ezgif.com/tmp/ezgif-4-71f5c719de.gif */
+  background-repeat: no-repeat;
+  background-color: rgb(255, 251, 127);
+  background-size: cover;
 }
 
 a {
@@ -22,5 +30,22 @@ form div {
 
 a:visited {
   text-decoration: none;
+  color: orange;
+}
+
+label {
+  color: '#283593';
+}
+input {
+  background-color: rgba(127, 255, 212, 0);
+}
+button {
+  background-color: #283593;
+  color: orange;
+  padding: 15px 32px;
+  font-size: 16px;
+}
+#goog {
+  background-color: #283593;
   color: orange;
 }

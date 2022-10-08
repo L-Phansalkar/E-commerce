@@ -21,10 +21,7 @@ export class AllProducts extends React.Component {
             {products.map(product => (
               <ImageListItem key={product.id}>
                 <img
-                  src={`${product.image}?w=248&fit=crop&auto=format`}
-                  srcSet={`${
-                    product.image
-                  }?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${product.image}?w=248&fit=cover&auto=format`}
                   alt={product.name}
                   loading="lazy"
                 />

@@ -89,7 +89,7 @@ export class SingleProduct extends React.Component {
         >
           <Grid container spacing={1}>
             <Grid item>
-              <ButtonBase sx={{width: 300, height: 300}}>
+              <ButtonBase sx={{width: 500, height: 500, margin: 2}}>
                 <Img alt={singleProduct.name} src={singleProduct.image} />
               </ButtonBase>
             </Grid>
