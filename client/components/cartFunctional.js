@@ -1,44 +1,41 @@
-import React, {useEffect} from 'react'
-import {connect} from 'react-redux'
-import {getCurrOrder} from '../store/orders'
-import {updateProductInv} from '../store/singleProduct'
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {getCurrOrder} from '../store/orders';
+import {updateProductInv} from '../store/singleProduct';
 import {
   updateCurrOrder,
   decreaseCurrProd,
-  deleteCurrProd
-} from '../store/productOrders'
-import Stripe from './Stripe'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import Avatar from '@mui/material/Avatar'
-import Typography from '@mui/material/Typography'
-import {Button} from '@mui/material'
+  deleteCurrProd,
+} from '../store/productOrders';
+import Stripe from './Stripe';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import {Button} from '@mui/material';
 
 const CartFunctional = ({openOrder, dispatch}) => {
-  console.log('openOrder', openOrder)
-  const existing = JSON.parse(localStorage.getItem('cart'))
+  console.log('openOrder', openOrder);
+  const existing = JSON.parse(localStorage.getItem('cart'));
 
-  useEffect(
-    () => {
-      dispatch(getCurrOrder())
-    },
-    [dispatch]
-  )
+  useEffect(() => {
+    dispatch(getCurrOrder());
+  }, [dispatch]);
 
-  const subtractItem = item => {
-    dispatch(decreaseCurrProd(item.product.id, openOrder.id))
-  }
+  const subtractItem = (item) => {
+    dispatch(decreaseCurrProd(item.product.id, openOrder.id));
+  };
 
-  const addItem = item => {
-    dispatch(updateProductInv(item.product.id))
-    dispatch(updateCurrOrder(item.product.id, openOrder.id))
-  }
+  const addItem = (item) => {
+    dispatch(updateProductInv(item.product.id));
+    dispatch(updateCurrOrder(item.product.id, openOrder.id));
+  };
 
-  const deleteItem = item => {
-    dispatch(deleteCurrProd(item.product.id, openOrder.id))
-  }
+  const deleteItem = (item) => {
+    dispatch(deleteCurrProd(item.product.id, openOrder.id));
+  };
 
   return (
     <div id="cart">
@@ -46,10 +43,10 @@ const CartFunctional = ({openOrder, dispatch}) => {
 
       {openOrder.productOrders ? (
         <List sx={{bgcolor: 'background.paper', p: 2}}>
-          {openOrder.productOrders.map(item => {
-            const {quantity, product} = item
+          {openOrder.productOrders.map((item) => {
+            const {quantity, product} = item;
 
-            const showMinus = quantity > 1
+            const showMinus = quantity > 1;
 
             return (
               <ListItem alignItems="center" key={product.name}>
@@ -77,7 +74,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            subtractItem(item)
+                            subtractItem(item);
                           }}
                         >
                           MINUS
@@ -87,7 +84,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
                       <Button
                         variant="contained"
                         onClick={() => {
-                          addItem(item)
+                          addItem(item);
                         }}
                       >
                         PLUS
@@ -96,7 +93,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
                       <Button
                         variant="contained"
                         onClick={() => {
-                          deleteItem(item)
+                          deleteItem(item);
                         }}
                       >
                         REMOVE FROM CART
@@ -105,7 +102,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
                   }
                 />
               </ListItem>
-            )
+            );
           })}
         </List>
       ) : null}
@@ -114,7 +111,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
 
       {existing && (
         <List sx={{bgcolor: 'background.paper'}}>
-          {existing.map(item => (
+          {existing.map((item) => (
             <ListItem alignItems="flex-start" key={item.name}>
               <ListItemAvatar>
                 <Avatar alt={item.name} src={item.image} />
@@ -140,11 +137,11 @@ const CartFunctional = ({openOrder, dispatch}) => {
         </List>
       )}
     </div>
-  )
-}
+  );
+};
 
-const mapState = state => ({
-  openOrder: state.order
-})
+const mapState = (state) => ({
+  openOrder: state.order,
+});
 
-export default connect(mapState)(CartFunctional)
+export default connect(mapState)(CartFunctional);

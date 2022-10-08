@@ -1,24 +1,24 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {getAllProducts} from '../store/products'
-import {Link} from 'react-router-dom'
-import ImageList from '@mui/material/ImageList'
-import ImageListItem from '@mui/material/ImageListItem'
-import ImageListItemBar from '@mui/material/ImageListItemBar'
+import React from 'react';
+import {connect} from 'react-redux';
+import {getAllProducts} from '../store/products';
+import {Link} from 'react-router-dom';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 export class AllProducts extends React.Component {
   componentDidMount() {
-    this.props.getProducts()
+    this.props.getProducts();
   }
 
   render() {
-    const {products} = this.props
+    const {products} = this.props;
 
     return (
       <div id="allProducts">
         <div className="outerContainer">
           <ImageList sx={{backgroundColor: 'orange'}}>
-            {products.map(product => (
+            {products.map((product) => (
               <ImageListItem key={product.id} sx={{p: 1}}>
                 <img src={product.image} alt={product.name} loading="lazy" />
 
@@ -44,19 +44,19 @@ export class AllProducts extends React.Component {
           ))} */}
         </div>
       </div>
-    )
+    );
   }
 }
-const mapState = state => {
+const mapState = (state) => {
   return {
-    products: state.products
-  }
-}
+    products: state.products,
+  };
+};
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
-    getProducts: () => dispatch(getAllProducts())
-  }
-}
+    getProducts: () => dispatch(getAllProducts()),
+  };
+};
 
-export default connect(mapState, mapDispatch)(AllProducts)
+export default connect(mapState, mapDispatch)(AllProducts);

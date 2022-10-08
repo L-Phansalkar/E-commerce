@@ -1,55 +1,55 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {getCurrOrder} from '../store/orders'
-import {updateProductInv} from '../store/singleProduct'
+import React from 'react';
+import {connect} from 'react-redux';
+import {getCurrOrder} from '../store/orders';
+import {updateProductInv} from '../store/singleProduct';
 import {
   updateCurrOrder,
   decreaseCurrProd,
-  deleteCurrProd
-} from '../store/productOrders'
-import Stripe from './Stripe'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import Avatar from '@mui/material/Avatar'
-import Typography from '@mui/material/Typography'
-import {Button} from '@mui/material'
+  deleteCurrProd,
+} from '../store/productOrders';
+import Stripe from './Stripe';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import {Button} from '@mui/material';
 
 export class Cart extends React.Component {
   constructor(props) {
-    super(props)
-    this.subtract = this.subtract.bind(this)
-    this.add = this.add.bind(this)
-    this.delete = this.delete.bind(this)
+    super(props);
+    this.subtract = this.subtract.bind(this);
+    this.add = this.add.bind(this);
+    this.delete = this.delete.bind(this);
   }
   componentDidMount() {
-    this.props.getCurrentOrder()
+    this.props.getCurrentOrder();
   }
 
   subtract(item) {
-    this.props.decreaseQuant(item.product.id, this.props.openOrder.id)
+    this.props.decreaseQuant(item.product.id, this.props.openOrder.id);
   }
 
   delete(item) {
-    this.props.deleteCartItem(item.product.id, this.props.openOrder.id)
+    this.props.deleteCartItem(item.product.id, this.props.openOrder.id);
   }
 
   add(item) {
-    this.props.updateProductInventory(item.product.id)
-    this.props.updateCurrentOrder(item.product.id, this.props.openOrder.id)
+    this.props.updateProductInventory(item.product.id);
+    this.props.updateCurrentOrder(item.product.id, this.props.openOrder.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.openOrder !== prevProps.openOrder) {
-      this.props.getCurrentOrder()
+      this.props.getCurrentOrder();
     }
   }
 
   render() {
-    const {openOrder} = this.props
-    console.log(openOrder)
-    let existing = JSON.parse(localStorage.getItem('cart'))
+    const {openOrder} = this.props;
+    console.log(openOrder);
+    let existing = JSON.parse(localStorage.getItem('cart'));
     // if (openOrder && existing){
     //   console.log("i got both")
     //   console.log(this.props.openOrder)
@@ -72,7 +72,7 @@ export class Cart extends React.Component {
 
         {openOrder.productOrders ? (
           <List sx={{bgcolor: 'background.paper', p: 2}}>
-            {openOrder.productOrders.map(item => (
+            {openOrder.productOrders.map((item) => (
               <ListItem alignItems="center" key={item.product.name}>
                 <ListItemAvatar>
                   <Avatar
@@ -98,7 +98,7 @@ export class Cart extends React.Component {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            this.subtract(item)
+                            this.subtract(item);
                           }}
                         >
                           MINUS
@@ -110,7 +110,7 @@ export class Cart extends React.Component {
                       <Button
                         variant="contained"
                         onClick={() => {
-                          this.add(item)
+                          this.add(item);
                         }}
                       >
                         PLUS
@@ -119,7 +119,7 @@ export class Cart extends React.Component {
                       <Button
                         variant="contained"
                         onClick={() => {
-                          this.delete(item)
+                          this.delete(item);
                         }}
                       >
                         REMOVE FROM CART
@@ -138,7 +138,7 @@ export class Cart extends React.Component {
 
         {existing ? (
           <List sx={{bgcolor: 'background.paper'}}>
-            {existing.map(item => (
+            {existing.map((item) => (
               <ListItem alignItems="flex-start" key={item.name}>
                 <ListItemAvatar>
                   <Avatar alt={item.name} src={item.image} />
@@ -166,27 +166,27 @@ export class Cart extends React.Component {
           <div />
         )}
       </div>
-    )
+    );
   }
 }
 
-const mapState = state => {
+const mapState = (state) => {
   return {
-    openOrder: state.order
-  }
-}
+    openOrder: state.order,
+  };
+};
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     getCurrentOrder: () => dispatch(getCurrOrder()),
     decreaseQuant: (productId, openOrderid) =>
       dispatch(decreaseCurrProd(productId, openOrderid)),
     deleteCartItem: (productId, openOrderid) =>
       dispatch(deleteCurrProd(productId, openOrderid)),
-    updateProductInventory: id => dispatch(updateProductInv(id)),
+    updateProductInventory: (id) => dispatch(updateProductInv(id)),
     updateCurrentOrder: (productId, openOrderid) =>
-      dispatch(updateCurrOrder(productId, openOrderid))
-  }
-}
+      dispatch(updateCurrOrder(productId, openOrderid)),
+  };
+};
 
-export default connect(mapState, mapDispatch)(Cart)
+export default connect(mapState, mapDispatch)(Cart);

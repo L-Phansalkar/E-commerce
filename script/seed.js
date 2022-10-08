@@ -1,16 +1,16 @@
-'use strict'
+'use strict';
 
-const db = require('../server/db')
-const {User, Product, Order, productOrder} = require('../server/db/models')
+const db = require('../server/db');
+const {User, Product, Order, productOrder} = require('../server/db/models');
 
 async function seed() {
-  await db.sync({force: true})
-  console.log('db synced!')
+  await db.sync({force: true});
+  console.log('db synced!');
 
   const users = await Promise.all([
     User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
+    User.create({email: 'murphy@email.com', password: '123'}),
+  ]);
   const products = await Promise.all([
     Product.create({
       name: 'Big Mouth Billy Bass The Singing Sensation',
@@ -19,7 +19,7 @@ async function seed() {
       price: '3.99',
       inventory: '26',
       year: '1998',
-      songs: "Take Me To The River, Don't Worry Be Happy"
+      songs: "Take Me To The River, Don't Worry Be Happy",
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Sings For The Holidays V1',
@@ -31,7 +31,7 @@ async function seed() {
       inventory: '26',
       year: '1999',
       songs:
-        'Blues version of Twas The Night Before Christmas (which is a parody of Trouble by Elvis Presley)'
+        'Blues version of Twas The Night Before Christmas (which is a parody of Trouble by Elvis Presley)',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Sings For The Holidays V2',
@@ -42,7 +42,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2000',
-      songs: 'Country versions of Jingle Bells and Up On A Housetop'
+      songs: 'Country versions of Jingle Bells and Up On A Housetop',
     }),
     Product.create({
       name: 'World Record Billy Bass',
@@ -53,7 +53,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2000',
-      songs: "Take Me To The River, Don't Worry Be Happy"
+      songs: "Take Me To The River, Don't Worry Be Happy",
     }),
     Product.create({
       name: 'Big Mouth Billy Bones',
@@ -64,7 +64,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2000',
-      songs: 'Bad To The Bone'
+      songs: 'Bad To The Bone',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Musical Keychain',
@@ -74,7 +74,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2000',
-      songs: "Take Me To The River, Don't Worry Be Happy"
+      songs: "Take Me To The River, Don't Worry Be Happy",
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Cupholder',
@@ -84,7 +84,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2000',
-      songs: "Take Me To The River, Don't Worry Be Happy"
+      songs: "Take Me To The River, Don't Worry Be Happy",
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Superstar',
@@ -94,7 +94,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2001',
-      songs: 'Act Naturally and a parody of I Will Survive'
+      songs: 'Act Naturally and a parody of I Will Survive',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Jr',
@@ -104,7 +104,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2004',
-      songs: 'parody of I Will Survive and Take Me To The River'
+      songs: 'parody of I Will Survive and Take Me To The River',
     }),
     Product.create({
       name: 'Mini Big Mouth Billy Bass REC+PLAY',
@@ -114,7 +114,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2009',
-      songs: 'Recorded message (up to 9 seconds) and Take Me To The River'
+      songs: 'Recorded message (up to 9 seconds) and Take Me To The River',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass 15th Anniversary Edition',
@@ -124,7 +124,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2014',
-      songs: "Don't Worry Be Happy and a parody of I Will Survive"
+      songs: "Don't Worry Be Happy and a parody of I Will Survive",
     }),
     Product.create({
       name: 'Big Mouth Billy Bones 15th Anniversary Edition',
@@ -134,7 +134,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2015',
-      songs: 'Bad To The Bone'
+      songs: 'Bad To The Bone',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass 15th Anniversary Christmas Edition',
@@ -144,7 +144,7 @@ async function seed() {
       inventory: '26',
       year: '2015',
       songs:
-        'Billy Bass themed parody of Jingle Bells and a parody of I Will Survive'
+        'Billy Bass themed parody of Jingle Bells and a parody of I Will Survive',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Survivor Edition',
@@ -154,7 +154,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2018',
-      songs: 'Parody of I Will Survive and Dont Worry Be Happy'
+      songs: 'Parody of I Will Survive and Dont Worry Be Happy',
     }),
     Product.create({
       name: 'Big Mouth Billy Bass The Speaking Sensation',
@@ -165,7 +165,7 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2018',
-      songs: "exclusive song called Fishin' Time"
+      songs: "exclusive song called Fishin' Time",
     }),
     Product.create({
       name: 'Classic Plaque Big Mouth Billy Bass',
@@ -174,34 +174,34 @@ async function seed() {
       price: '9.99',
       inventory: '26',
       year: '2021',
-      songs: 'Take Me to the River and Huntin’, Fishin’, and Lovin’ Every Day'
-    })
-  ])
-  const orders = await Promise.all([Order.create({userId: '1'})])
+      songs: 'Take Me to the River and Huntin’, Fishin’, and Lovin’ Every Day',
+    }),
+  ]);
+  const orders = await Promise.all([Order.create({userId: '1'})]);
   const productOrders = await Promise.all([
-    productOrder.create({productId: '2', quantity: '3', orderId: '1'})
-  ])
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${products.length} products`)
-  console.log(`seeded ${orders.length} orders`)
-  console.log(`seeded ${productOrders.length} productOrders`)
-  console.log(`seeded successfully`)
+    productOrder.create({productId: '2', quantity: '3', orderId: '1'}),
+  ]);
+  console.log(`seeded ${users.length} users`);
+  console.log(`seeded ${products.length} products`);
+  console.log(`seeded ${orders.length} orders`);
+  console.log(`seeded ${productOrders.length} productOrders`);
+  console.log(`seeded successfully`);
 }
 
 // We've separated the `seed` function from the `runSeed` function.
 // This way we can isolate the error handling and exit trapping.
 // The `seed` function is concerned only with modifying the database.
 async function runSeed() {
-  console.log('seeding...')
+  console.log('seeding...');
   try {
-    await seed()
+    await seed();
   } catch (err) {
-    console.error(err)
-    process.exitCode = 1
+    console.error(err);
+    process.exitCode = 1;
   } finally {
-    console.log('closing db connection')
-    await db.close()
-    console.log('db connection closed')
+    console.log('closing db connection');
+    await db.close();
+    console.log('db connection closed');
   }
 }
 
@@ -209,8 +209,8 @@ async function runSeed() {
 // `Async` functions always return a promise, so we can use `catch` to handle
 // any errors that might occur inside of `seed`.
 if (module === require.main) {
-  runSeed()
+  runSeed();
 }
 
 // we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = seed
+module.exports = seed;

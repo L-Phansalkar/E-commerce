@@ -1,12 +1,12 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const GET_OPEN_ORDER = 'GET_OPEN_ORDER'
+const GET_OPEN_ORDER = 'GET_OPEN_ORDER';
 // const GET_GUEST_ORDER = 'GET_GUEST_ORDER'
 
-const getOpenOrder = openOrder => ({
+const getOpenOrder = (openOrder) => ({
   type: GET_OPEN_ORDER,
-  openOrder
-})
+  openOrder,
+});
 
 // const getGuestOrder = guestOrder => ({
 //   type: GET_GUEST_ORDER,
@@ -14,15 +14,15 @@ const getOpenOrder = openOrder => ({
 // })
 
 export const getCurrOrder = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/orders`)
-      dispatch(getOpenOrder(data))
+      const {data} = await axios.get(`/api/orders`);
+      dispatch(getOpenOrder(data));
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
-}
+  };
+};
 // export const getGstOrder = (guestId) => {
 //   return async dispatch => {
 //     try {
@@ -34,13 +34,13 @@ export const getCurrOrder = () => {
 //   }
 // }
 
-export default function(state = [], action) {
+export default function (state = [], action) {
   switch (action.type) {
     case GET_OPEN_ORDER:
-      return action.openOrder
+      return action.openOrder;
     // case GET_GUEST_ORDER:
     //   return action.guestOrder
     default:
-      return state
+      return state;
   }
 }

@@ -1,13 +1,13 @@
-const router = require('express').Router()
-const {Order, productOrder, Product} = require('../db/models')
-module.exports = router
+const router = require('express').Router();
+const {Order, productOrder, Product} = require('../db/models');
+module.exports = router;
 
 router.get('/', async (req, res, next) => {
   try {
     const [currentOrder, created] = await Order.findOrCreate({
       where: {
         userId: req.user.id,
-        checkout: false
+        checkout: false,
       },
       attributes: ['id'],
       include: {
@@ -15,16 +15,16 @@ router.get('/', async (req, res, next) => {
         attributes: ['quantity'],
         include: {
           model: Product,
-          attributes: ['name', 'price', 'id', 'image']
-        }
-      }
-    })
+          attributes: ['name', 'price', 'id', 'image'],
+        },
+      },
+    });
 
-    res.json(currentOrder)
+    res.json(currentOrder);
   } catch (err) {
-    next(err)
+    next(err);
   }
-})
+});
 // router.get('/:guestId', async (req, res, next) => {
 //   try {
 //     const [currentOrder, created] = await Order.findOrCreate({
@@ -53,12 +53,12 @@ router.get('/history', async (req, res, next) => {
   try {
     const allOrders = await Order.findAll({
       where: {
-        userId: req.user.id
+        userId: req.user.id,
       },
-      include: productOrder
-    })
-    res.json(allOrders)
+      include: productOrder,
+    });
+    res.json(allOrders);
   } catch (err) {
-    next(err)
+    next(err);
   }
-})
+});

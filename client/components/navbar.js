@@ -1,14 +1,14 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout} from '../store'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import appTheme from '../app'
+import React from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {logout} from '../store';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import appTheme from '../app';
 
 // import MenuIcon from '@mui/icons-material';
 
@@ -36,7 +36,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             <Button
               color="inherit"
               onClick={() => {
-                handleClick()
+                handleClick();
               }}
             >
               {' '}
@@ -73,31 +73,31 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       </AppBar>
     </Box>
   </div>
-)
+);
 
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
-    isLoggedIn: !!state.user.id
-  }
-}
+    isLoggedIn: !!state.user.id,
+  };
+};
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     handleClick() {
-      dispatch(logout())
-    }
-  }
-}
+      dispatch(logout());
+    },
+  };
+};
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(Navbar);
 
 /**
  * PROP TYPES
  */
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
-}
+  isLoggedIn: PropTypes.bool.isRequired,
+};

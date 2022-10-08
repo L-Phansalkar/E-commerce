@@ -1,75 +1,75 @@
-import axios from 'axios'
-import {getCurrOrder} from './orders'
+import axios from 'axios';
+import {getCurrOrder} from './orders';
 
-const UPDATE_OPEN_ORDER = 'UPDATE_OPEN_ORDER'
-const DECREASE_QUANTITY = 'DECREASE_QUANTITY'
-const DELETE_CART_ITEM = 'DELETE_CART_ITEM'
+const UPDATE_OPEN_ORDER = 'UPDATE_OPEN_ORDER';
+const DECREASE_QUANTITY = 'DECREASE_QUANTITY';
+const DELETE_CART_ITEM = 'DELETE_CART_ITEM';
 
 // increase quantity, or add to cart
-const updateOpenOrder = currentOrder => ({
+const updateOpenOrder = (currentOrder) => ({
   type: UPDATE_OPEN_ORDER,
-  currentOrder
-})
+  currentOrder,
+});
 
-const decreaseProductQuant = currentOrder => ({
+const decreaseProductQuant = (currentOrder) => ({
   type: DECREASE_QUANTITY,
-  currentOrder
-})
+  currentOrder,
+});
 
-const deleteProductFromCart = currentOrder => ({
+const deleteProductFromCart = (currentOrder) => ({
   type: DELETE_CART_ITEM,
-  currentOrder
-})
+  currentOrder,
+});
 
 export const updateCurrOrder = (productId, orderId) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const {data} = await axios.post(
         `/api/productOrders/${productId}/${orderId}`
-      )
-      dispatch(updateOpenOrder(data))
-      dispatch(getCurrOrder())
+      );
+      dispatch(updateOpenOrder(data));
+      dispatch(getCurrOrder());
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
-}
+  };
+};
 export const decreaseCurrProd = (productId, orderId) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const {data} = await axios.put(
         `/api/productOrders/${productId}/${orderId}`
-      )
-      dispatch(decreaseProductQuant(data))
-      dispatch(getCurrOrder())
+      );
+      dispatch(decreaseProductQuant(data));
+      dispatch(getCurrOrder());
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
-}
+  };
+};
 export const deleteCurrProd = (productId, orderId) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const {data} = await axios.delete(
         `/api/productOrders/${productId}/${orderId}`
-      )
-      dispatch(deleteProductFromCart(data))
-      dispatch(getCurrOrder())
+      );
+      dispatch(deleteProductFromCart(data));
+      dispatch(getCurrOrder());
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
-}
+  };
+};
 
-export default function(state = {}, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case UPDATE_OPEN_ORDER:
-      return action.currentOrder
+      return action.currentOrder;
     case DECREASE_QUANTITY:
-      return action.currentOrder
+      return action.currentOrder;
     case DELETE_CART_ITEM:
-      return action.currentOrder
+      return action.currentOrder;
     default:
-      return state
+      return state;
   }
 }
