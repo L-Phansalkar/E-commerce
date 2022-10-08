@@ -1,9 +1,11 @@
 import axios from 'axios'
+import {getCurrOrder} from './orders'
 
 const UPDATE_OPEN_ORDER = 'UPDATE_OPEN_ORDER'
 const DECREASE_QUANTITY = 'DECREASE_QUANTITY'
 const DELETE_CART_ITEM = 'DELETE_CART_ITEM'
 
+// increase quantity, or add to cart
 const updateOpenOrder = currentOrder => ({
   type: UPDATE_OPEN_ORDER,
   currentOrder
@@ -26,6 +28,7 @@ export const updateCurrOrder = (productId, orderId) => {
         `/api/productOrders/${productId}/${orderId}`
       )
       dispatch(updateOpenOrder(data))
+      dispatch(getCurrOrder())
     } catch (err) {
       console.log(err)
     }
@@ -38,6 +41,7 @@ export const decreaseCurrProd = (productId, orderId) => {
         `/api/productOrders/${productId}/${orderId}`
       )
       dispatch(decreaseProductQuant(data))
+      dispatch(getCurrOrder())
     } catch (err) {
       console.log(err)
     }
@@ -50,13 +54,14 @@ export const deleteCurrProd = (productId, orderId) => {
         `/api/productOrders/${productId}/${orderId}`
       )
       dispatch(deleteProductFromCart(data))
+      dispatch(getCurrOrder())
     } catch (err) {
       console.log(err)
     }
   }
 }
 
-export default function(state = [], action) {
+export default function(state = {}, action) {
   switch (action.type) {
     case UPDATE_OPEN_ORDER:
       return action.currentOrder

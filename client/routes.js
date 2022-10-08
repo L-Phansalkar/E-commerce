@@ -9,8 +9,8 @@ import {
   AllProducts,
   SingleProduct,
   Cart,
-  Stripe,
-  Home
+  CartFunctional,
+  Stripe
 } from './components'
 import {me} from './store'
 
@@ -25,12 +25,14 @@ class Routes extends Component {
   render() {
     const {isLoggedIn} = this.props
 
+    const useNewCart = true
+
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/cart" component={Cart} />
+        <Route path="/cart" component={useNewCart ? CartFunctional : Cart} />
         <Route path="/check" component={Stripe} />
         <Route exact path="/products" component={AllProducts} />
         <Route exact path="/products/:id" component={SingleProduct} />

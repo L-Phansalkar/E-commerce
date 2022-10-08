@@ -49,7 +49,7 @@ export class Cart extends React.Component {
   render() {
     const {openOrder} = this.props
     console.log(openOrder)
-    var existing = JSON.parse(localStorage.getItem('cart'))
+    let existing = JSON.parse(localStorage.getItem('cart'))
     // if (openOrder && existing){
     //   console.log("i got both")
     //   console.log(this.props.openOrder)
