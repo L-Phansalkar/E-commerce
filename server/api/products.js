@@ -38,7 +38,16 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id, {
-      attributes: ['name', 'image', 'description', 'price', 'inventory', 'id']
+      attributes: [
+        'name',
+        'image',
+        'description',
+        'price',
+        'inventory',
+        'id',
+        'songs',
+        'year'
+      ]
     })
     product.inventory--
     await product.save()

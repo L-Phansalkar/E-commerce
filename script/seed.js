@@ -23,7 +23,8 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Sings For The Holidays V1',
-      image: 'https://i.ytimg.com/vi/SwtxNEqbHJA/maxresdefault.jpg',
+      image:
+        'https://i.etsystatic.com/12164314/r/il/689569/3331563655/il_fullxfull.3331563655_bmk6.jpg',
       description:
         'A Christmas themed version of Billy Bass. He wears a Santa hat and has a small jingle bell wrapped around his tail.',
       price: '9.99',
@@ -34,7 +35,8 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Sings For The Holidays V2',
-      image: 'https://m.media-amazon.com/images/I/6130rsz7Y0L._AC_SY580_.jpg',
+      image:
+        'https://i.etsystatic.com/12164314/r/il/689569/3331563655/il_fullxfull.3331563655_bmk6.jpg',
       description:
         'A Christmas themed version of Billy Bass. He wears a Santa hat and has a small jingle bell wrapped around his tail.',
       price: '9.99',
@@ -44,7 +46,8 @@ async function seed() {
     }),
     Product.create({
       name: 'World Record Billy Bass',
-      image: 'https://i.ytimg.com/vi/W2Il6PJMhN8/maxresdefault.jpg',
+      image:
+        'https://preview.redd.it/rky092pjpus81.jpg?auto=webp&s=c30389666215ab466555a2fae51eb4b8d7f68a46',
       description:
         ' A giant 28" lunker singing fish sold exclusively at KayBee Toys. The fish comes with an extra nameplate that reads "WORLD RECORD BILLY BASS" that can be placed via peel off tape over the existing "BIG MOUTH BILLY BASS" nameplate.',
       price: '9.99',
@@ -55,7 +58,7 @@ async function seed() {
     Product.create({
       name: 'Big Mouth Billy Bones',
       image:
-        'https://i.ebayimg.com/thumbs/images/g/TbkAAOSwHVNjI6mg/s-l225.jpg',
+        'https://image.invaluable.com/housePhotos/onesourceauctions/41/710741/H4367-L270358642_original.jpg',
       description:
         'A singing skeleton fish made for Halloween. Billy Bones appears to be the deceased brother of Billy Bass. His bones also glow in the dark.',
       price: '9.99',
@@ -65,7 +68,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Musical Keychain',
-      image: 'https://i.ytimg.com/vi/OfKIKGOjZnY/maxresdefault.jpg',
+      image: 'https://live.staticflickr.com/5578/30110040924_656944327e_b.jpg',
       description:
         "A very small static version of Billy Bass that is attached to a clip. This version lacks a plaque and doesn't have movement. You activate him by pressing a small button near his tail.",
       price: '9.99',
@@ -85,7 +88,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Superstar',
-      image: 'https://i.ytimg.com/vi/l7EEtPn4TFs/maxresdefault.jpg',
+      image: 'https://i.ytimg.com/vi/_T4EMOLOaqk/maxresdefault.jpg',
       description:
         'A special edition of Billy Bass. He stands on his tail on a stage (Black round base) and holds a microphone. He taps his tail, sways his body and sings into the microphone.',
       price: '9.99',
@@ -95,7 +98,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Jr',
-      image: 'https://i.ytimg.com/vi/WlQ3apHe3XA/maxresdefault.jpg',
+      image: 'https://m.media-amazon.com/images/I/81Jv9zcaCyL.jpg',
       description:
         "A smaller version of Billy Bass on an oval plaque. Made for Billy's 5th birthday.",
       price: '9.99',
@@ -105,7 +108,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Mini Big Mouth Billy Bass REC+PLAY',
-      image: 'https://i.ytimg.com/vi/8Kur1yj8P64/maxresdefault.jpg',
+      image: 'https://i.ytimg.com/vi/xBQ0Ts0mcVs/hqdefault.jpg',
       description:
         "A miniature version of Billy Bass released sold at CVS and Cabela's. Made for Billy's 10th birthday. This version is very fragile and known to break easily.",
       price: '9.99',
@@ -115,7 +118,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass 15th Anniversary Edition',
-      image: 'https://i.ebayimg.com/images/g/dsIAAOSwxj9eRYdZ/s-l640.jpg',
+      image: 'https://m.media-amazon.com/images/I/518lEEAIw3L._AC_SY350_.jpg',
       description:
         "Billy is mounted on an oval shaped plaque and has a shiny nameplate with his name and logo. Made for Billy's 15th birthday.",
       price: '9.99',
@@ -125,7 +128,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bones 15th Anniversary Edition',
-      image: 'https://i.ytimg.com/vi/Nm-xl4CmqIY/maxresdefault.jpg',
+      image: 'https://m.media-amazon.com/images/I/91lXCI9skmL.jpg',
       description:
         ' This Billy Bones is mounted on a black oval shaped plaque, has red LEDs on his eyes and mouth, and lacks a nameplate. ',
       price: '9.99',
@@ -145,8 +148,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Big Mouth Billy Bass Survivor Edition',
-      image:
-        'https://i.etsystatic.com/12649435/r/il/be138a/4160735744/il_fullxfull.4160735744_ko3l.jpg',
+      image: 'https://m.media-amazon.com/images/I/91dEsfDo+ZL.jpg',
       description:
         'Sold exclusively at Cracker Barrel, now with improved movements.',
       price: '9.99',
@@ -157,7 +159,7 @@ async function seed() {
     Product.create({
       name: 'Big Mouth Billy Bass The Speaking Sensation',
       image:
-        'https://cdn.geekwire.com/wp-content/uploads/2018/11/bass-1260x718.jpg',
+        'https://cdn.thenewstack.io/media/2016/11/vtg-gemmy-big-mouth-billy-bass-singing-sensation-fish-2-songs-new-in-opened-box-3a78e94f60e7c847cabb27df4419a148-1024x687.jpg',
       description:
         "A special version of Billy Bass that is compatible with Alexa via Bluetooth to an Amazon Echo device. He moves his mouth in sync with Alexa's voice, turns his head outward when saying the wake word,and dances to music.",
       price: '9.99',
@@ -167,8 +169,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Classic Plaque Big Mouth Billy Bass',
-      image:
-        'https://i5.walmartimages.com/asr/9ec71bfc-e21e-49c4-bd6d-6e0d5183b53b.6e64ace1eb402e678f4d8753aaff2f4b.jpeg',
+      image: 'https://m.media-amazon.com/images/I/A1JcVUjNOwL.jpg',
       description: 'Features classic plaque design.',
       price: '9.99',
       inventory: '26',

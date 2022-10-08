@@ -19,3 +19,35 @@ router.post('/:productId/:orderId', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/:productId/:orderId', async (req, res, next) => {
+  try {
+    const currentOrder = await productOrder.findOne({
+      where: {
+        productId: req.params.productId,
+        orderId: req.params.orderId
+      }
+    })
+    if (currentOrder.quantity > 1) {
+      currentOrder.quantity--
+    }
+    await currentOrder.save()
+    res.json(currentOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:productId/:orderId', async (req, res, next) => {
+  try {
+    const currentOrder = await productOrder.destroy({
+      where: {
+        productId: req.params.productId,
+        orderId: req.params.orderId
+      }
+    })
+    res.json(currentOrder)
+  } catch (err) {
+    next(err)
+  }
+})

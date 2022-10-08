@@ -2,26 +2,52 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getCurrOrder} from '../store/orders'
 import {updateProductInv} from '../store/singleProduct'
-import {updateCurrOrder} from '../store/productOrders'
+import {
+  updateCurrOrder,
+  decreaseCurrProd,
+  deleteCurrProd
+} from '../store/productOrders'
 import Stripe from './Stripe'
-import {Link} from 'react-router-dom'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
+import {Button} from '@mui/material'
 
 export class Cart extends React.Component {
+  constructor(props) {
+    super(props)
+    this.subtract = this.subtract.bind(this)
+    this.add = this.add.bind(this)
+    this.delete = this.delete.bind(this)
+  }
   componentDidMount() {
-    console.log(this.props)
     this.props.getCurrentOrder()
+  }
+
+  subtract(item) {
+    this.props.decreaseQuant(item.product.id, this.props.openOrder.id)
+  }
+
+  delete(item) {
+    this.props.deleteCartItem(item.product.id, this.props.openOrder.id)
+  }
+
+  add(item) {
+    this.props.updateProductInventory(item.product.id)
+    this.props.updateCurrentOrder(item.product.id, this.props.openOrder.id)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.openOrder !== prevProps.openOrder) {
+      this.props.getCurrentOrder()
+    }
   }
 
   render() {
     const {openOrder} = this.props
-    const productList = openOrder.productOrders
     console.log(openOrder)
     var existing = JSON.parse(localStorage.getItem('cart'))
     // if (openOrder && existing){
@@ -42,9 +68,11 @@ export class Cart extends React.Component {
 
     return (
       <div id="cart">
-        {productList ? (
+        {/* this is for logged in guest */}
+
+        {openOrder.productOrders ? (
           <List sx={{bgcolor: 'background.paper', p: 2}}>
-            {productList.map(item => (
+            {openOrder.productOrders.map(item => (
               <ListItem alignItems="center" key={item.product.name}>
                 <ListItemAvatar>
                   <Avatar
@@ -65,6 +93,37 @@ export class Cart extends React.Component {
                     >
                       {item.quantity}
                       {`    at  $${item.product.price} each`}
+                      <br />
+                      {item.quantity > 1 ? (
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            this.subtract(item)
+                          }}
+                        >
+                          MINUS
+                        </Button>
+                      ) : (
+                        <div />
+                      )}
+
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          this.add(item)
+                        }}
+                      >
+                        PLUS
+                      </Button>
+
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          this.delete(item)
+                        }}
+                      >
+                        REMOVE FROM CART
+                      </Button>
                     </Typography>
                   }
                 />
@@ -74,6 +133,9 @@ export class Cart extends React.Component {
         ) : (
           <div />
         )}
+
+        {/* this is for not logged in guest  */}
+
         {existing ? (
           <List sx={{bgcolor: 'background.paper'}}>
             {existing.map(item => (
@@ -117,6 +179,10 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getCurrentOrder: () => dispatch(getCurrOrder()),
+    decreaseQuant: (productId, openOrderid) =>
+      dispatch(decreaseCurrProd(productId, openOrderid)),
+    deleteCartItem: (productId, openOrderid) =>
+      dispatch(deleteCurrProd(productId, openOrderid)),
     updateProductInventory: id => dispatch(updateProductInv(id)),
     updateCurrentOrder: (productId, openOrderid) =>
       dispatch(updateCurrOrder(productId, openOrderid))
