@@ -23,7 +23,7 @@ export class AllProducts extends React.Component {
                 <img src={product.image} alt={product.name} loading="lazy" />
 
                 <ImageListItemBar
-                  sx={{p: 1}}
+                  sx={{p: 1, color: 'orange'}}
                   title={
                     <Link to={`/products/${product.id}`} as="/products/:id">
                       {product.name}

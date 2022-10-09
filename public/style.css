@@ -12,6 +12,7 @@ body {
 
 a {
   text-decoration: none;
+  color: orange;
 }
 
 label {
@@ -48,4 +49,10 @@ button {
 #goog {
   background-color: #283593;
   color: orange;
+}
+#confirm,
+#userhome,
+#logsub {
+  background-color: orange;
+  color: #283593;
 }

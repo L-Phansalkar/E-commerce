@@ -43,8 +43,8 @@ export class UserHome extends React.Component {
     }
 
     return (
-      <div>
-        <h3>Welcome, {email}</h3>
+      <div id="userhome">
+        <h1>Welcome, {email}</h1>
       </div>
     );
   }

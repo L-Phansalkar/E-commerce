@@ -10,7 +10,7 @@ import {
   SingleProduct,
   Cart,
   CartFunctional,
-  Stripe,
+  Confirm,
 } from './components';
 import {me} from './store';
 
@@ -33,7 +33,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/cart" component={useNewCart ? CartFunctional : Cart} />
-        <Route path="/check" component={Stripe} />
+        <Route path="/confirm" component={Confirm} />
         <Route exact path="/products" component={AllProducts} />
         <Route exact path="/products/:id" component={SingleProduct} />
         {isLoggedIn && (
