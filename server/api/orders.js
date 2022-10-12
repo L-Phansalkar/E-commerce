@@ -12,6 +12,7 @@ router.get('/', async (req, res, next) => {
         userId: req.user.id,
         checkout: false,
       },
+
       attributes: ['id'],
       include: {
         model: productOrder,
@@ -20,6 +21,7 @@ router.get('/', async (req, res, next) => {
           model: Product,
           attributes: ['name', 'price', 'id', 'image'],
         },
+        order: [['name', 'ASC']],
       },
     });
 

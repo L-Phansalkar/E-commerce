@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {getCurrOrder, stripeCheckout} from '../store/orders';
-import {updateProductInv} from '../store/singleProduct';
+import {subtractProductInv, addProductInv} from '../store/singleProduct';
 import {
   updateCurrOrder,
   decreaseCurrProd,
   deleteCurrProd,
 } from '../store/productOrders';
-import Stripe from './Stripe';
+import {Link} from 'react-router-dom';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -20,16 +20,23 @@ const CartFunctional = ({openOrder, dispatch}) => {
   console.log('openOrder', openOrder);
   const existing = JSON.parse(localStorage.getItem('cart'));
 
+  const subtractGuestItem = (item) => {};
+
+  const addGuestItem = (item) => {};
+
+  const deleteGuestItem = (item) => {};
+
   useEffect(() => {
     dispatch(getCurrOrder());
   }, [dispatch]);
 
   const subtractItem = (item) => {
     dispatch(decreaseCurrProd(item.product.id, openOrder.id));
+    dispatch(addProductInv(item.product.id));
   };
 
   const addItem = (item) => {
-    dispatch(updateProductInv(item.product.id));
+    dispatch(subtractProductInv(item.product.id));
     dispatch(updateCurrOrder(item.product.id, openOrder.id));
   };
 
@@ -57,7 +64,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
               <ListItem alignItems="center" key={product.name}>
                 <ListItemAvatar>
                   <Avatar
-                    sx={{width: 200, height: 200}}
+                    sx={{width: 100, height: 100}}
                     alt={product.name}
                     src={product.image}
                   />
@@ -82,7 +89,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
                             subtractItem(item);
                           }}
                         >
-                          MINUS
+                          -
                         </Button>
                       )}
 
@@ -92,7 +99,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
                           addItem(item);
                         }}
                       >
-                        PLUS
+                        +
                       </Button>
 
                       <Button
@@ -127,7 +134,11 @@ const CartFunctional = ({openOrder, dispatch}) => {
           {existing.map((item) => (
             <ListItem alignItems="flex-start" key={item.name}>
               <ListItemAvatar>
-                <Avatar alt={item.name} src={item.image} />
+                <Avatar
+                  sx={{width: 100, height: 100}}
+                  alt={item.name}
+                  src={item.image}
+                />
               </ListItemAvatar>
               <ListItemText
                 primary={item.name}
@@ -147,6 +158,14 @@ const CartFunctional = ({openOrder, dispatch}) => {
               />
             </ListItem>
           ))}
+          <Button
+            variant="contained"
+            onClick={() => {
+              deleteItem(item);
+            }}
+          >
+            <Link to="/login}">Log In to Check Out</Link>
+          </Button>
         </List>
       )}
     </div>

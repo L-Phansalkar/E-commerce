@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getOneProduct, updateProductInv} from '../store/singleProduct';
+import {getOneProduct, subtractProductInv} from '../store/singleProduct';
 import {getCurrOrder} from '../store/orders';
 import {updateCurrOrder} from '../store/productOrders';
 import {Button} from '@mui/material';
@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
+import toast, {Toaster} from 'react-hot-toast';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -73,6 +74,7 @@ export class SingleProduct extends React.Component {
       }
       console.log(localStorage.getItem('cart'));
     }
+    toast.success('Added to cart!');
   }
 
   render() {
@@ -113,28 +115,32 @@ export class SingleProduct extends React.Component {
                   <Typography variant="body2" color="text.secondary">
                     In stock: {singleProduct.inventory}
                   </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography sx={{cursor: 'pointer'}} variant="body2">
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        this.updateInventory();
-                      }}
-                    >
-                      ADD TO CART
-                    </Button>
+                  <Typography variant="subtitle1" component="div">
+                    ${singleProduct.price}
                   </Typography>
                 </Grid>
+                {singleProduct.inventory > 0 ? (
+                  <Grid item>
+                    <Typography sx={{cursor: 'pointer'}} variant="body2">
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          this.updateInventory();
+                        }}
+                      >
+                        ADD TO CART
+                      </Button>
+                    </Typography>
+                  </Grid>
+                ) : (
+                  <h3>OUT OF STOCK</h3>
+                )}
               </Grid>
-              <Grid item>
-                <Typography variant="subtitle1" component="div">
-                  {singleProduct.price}
-                </Typography>
-              </Grid>
+              <Grid item />
             </Grid>
           </Grid>
         </Paper>
+        <Toaster />
       </div>
     );
   }
@@ -150,7 +156,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getProduct: (id) => dispatch(getOneProduct(id)),
-    updateProductInventory: (id) => dispatch(updateProductInv(id)),
+    updateProductInventory: (id) => dispatch(subtractProductInv(id)),
     updateCurrentOrder: (productId, openOrderid) =>
       dispatch(updateCurrOrder(productId, openOrderid)),
     getOpenOrder: () => dispatch(getCurrOrder()),

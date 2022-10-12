@@ -1,13 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getCurrOrder} from '../store/orders';
-import {updateProductInv} from '../store/singleProduct';
+import {subtractProductInv, addProductInv} from '../store/singleProduct';
 import {
   updateCurrOrder,
   decreaseCurrProd,
   deleteCurrProd,
 } from '../store/productOrders';
-import Stripe from './Stripe';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -183,7 +183,8 @@ const mapDispatch = (dispatch) => {
       dispatch(decreaseCurrProd(productId, openOrderid)),
     deleteCartItem: (productId, openOrderid) =>
       dispatch(deleteCurrProd(productId, openOrderid)),
-    updateProductInventory: (id) => dispatch(updateProductInv(id)),
+    subtProductInventory: (id) => dispatch(subtractProductInv(id)),
+    addProductInventory: (id) => dispatch(addProductInv(id)),
     updateCurrentOrder: (productId, openOrderid) =>
       dispatch(updateCurrOrder(productId, openOrderid)),
   };

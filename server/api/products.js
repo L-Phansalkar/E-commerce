@@ -1,3 +1,5 @@
+const {Op} = require('sequelize');
+
 const router = require('express').Router();
 const {Product} = require('../db/models');
 module.exports = router;
@@ -5,9 +7,11 @@ module.exports = router;
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      // explicitly select only the id and email fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
+      where: {
+        inventory: {
+          [Op.gt]: 0,
+        },
+      },
       attributes: ['name', 'image', 'price', 'id'],
       order: [
         ['year', 'ASC'],
@@ -38,7 +42,7 @@ router.get('/:id', async (req, res, next) => {
     next(err);
   }
 });
-router.put('/:id', async (req, res, next) => {
+router.put('/:id/minus', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id, {
       attributes: [
@@ -52,7 +56,30 @@ router.put('/:id', async (req, res, next) => {
         'year',
       ],
     });
-    product.inventory--;
+    if (product.inventory > 0) {
+      product.inventory--;
+    }
+    await product.save();
+    res.json(product);
+  } catch (err) {
+    next(err);
+  }
+});
+router.put('/:id/plus', async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.id, {
+      attributes: [
+        'name',
+        'image',
+        'description',
+        'price',
+        'inventory',
+        'id',
+        'songs',
+        'year',
+      ],
+    });
+    product.inventory++;
     await product.save();
     res.json(product);
   } catch (err) {

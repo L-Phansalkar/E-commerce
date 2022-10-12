@@ -11,6 +11,6 @@ export {default as AllProducts} from './allProducts';
 export {default as SingleProduct} from './SingleProduct';
 export {default as Cart} from './Cart';
 export {default as CartFunctional} from './CartFunctional';
-export {default as Stripe} from './stripe';
+
 export {default as CheckoutForm} from './CheckoutForm';
 export {Login, Signup} from './auth-form';

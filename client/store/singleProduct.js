@@ -24,10 +24,20 @@ export const getOneProduct = (id) => {
   };
 };
 
-export const updateProductInv = (id) => {
+export const subtractProductInv = (id) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.put(`/api/products/${id}`);
+      const {data} = await axios.put(`/api/products/${id}/minus`);
+      dispatch(updateSingleProduct(data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+export const addProductInv = (id) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put(`/api/products/${id}/plus`);
       dispatch(updateSingleProduct(data));
     } catch (err) {
       console.log(err);
