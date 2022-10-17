@@ -12,16 +12,15 @@ router.get('/', async (req, res, next) => {
         userId: req.user.id,
         checkout: false,
       },
-
       attributes: ['id'],
       include: {
         model: productOrder,
-        attributes: ['quantity'],
+        attributes: ['quantity', 'productId'],
+        order: [['createdAt', 'DESC']],
         include: {
           model: Product,
           attributes: ['name', 'price', 'id', 'image'],
         },
-        order: [['name', 'ASC']],
       },
     });
 

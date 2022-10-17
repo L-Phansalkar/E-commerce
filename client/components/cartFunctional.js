@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, setState} from 'react';
 import {connect} from 'react-redux';
 import {getCurrOrder, stripeCheckout} from '../store/orders';
 import {subtractProductInv, addProductInv} from '../store/singleProduct';
@@ -17,18 +17,20 @@ import Typography from '@mui/material/Typography';
 import {Button} from '@mui/material';
 
 const CartFunctional = ({openOrder, dispatch}) => {
-  console.log('openOrder', openOrder);
-  const existing = JSON.parse(localStorage.getItem('cart'));
+  let [cart, setCart] = useState([]);
 
-  const subtractGuestItem = (item) => {};
-
-  const addGuestItem = (item) => {};
-
-  const deleteGuestItem = (item) => {};
-
-  useEffect(() => {
-    dispatch(getCurrOrder());
-  }, [dispatch]);
+  async function init() {
+    const data = await localStorage.getItem('cart');
+    setCart(JSON.parse(data));
+  }
+  useEffect(
+    () => {
+      dispatch(getCurrOrder());
+      init();
+    },
+    [dispatch],
+    cart
+  );
 
   const subtractItem = (item) => {
     dispatch(decreaseCurrProd(item.product.id, openOrder.id));
@@ -49,11 +51,55 @@ const CartFunctional = ({openOrder, dispatch}) => {
     dispatch(stripeCheckout(id));
   };
 
+  const subtractGuestItem = (item) => {
+    let existingCart = cart;
+    let [updateQuant] = existingCart.filter(
+      (e) => e.productId === item.productId
+    );
+    //need to check if the posterId already exists, if it does just update quantit
+    updateQuant.quantity--;
+    console.log(cart);
+    setCart(existingCart);
+    console.log(cart);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    init();
+  };
+
+  const addGuestItem = (item) => {
+    let existingCart = cart;
+    let [updateQuant] = existingCart.filter(
+      (e) => e.productId === item.productId
+    );
+    console.log(updateQuant);
+    //need to check if the posterId already exists, if it does just update quantit
+    updateQuant.quantity++;
+    console.log(cart);
+    setCart(existingCart);
+    console.log(cart);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    init();
+  };
+
+  const deleteGuestItem = (item) => {
+    let existingCart = cart;
+    let index = existingCart.findIndex((e) => e.productId === item.productId);
+    existingCart.splice(index, 1);
+    if (existingCart.length === 0) {
+      setCart(null);
+      localStorage.removeItem('cart');
+    } else {
+      setCart(existingCart);
+      console.log(cart);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    init();
+  };
+
   return (
     <div id="cart">
       {/* this is for logged in guest */}
 
-      {openOrder.productOrders ? (
+      {openOrder.productOrders && (
         <List sx={{bgcolor: 'background.paper', p: 2}}>
           {openOrder.productOrders.map((item) => {
             const {quantity, product} = item;
@@ -125,13 +171,13 @@ const CartFunctional = ({openOrder, dispatch}) => {
             Checkout With Stripe
           </Button>
         </List>
-      ) : null}
+      )}
 
       {/* this is for not logged in guest  */}
 
-      {existing && (
+      {cart && (
         <List sx={{bgcolor: 'background.paper'}}>
-          {existing.map((item) => (
+          {cart.map((item) => (
             <ListItem alignItems="flex-start" key={item.name}>
               <ListItemAvatar>
                 <Avatar
@@ -153,20 +199,51 @@ const CartFunctional = ({openOrder, dispatch}) => {
                       {item.quantity}
                     </Typography>
                     {`    at  $${item.price} each`}
+                    {item.quantity > 1 && (
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          subtractGuestItem(item);
+                        }}
+                      >
+                        -
+                      </Button>
+                    )}
+
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        addGuestItem(item);
+                      }}
+                    >
+                      +
+                    </Button>
+
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        deleteGuestItem(item);
+                      }}
+                    >
+                      REMOVE FROM CART
+                    </Button>
                   </React.Fragment>
                 }
               />
             </ListItem>
           ))}
-          <Button
-            variant="contained"
-            onClick={() => {
-              deleteItem(item);
-            }}
-          >
-            <Link to="/login}">Log In to Check Out</Link>
+          <Button variant="contained">
+            <Link to="/login">Log In to Check Out</Link>
           </Button>
         </List>
+      )}
+      {!cart && !openOrder.productOrders && (
+        <div>
+          <h1>Nothing here yet! </h1>
+          <Button variant="contained">
+            <Link to="/products">Click here to see All Products</Link>
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -174,6 +251,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
 
 const mapState = (state) => ({
   openOrder: state.order,
+  cart: state.cart,
 });
 
 export default connect(mapState)(CartFunctional);
