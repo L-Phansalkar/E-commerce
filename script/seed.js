@@ -16,7 +16,7 @@ async function seed() {
       name: 'Big Mouth Billy Bass The Singing Sensation',
       image: 'https://i.ebayimg.com/images/g/JQ4AAOSw2w5gDO6t/s-l500.jpg',
       description: 'The original singing fish!',
-      price: '3.99',
+      price: '9.99',
       inventory: '26',
       year: '1998',
       songs: "Take Me To The River, Don't Worry Be Happy",
