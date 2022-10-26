@@ -2,7 +2,7 @@
 
 ![This is an image](https://billy-bass-pro-shop.herokuapp.com/flish.gif)
 
-##Tech Stack
+## Tech Stack
 - Node.js
 - React
 - Material UI 
