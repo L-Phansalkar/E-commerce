@@ -1,6 +1,6 @@
 # Big Mouth Billy Bass Pro Shop E-commerce site
 
-<img src="/public/readme.gif" width="500" height="400"/> 
+<img src="/public/readme.gif" width="600" height="400"/> 
 
 
 ## Site Features
