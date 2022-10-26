@@ -20,3 +20,4 @@ Browse as a guest and see added items in cart page, log in to complete your orde
 - Redux
 - PostgreSql
 - webpack
+- Stripe API
