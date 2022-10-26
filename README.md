@@ -1,7 +1,7 @@
 # Big Mouth Billy Bass Pro Shop E-commerce site
 
 <img src="https://billy-bass-pro-shop.herokuapp.com/flish.gif" width="500" height="400"/>
-<img src="https://billy-bass-pro-shop.herokuapp.com/readme.gif" width="500" height="400"/>
+<img src="https://billy-bass-pro-shop.herokuapp.com/readme.gif" width="500" height="400"/> 
 
 
 ## Site Features
