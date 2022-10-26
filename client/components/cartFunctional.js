@@ -15,6 +15,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {Button} from '@mui/material';
+import toast, {Toaster} from 'react-hot-toast';
 
 const CartFunctional = ({openOrder, dispatch}) => {
   let [cart, setCart] = useState([]);
@@ -44,6 +45,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
 
   const deleteItem = (item) => {
     dispatch(deleteCurrProd(item.product.id, openOrder.id));
+    toast.success('Item Deleted From Cart');
   };
 
   const checkoutOrder = (id) => {
@@ -93,6 +95,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
     init();
+    toast.success('Item Deleted From Cart');
   };
 
   return (
