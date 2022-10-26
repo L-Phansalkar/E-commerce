@@ -56,3 +56,9 @@ button {
   background-color: orange;
   color: #283593;
 }
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

@@ -14,8 +14,7 @@ import toast, {Toaster} from 'react-hot-toast';
 const Img = styled('img')({
   margin: 'auto',
   display: 'block',
-  maxWidth: '100%',
-  maxHeight: '100%',
+  width: 500,
 });
 
 export class SingleProduct extends React.Component {

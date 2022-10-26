@@ -17,11 +17,10 @@ export class AllProducts extends React.Component {
     return (
       <div id="allProducts">
         <div className="outerContainer">
-          <ImageList sx={{backgroundColor: 'orange'}}>
+          <ImageList sx={{p: 2}} cols={3}>
             {products.map((product) => (
               <ImageListItem key={product.id} sx={{p: 1}}>
                 <img src={product.image} alt={product.name} loading="lazy" />
-
                 <ImageListItemBar
                   sx={{p: 1, color: 'orange'}}
                   title={
@@ -35,13 +34,6 @@ export class AllProducts extends React.Component {
               </ImageListItem>
             ))}
           </ImageList>
-
-          {/* <div className="card" key={product.id}>
-              <img id="productImage" src={product.image} alt={product.name} />
-              
-              <h2 className="price">{product.price}</h2>
-            </div>
-          ))} */}
         </div>
       </div>
     );

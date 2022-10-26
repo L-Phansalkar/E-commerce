@@ -95,7 +95,6 @@ const CartFunctional = ({openOrder, dispatch}) => {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
     init();
-    toast.success('Item Deleted From Cart');
   };
 
   return (
