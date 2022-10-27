@@ -12,7 +12,6 @@ Browse as a guest and see added items in cart page, log in to complete your orde
 
 
 ## Tech Stack
-
 - Node.js
 - React
 - Material UI
@@ -23,3 +22,10 @@ Browse as a guest and see added items in cart page, log in to complete your orde
 - PostgreSql
 - webpack
 - Stripe API
+
+
+## How To Run Locally
+- ```npm install```
+- ```create db E-commerce```
+- ```npm run seed```
+- ```npm run start-dev```
