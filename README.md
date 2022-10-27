@@ -29,3 +29,5 @@ Browse as a guest and see added items in cart page, log in to complete your orde
 - ```create db E-commerce```
 - ```npm run seed```
 - ```npm run start-dev```
+
+made with https://github.com/FullstackAcademy/boilermaker
