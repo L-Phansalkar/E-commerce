@@ -1,5 +1,8 @@
 # Big Mouth Billy Bass Pro Shop E-commerce site
 
+
+https://billy-bass-pro-shop.onrender.com/
+
 <img src="/public/readme.gif" width="600" height="400"/> 
 
 
@@ -10,7 +13,6 @@ Browse as a guest and see added items in cart page, log in to complete your orde
 
 
 ## Tech Stack
-
 - Node.js
 - React
 - Material UI
@@ -21,3 +23,12 @@ Browse as a guest and see added items in cart page, log in to complete your orde
 - PostgreSql
 - webpack
 - Stripe API
+
+
+## How To Run Locally
+- ```npm install```
+- ```create db E-commerce```
+- ```npm run seed```
+- ```npm run start-dev```
+
+made with https://github.com/FullstackAcademy/boilermaker
