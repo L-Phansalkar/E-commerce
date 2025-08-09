@@ -23,15 +23,18 @@ interface User {
 
 interface Order {
   id?: number
-  userId: number
-  checkout: boolean
-  created_at?: string
+  userId: number  // matches DB column
+  status?: string
+  total?: number
+  checkout?: string  // TEXT field, not boolean
+  createdAt?: string // matches DB column
+  updatedAt?: string // matches DB column
 }
 
 interface ProductOrder {
   id?: number
   order_id: number
-  product_id: number
+  productId: number
   quantity: number
 }
 
@@ -112,7 +115,7 @@ app.get('/init-db', async (c) => {
         CREATE TABLE IF NOT EXISTS product_orders (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           order_id INTEGER NOT NULL,
-          product_id INTEGER NOT NULL,
+          productId INTEGER NOT NULL,
           quantity INTEGER NOT NULL DEFAULT 1,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -304,34 +307,42 @@ app.get('/api/orders', async (c) => {
   const userId = 1
   
   try {
+    console.log('Fetching orders for userId:', userId)
+    
     // Find or create current order
     let order = await c.env.DB.prepare(`
-      SELECT * FROM orders WHERE userId = ? AND checkout = FALSE
+      SELECT * FROM orders WHERE userId = ? AND (checkout IS NULL OR checkout != 'completed')
     `).bind(userId).first()
 
+    console.log('Found order:', order)
+
     if (!order) {
+      console.log('Creating new order for userId:', userId)
       // Create new order
       const result = await c.env.DB.prepare(`
-        INSERT INTO orders (userId, checkout) VALUES (?, FALSE)
+        INSERT INTO orders (userId, status, total, checkout) VALUES (?, 'pending', 0, NULL)
       `).bind(userId).run()
       
-      order = { id: result.meta.last_row_id, user_id: userId, checkout: false }
+      console.log('Insert result:', result)
+      order = { id: result.meta.last_row_id, userId: userId, checkout: null, status: 'pending', total: 0 }
     }
 
-    // Get order items with product details
+    // Get order items with product details - FIXED COLUMN NAMES
     const orderItems = await c.env.DB.prepare(`
       SELECT 
         po.quantity,
-        po.product_id,
+        po.productId,
         p.name,
         p.price,
         p.id,
         p.image
       FROM product_orders po
-      JOIN products p ON po.product_id = p.id
-      WHERE po.order_id = ?
-      ORDER BY po.created_at DESC
+      JOIN products p ON po.productId = p.id
+      WHERE po.orderId = ?
+      ORDER BY po.createdAt DESC
     `).bind(order.id).all()
+
+    console.log('Order items:', orderItems)
 
     return c.json({
       ...order,
@@ -339,13 +350,45 @@ app.get('/api/orders', async (c) => {
     })
   } catch (error) {
     console.error('Orders fetch error:', error)
-    return c.json({ error: 'Failed to fetch orders' }, 500)
+    return c.json({ 
+      error: 'Failed to fetch orders',
+      details: error.message,
+      stack: error.stack
+    }, 500)
   }
 })
 
 // Health check
 app.get('/health', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString() })
+})
+app.get('/debug-schema', async (c) => {
+  try {
+    const tables = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()
+    const ordersSchema = await c.env.DB.prepare("PRAGMA table_info(orders)").all()
+    
+    return c.json({
+      tables: tables.results,
+      ordersSchema: ordersSchema.results
+    })
+  } catch (error) {
+    return c.json({ error: error.message }, 500)
+  }
+})
+app.get('/debug-all-schemas', async (c) => {
+  try {
+    const tablesResult = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '*cf*%'").all()
+    const schemas = {}
+    
+    for (const table of tablesResult.results) {
+      const schemaResult = await c.env.DB.prepare(`PRAGMA table_info(${table.name})`).all()
+      schemas[table.name] = schemaResult.results
+    }
+    
+    return c.json({ schemas })
+  } catch (error) {
+    return c.json({ error: error.message }, 500)
+  }
 })
 
 // Default route
@@ -363,6 +406,9 @@ app.get('/', (c) => {
       'POST /seed-products': 'Seed initial products'
     }
   })
-})
+}
+
+)
 
 export default app
+

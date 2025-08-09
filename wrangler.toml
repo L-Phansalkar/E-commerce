@@ -21,7 +21,7 @@ ENVIRONMENT = "production"
 vars = { ENVIRONMENT = "development" }
 
 pages_build_output_dir = "public"
-EOF
+
 
 
 

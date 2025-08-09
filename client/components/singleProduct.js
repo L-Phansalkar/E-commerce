@@ -30,8 +30,8 @@ export class SingleProduct extends React.Component {
   }
   updateInventory() {
     console.log(this.props);
-    var userId = this.props.id;
-    if (userId) {
+    var user_id = this.props.id;
+    if (user_id) {
       this.props.getOpenOrder();
       console.log(this.props.openOrder);
       this.props.updateProductInventory(this.productId);

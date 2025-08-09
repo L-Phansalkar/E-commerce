@@ -26,12 +26,12 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS orders (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  userId INTEGER NOT NULL,
+  user_id INTEGER NOT NULL,
   status TEXT DEFAULT 'pending',
   total REAL DEFAULT 0,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (userId) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS product_orders (
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS product_orders (
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_products_name ON products(name);
-CREATE INDEX IF NOT EXISTS idx_orders_userId ON orders(userId);
+CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_product_orders_productId ON product_orders(productId);
 CREATE INDEX IF NOT EXISTS idx_product_orders_orderId ON product_orders(orderId);
 
@@ -102,7 +102,7 @@ INSERT INTO products (name, image, description, price, inventory, year, songs, s
   ('Classic Plaque Big Mouth Billy Bass', 'https://m.media-amazon.com/images/I/A1JcVUjNOwL.jpg', 'Features classic plaque design.', 9.99, 26, 2021, 'Take Me to the River and Huntin'', Fishin'', and Lovin'' Every Day', 'price_1LqiZALVr6OUxlRlgI4OPXYP');
 
 -- Seed Orders
-INSERT INTO orders (userId) VALUES (1);
+INSERT INTO orders () VALUES (1);
 
 -- Seed Product Orders (junction table)
 INSERT INTO product_orders (productId, orderId, quantity, price) VALUES (2, 1, 3, 9.99);

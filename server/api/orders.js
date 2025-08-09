@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
   try {
     const [currentOrder, created] = await Order.findOrCreate({
       where: {
-        userId: req.user.id,
+        user_id: req.user.id,
         checkout: false,
       },
       attributes: ['id'],
@@ -64,7 +64,7 @@ router.get('/history', async (req, res, next) => {
   try {
     const allOrders = await Order.findAll({
       where: {
-        userId: req.user.id,
+        user_id: req.user.id,
       },
       include: productOrder,
     });

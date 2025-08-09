@@ -50,7 +50,7 @@ INSERT INTO products (name, image, description, price, inventory, year, songs, s
   ('Classic Plaque Big Mouth Billy Bass', 'https://m.media-amazon.com/images/I/A1JcVUjNOwL.jpg', 'Features classic plaque design.', 9.99, 26, 2021, 'Take Me to the River and Huntin'', Fishin'', and Lovin'' Every Day', 'price_1LqiZALVr6OUxlRlgI4OPXYP');
 
 -- Seed Orders
-INSERT INTO orders (userId) VALUES (1);
+INSERT INTO orders (user_id) VALUES (1);
 
 -- Seed Product Orders (junction table)
 INSERT INTO product_orders (productId, orderId, quantity) VALUES (2, 1, 3);

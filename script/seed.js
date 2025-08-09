@@ -193,7 +193,7 @@ async function seed() {
       stripe: 'price_1LqiZALVr6OUxlRlgI4OPXYP',
     }),
   ]);
-  const orders = await Promise.all([Order.create({userId: '1'})]);
+  const orders = await Promise.all([Order.create({user_id: '1'})]);
   const productOrders = await Promise.all([
     productOrder.create({productId: '2', quantity: '3', orderId: '1'}),
   ]);
