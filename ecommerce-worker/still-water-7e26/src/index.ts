@@ -23,7 +23,7 @@ interface User {
 
 interface Order {
   id?: number
-  user_id: number
+  userId: number
   checkout: boolean
   created_at?: string
 }
@@ -306,13 +306,13 @@ app.get('/api/orders', async (c) => {
   try {
     // Find or create current order
     let order = await c.env.DB.prepare(`
-      SELECT * FROM orders WHERE user_id = ? AND checkout = FALSE
+      SELECT * FROM orders WHERE userId = ? AND checkout = FALSE
     `).bind(userId).first()
 
     if (!order) {
       // Create new order
       const result = await c.env.DB.prepare(`
-        INSERT INTO orders (user_id, checkout) VALUES (?, FALSE)
+        INSERT INTO orders (userId, checkout) VALUES (?, FALSE)
       `).bind(userId).run()
       
       order = { id: result.meta.last_row_id, user_id: userId, checkout: false }
