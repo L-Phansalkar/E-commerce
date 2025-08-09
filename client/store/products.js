@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiCall from '../api/config';
 
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 
@@ -10,7 +10,7 @@ const fetchProducts = (products) => ({
 export const getAllProducts = () => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get('/api/products/');
+      const data = await apiCall('/api/products');
       dispatch(fetchProducts(data));
     } catch (err) {
       console.log(err);

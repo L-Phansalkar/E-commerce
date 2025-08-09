@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiCall from '../api/config';
 import history from '../history';
 
 const GET_OPEN_ORDER = 'GET_OPEN_ORDER';
@@ -11,10 +11,12 @@ const getOpenOrder = (openOrder) => ({
 export const getCurrOrder = () => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/orders`);
+      const data = await apiCall('/api/orders');
       dispatch(getOpenOrder(data));
     } catch (err) {
       console.log(err);
+      // If API fails, dispatch empty order to prevent app crashes
+      dispatch(getOpenOrder({productOrders: []}));
     }
   };
 };
@@ -22,14 +24,18 @@ export const getCurrOrder = () => {
 export const stripeCheckout = (id) => {
   return async () => {
     try {
-      const response = await axios.post(
-        `/api/orders/${id}/create-checkout-session`
+      const response = await apiCall(
+        `/api/orders/${id}/create-checkout-session`,
+        {
+          method: 'POST',
+        }
       );
       console.log('response', response);
-      const {checkoutSessionUrl} = response.data;
+      const {checkoutSessionUrl} = response;
       window.location.href = checkoutSessionUrl;
     } catch (err) {
-      console.log(err);
+      console.log('Stripe checkout not implemented in new API yet:', err);
+      // For now, we'll just log the error since Stripe isn't implemented in the worker yet
     }
   };
 };

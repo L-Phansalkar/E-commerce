@@ -1,0 +1,29 @@
+name = "billy-bass-api"
+main = "ecommerce-worker/still-water-7e26/src/index.ts"
+compatibility_date = "2024-01-01"
+
+# D1 Database configuration
+[[d1_databases]]
+binding = "DB"
+database_name = "ecommerce-db"  
+database_id = "83033385-c6b6-4e68-941e-c073640d2d52"
+
+# Environment variables (optional)
+[vars]
+ENVIRONMENT = "production"
+
+# For local development, you can add:
+# [env.dev.vars]
+# ENVIRONMENT = "development"
+
+# CORS settings (if needed)
+[env.dev]
+vars = { ENVIRONMENT = "development" }
+
+
+
+
+
+
+
+

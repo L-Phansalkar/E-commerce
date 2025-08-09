@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiCall from '../api/config';
 
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const UPDATE_PRODUCT_INVENTORY = 'UPDATE_PRODUCT_INVENTORY';
@@ -16,7 +16,7 @@ const updateSingleProduct = (product) => ({
 export const getOneProduct = (id) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/products/${id}`);
+      const data = await apiCall(`/api/products/${id}`);
       dispatch(fetchSingleProduct(data));
     } catch (err) {
       console.log(err);
@@ -27,17 +27,22 @@ export const getOneProduct = (id) => {
 export const subtractProductInv = (id) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.put(`/api/products/${id}/minus`);
+      const data = await apiCall(`/api/products/${id}/minus`, {
+        method: 'PUT',
+      });
       dispatch(updateSingleProduct(data));
     } catch (err) {
       console.log(err);
     }
   };
 };
+
 export const addProductInv = (id) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.put(`/api/products/${id}/plus`);
+      const data = await apiCall(`/api/products/${id}/plus`, {
+        method: 'PUT',
+      });
       dispatch(updateSingleProduct(data));
     } catch (err) {
       console.log(err);
