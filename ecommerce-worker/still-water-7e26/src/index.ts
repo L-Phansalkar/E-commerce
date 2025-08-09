@@ -47,7 +47,7 @@ const app = new Hono<{ Bindings: Env }>()
 
 // CORS middleware
 app.use('/*', cors({
-  origin: ['http://localhost:8080', 'https://ecommerce-app-new.pages.dev', 'https://6544a78f.ecommerce-app-new.pages.dev', 'https://a48a68f3.ecommerce-app-new.pages.dev', 'https://b89bb057.ecommerce-app-new-8hg.pages.dev' ],
+  origin: '*',
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }))

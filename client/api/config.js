@@ -1,5 +1,5 @@
 // client/api/config.js
-const API_BASE_URL = 'https://billy-bass-api.bf2kc5fx4x.workers.dev/api';
+const API_BASE_URL = 'https://billy-bass-api.bf2kc5fx4x.workers.dev';
 
 // Generic API call function
 const apiCall = async (endpoint, options = {}) => {
@@ -22,15 +22,20 @@ const apiCall = async (endpoint, options = {}) => {
   };
 
   try {
+    console.log('📤 Request options:', finalOptions); // Debug log
     const response = await fetch(url, finalOptions);
+    console.log('📥 Response status:', response.status); // Debug log
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log('✅ API Response:', data); // Debug log
+    return data;
   } catch (error) {
-    console.error(`API call failed for ${endpoint}:`, error);
+    console.error(`❌ API call failed for ${endpoint}:`, error);
+    console.error('🔍 Full error:', error);
     throw error;
   }
 };
