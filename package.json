@@ -3,12 +3,12 @@
   "version": "2.0.0",
   "description": "Some boilerplate code to get you started - get shakin'!",
   "engines": {
-    "node": "~12.11.1"
+    "node": ">=18.0.0"
   },
   "main": "index.js",
   "scripts": {
     "build": "npm install --legacy-peer-deps && npm run build:actual",
-    "build:actual": "start",
+    "build:actual": "webpack --mode=production",
     "build-client": "webpack",
     "build-client-watch": "webpack -w",
     "deploy": "script/deploy",
@@ -32,12 +32,10 @@
   "lint-staged": {
     "*.{js,jsx}": [
       "prettier --write",
-      "npm run lint-fix",
-      "git add"
+      "npm run lint-fix"
     ],
     "*.{css,scss,json,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "author": "Fullstack Academy of Code",
@@ -92,9 +90,6 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "chai": "^4.2.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.7",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.3",
@@ -109,7 +104,7 @@
     "nodemon": "^2.0.20",
     "npm-merge-driver": "^2.0.1",
     "prettier": "2.7.1",
-    "react-test-renderer": "^16.4.2",
+    "react-test-renderer": "^18.2.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.3",
     "simple-git": "^3.14.1",
