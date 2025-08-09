@@ -10,7 +10,7 @@ const fetchProducts = (products) => ({
 export const getAllProducts = () => {
   return async (dispatch) => {
     try {
-      const data = await apiCall('/api/products');
+      const data = await apiCall('api/products');
       dispatch(fetchProducts(data));
     } catch (err) {
       console.log(err);
