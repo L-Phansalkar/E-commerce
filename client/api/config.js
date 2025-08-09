@@ -1,5 +1,5 @@
 // client/api/config.js
-const API_BASE_URL = 'https://billy-bass-api.bf2kc5fx4x.workers.dev/';
+const API_BASE_URL = 'https://billy-bass-api.bf2kc5fx4x.workers.dev/api';
 
 // Generic API call function
 const apiCall = async (endpoint, options = {}) => {
