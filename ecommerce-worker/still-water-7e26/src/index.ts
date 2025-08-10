@@ -506,6 +506,87 @@ app.get('/test-product/:id', async (c) => {
     timestamp: new Date().toISOString() 
   })
 })
+app.post('/auth/login', async (c) => {
+  try {
+    const { email, password } = await c.req.json()
+    
+    if (!email || !password) {
+      return c.json({ error: 'Email and password required' }, 400)
+    }
+
+    // Find user by email
+    const user = await c.env.DB.prepare(`
+      SELECT id, email, password_hash FROM users WHERE email = ?
+    `).bind(email).first()
+
+    if (!user) {
+      return c.json({ error: 'Invalid credentials' }, 401)
+    }
+
+    // For now, we'll do a simple password check
+    // In production, you'd use bcrypt or similar
+    if (user.password_hash !== password) {
+      return c.json({ error: 'Invalid credentials' }, 401)
+    }
+
+    // Return user data (without password)
+    return c.json({
+      id: user.id,
+      email: user.email
+    })
+  } catch (error) {
+    console.error('Login error:', error)
+    return c.json({ error: 'Login failed', details: error.message }, 500)
+  }
+})
+
+app.post('/auth/signup', async (c) => {
+  try {
+    const { email, password } = await c.req.json()
+    
+    if (!email || !password) {
+      return c.json({ error: 'Email and password required' }, 400)
+    }
+
+    // Check if user already exists
+    const existingUser = await c.env.DB.prepare(`
+      SELECT id FROM users WHERE email = ?
+    `).bind(email).first()
+
+    if (existingUser) {
+      return c.json({ error: 'User already exists' }, 409)
+    }
+
+    // Create new user
+    // In production, hash the password with bcrypt
+    const result = await c.env.DB.prepare(`
+      INSERT INTO users (email, password_hash) VALUES (?, ?)
+    `).bind(email, password).run()
+
+    return c.json({
+      id: result.meta.last_row_id,
+      email: email
+    })
+  } catch (error) {
+    console.error('Signup error:', error)
+    return c.json({ error: 'Signup failed', details: error.message }, 500)
+  }
+})
+
+app.get('/auth/me', async (c) => {
+  // For now, return a mock user since we don't have session management
+  // In production, you'd validate a JWT token or session
+  return c.json({
+    id: 1,
+    email: 'demo@example.com'
+  })
+})
+
+app.post('/auth/logout', async (c) => {
+  // For now, just return success
+  // In production, you'd invalidate the session/token
+  return c.json({ message: 'Logged out successfully' })
+})
 
 // Default route
 app.get('/', (c) => {
