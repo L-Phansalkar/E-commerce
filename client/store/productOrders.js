@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/config';
 import {getCurrOrder} from './orders';
 
 const UPDATE_OPEN_ORDER = 'UPDATE_OPEN_ORDER';
@@ -24,9 +24,9 @@ const deleteProductFromCart = (currentOrder) => ({
 export const updateCurrOrder = (productId, orderId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.post(
-        `/api/productOrders/${productId}/${orderId}`
-      );
+      const data = await api(`/api/productOrders/${productId}/${orderId}`, {
+        method: 'POST'
+      });
       dispatch(updateOpenOrder(data));
       dispatch(getCurrOrder());
     } catch (err) {
@@ -34,12 +34,13 @@ export const updateCurrOrder = (productId, orderId) => {
     }
   };
 };
+
 export const decreaseCurrProd = (productId, orderId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.put(
-        `/api/productOrders/${productId}/${orderId}`
-      );
+      const data = await api(`/api/productOrders/${productId}/${orderId}`, {
+        method: 'PUT'
+      });
       dispatch(decreaseProductQuant(data));
       dispatch(getCurrOrder());
     } catch (err) {
@@ -47,12 +48,13 @@ export const decreaseCurrProd = (productId, orderId) => {
     }
   };
 };
+
 export const deleteCurrProd = (productId, orderId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.delete(
-        `/api/productOrders/${productId}/${orderId}`
-      );
+      const data = await api(`/api/productOrders/${productId}/${orderId}`, {
+        method: 'DELETE'
+      });
       dispatch(deleteProductFromCart(data));
       dispatch(getCurrOrder());
     } catch (err) {

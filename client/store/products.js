@@ -1,4 +1,4 @@
-import api from '../api/config'; // Import the api object
+import api from '../api/config';
 
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 
@@ -10,13 +10,16 @@ const fetchProducts = (products) => ({
 export const getAllProducts = () => {
   return async (dispatch) => {
     try {
-      console.log('Calling API endpoint: products');
-      const data = await api.getProducts(); // Use the correct method
+      console.log('Calling API endpoint: /api/products');
+      // Use the method that matches your API config
+      const data = await api('/api/products');
       console.log('API response:', data);
       dispatch(fetchProducts(data));
     } catch (err) {
       console.log('API Error:', err);
       console.log('Error details:', err.message);
+      // Dispatch empty array to prevent crashes
+      dispatch(fetchProducts([]));
     }
   };
 };
