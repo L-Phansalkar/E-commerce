@@ -1,4 +1,4 @@
-import apiCall from '../api/config';
+import api from '../api/config'; // Import the api object
 
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 
@@ -10,8 +10,8 @@ const fetchProducts = (products) => ({
 export const getAllProducts = () => {
   return async (dispatch) => {
     try {
-      console.log('Calling API endpoint: api/products');
-      const data = await apiCall('/api/products'); // Note the leading slash
+      console.log('Calling API endpoint: products');
+      const data = await api.getProducts(); // Use the correct method
       console.log('API response:', data);
       dispatch(fetchProducts(data));
     } catch (err) {

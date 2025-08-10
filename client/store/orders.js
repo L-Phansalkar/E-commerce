@@ -1,4 +1,4 @@
-import apiCall from '../api/config';
+import api from '../api/config';
 import history from '../history';
 
 const GET_OPEN_ORDER = 'GET_OPEN_ORDER';
@@ -11,7 +11,7 @@ const getOpenOrder = (openOrder) => ({
 export const getCurrOrder = () => {
   return async (dispatch) => {
     try {
-      const data = await apiCall('/api/orders');
+      const data = await api('/api/orders');
       dispatch(getOpenOrder(data));
     } catch (err) {
       console.log(err);
@@ -24,7 +24,7 @@ export const getCurrOrder = () => {
 export const stripeCheckout = (id) => {
   return async () => {
     try {
-      const response = await apiCall(
+      const response = await api(
         `/api/orders/${id}/create-checkout-session`,
         {
           method: 'POST',

@@ -23,10 +23,10 @@ interface User {
 
 interface Order {
   id?: number
-  userId: number  // matches DB column
+  user_id: number  // Fixed: changed from userId to user_id to match DB
   status?: string
   total?: number
-  checkout?: string  // TEXT field, not boolean
+  checkout?: number  // Fixed: should be INTEGER (0/1) not string
   createdAt?: string // matches DB column
   updatedAt?: string // matches DB column
 }
@@ -45,11 +45,12 @@ interface Env {
 
 const app = new Hono<{ Bindings: Env }>()
 
-// CORS middleware
+// Enhanced CORS middleware
 app.use('/*', cors({
   origin: '*',
-  allowHeaders: ['Content-Type', 'Authorization'],
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  exposeHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
 }))
 
 // Initialize database tables
@@ -94,14 +95,15 @@ app.get('/init-db', async (c) => {
       results.push(`Products table error: ${e.message}`)
     }
 
-    // Create orders table
+    // Fixed orders table schema
     try {
       await c.env.DB.prepare(`
         CREATE TABLE IF NOT EXISTS orders (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           user_id INTEGER,
           checkout INTEGER DEFAULT 0,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
       `).run()
       results.push('Orders table created')
@@ -109,7 +111,7 @@ app.get('/init-db', async (c) => {
       results.push(`Orders table error: ${e.message}`)
     }
 
-    // Create product_orders table (junction table)
+    // Fixed product_orders table
     try {
       await c.env.DB.prepare(`
         CREATE TABLE IF NOT EXISTS product_orders (
@@ -117,7 +119,9 @@ app.get('/init-db', async (c) => {
           order_id INTEGER NOT NULL,
           productId INTEGER NOT NULL,
           quantity INTEGER NOT NULL DEFAULT 1,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (order_id) REFERENCES orders(id),
+          FOREIGN KEY (productId) REFERENCES products(id)
         )
       `).run()
       results.push('Product orders table created')
@@ -144,45 +148,40 @@ app.post('/seed-products', async (c) => {
     const products = [
       {
         name: 'Big Mouth Billy Bass The Singing Sensation',
-      image: 'https://i.ebayimg.com/images/g/JQ4AAOSw2w5gDO6t/s-l500.jpg',
-      description: 'The original singing fish!',
-      price: '9.99',
-      inventory: '26',
-      year: '1998',
-      songs: "Take Me To The River, Don't Worry Be Happy",
-      stripe: 'price_1LqiVwLVr6OUxlRlXarYijRo',
+        image: 'https://i.ebayimg.com/images/g/JQ4AAOSw2w5gDO6t/s-l500.jpg',
+        description: 'The original singing fish!',
+        price: 9.99,
+        inventory: 26,
+        year: 1998,
+        songs: "Take Me To The River, Don't Worry Be Happy",
+        stripe: 'price_1LqiVwLVr6OUxlRlXarYijRo',
       },
       {
-    name: 'Big Mouth Billy Bass Sings For The Holidays V1',
-      image:
-        'https://i.etsystatic.com/12164314/r/il/689569/3331563655/il_fullxfull.3331563655_bmk6.jpg',
-      description:
-        'A Christmas themed version of Billy Bass. He wears a Santa hat and has a small jingle bell wrapped around his tail.',
-      price: '9.99',
-      inventory: '26',
-      year: '1999',
-      songs:
-        'Blues version of Twas The Night Before Christmas (which is a parody of Trouble by Elvis Presley)',
-      stripe: 'price_1LqiW9LVr6OUxlRlJkfcX62N',
+        name: 'Big Mouth Billy Bass Sings For The Holidays V1',
+        image: 'https://i.etsystatic.com/12164314/r/il/689569/3331563655/il_fullxfull.3331563655_bmk6.jpg',
+        description: 'A Christmas themed version of Billy Bass. He wears a Santa hat and has a small jingle bell wrapped around his tail.',
+        price: 9.99,
+        inventory: 26,
+        year: 1999,
+        songs: 'Blues version of Twas The Night Before Christmas (which is a parody of Trouble by Elvis Presley)',
+        stripe: 'price_1LqiW9LVr6OUxlRlJkfcX62N',
       },
       {
-         name: 'Big Mouth Billy Bass Sings For The Holidays V2',
-      image:
-        'https://i.etsystatic.com/12164314/r/il/689569/3331563655/il_fullxfull.3331563655_bmk6.jpg',
-      description:
-        'A Christmas themed version of Billy Bass. He wears a Santa hat and has a small jingle bell wrapped around his tail.',
-      price: '9.99',
-      inventory: '26',
-      year: '2000',
-      songs: 'Country versions of Jingle Bells and Up On A Housetop',
-      stripe: 'price_1LqiWPLVr6OUxlRlrPqJ0FRz',
+        name: 'Big Mouth Billy Bass Sings For The Holidays V2',
+        image: 'https://i.etsystatic.com/12164314/r/il/689569/3331563655/il_fullxfull.3331563655_bmk6.jpg',
+        description: 'A Christmas themed version of Billy Bass. He wears a Santa hat and has a small jingle bell wrapped around his tail.',
+        price: 9.99,
+        inventory: 26,
+        year: 2000,
+        songs: 'Country versions of Jingle Bells and Up On A Housetop',
+        stripe: 'price_1LqiWPLVr6OUxlRlrPqJ0FRz',
       }
     ]
 
     for (const product of products) {
       await c.env.DB.prepare(`
-        INSERT OR IGNORE INTO products (name, image, description, price, inventory, year, songs)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT OR IGNORE INTO products (name, image, description, price, inventory, year, songs, stripe)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         product.name,
         product.image,
@@ -190,7 +189,8 @@ app.post('/seed-products', async (c) => {
         product.price,
         product.inventory,
         product.year,
-        product.songs
+        product.songs,
+        product.stripe
       ).run()
     }
 
@@ -214,19 +214,25 @@ app.get('/api/products', async (c) => {
     return c.json(results)
   } catch (error) {
     console.error('Products fetch error:', error)
-    return c.json({ error: 'Failed to fetch products' }, 500)
+    return c.json({ error: 'Failed to fetch products', details: error.message }, 500)
   }
 })
 
+// Fixed individual product route
 app.get('/api/products/:id', async (c) => {
   const id = c.req.param('id')
+  
+  // Validate ID is a number
+  if (!id || isNaN(Number(id))) {
+    return c.json({ error: 'Invalid product ID' }, 400)
+  }
   
   try {
     const product = await c.env.DB.prepare(`
       SELECT name, image, description, price, inventory, id, songs, year
       FROM products 
       WHERE id = ?
-    `).bind(id).first()
+    `).bind(Number(id)).first()
 
     if (!product) {
       return c.json({ error: 'Product not found' }, 404)
@@ -235,18 +241,22 @@ app.get('/api/products/:id', async (c) => {
     return c.json(product)
   } catch (error) {
     console.error('Product fetch error:', error)
-    return c.json({ error: 'Failed to fetch product' }, 500)
+    return c.json({ error: 'Failed to fetch product', details: error.message }, 500)
   }
 })
 
 app.put('/api/products/:id/minus', async (c) => {
   const id = c.req.param('id')
   
+  if (!id || isNaN(Number(id))) {
+    return c.json({ error: 'Invalid product ID' }, 400)
+  }
+  
   try {
     // Get current product
     const product = await c.env.DB.prepare(`
       SELECT * FROM products WHERE id = ?
-    `).bind(id).first() as Product
+    `).bind(Number(id)).first() as Product
 
     if (!product) {
       return c.json({ error: 'Product not found' }, 404)
@@ -255,35 +265,45 @@ app.put('/api/products/:id/minus', async (c) => {
     if (product.inventory > 0) {
       await c.env.DB.prepare(`
         UPDATE products SET inventory = inventory - 1 WHERE id = ?
-      `).bind(id).run()
+      `).bind(Number(id)).run()
       
-      product.inventory--
+      // Get updated product
+      const updatedProduct = await c.env.DB.prepare(`
+        SELECT name, image, description, price, inventory, id, songs, year
+        FROM products WHERE id = ?
+      `).bind(Number(id)).first()
+      
+      return c.json(updatedProduct)
     }
 
     return c.json(product)
   } catch (error) {
     console.error('Product update error:', error)
-    return c.json({ error: 'Failed to update product' }, 500)
+    return c.json({ error: 'Failed to update product', details: error.message }, 500)
   }
 })
 
 app.put('/api/products/:id/plus', async (c) => {
   const id = c.req.param('id')
   
+  if (!id || isNaN(Number(id))) {
+    return c.json({ error: 'Invalid product ID' }, 400)
+  }
+  
   try {
     await c.env.DB.prepare(`
       UPDATE products SET inventory = inventory + 1 WHERE id = ?
-    `).bind(id).run()
+    `).bind(Number(id)).run()
 
     const product = await c.env.DB.prepare(`
       SELECT name, image, description, price, inventory, id, songs, year
       FROM products WHERE id = ?
-    `).bind(id).first()
+    `).bind(Number(id)).first()
 
     return c.json(product)
   } catch (error) {
     console.error('Product update error:', error)
-    return c.json({ error: 'Failed to update product' }, 500)
+    return c.json({ error: 'Failed to update product', details: error.message }, 500)
   }
 })
 
@@ -297,11 +317,11 @@ app.get('/api/users', async (c) => {
     return c.json(results)
   } catch (error) {
     console.error('Users fetch error:', error)
-    return c.json({ error: 'Failed to fetch users' }, 500)
+    return c.json({ error: 'Failed to fetch users', details: error.message }, 500)
   }
 })
 
-// Orders API
+// Fixed Orders API
 app.get('/api/orders', async (c) => {
   // For now, we'll use a mock user ID. In production, you'd get this from authentication
   const userId = 1
@@ -309,25 +329,25 @@ app.get('/api/orders', async (c) => {
   try {
     console.log('Fetching orders for userId:', userId)
     
-    // Find or create current order
+    // Find or create current order - Fixed column name
     let order = await c.env.DB.prepare(`
-      SELECT * FROM orders WHERE userId = ? AND (checkout IS NULL OR checkout != 'completed')
+      SELECT * FROM orders WHERE user_id = ? AND checkout = 0
     `).bind(userId).first()
 
     console.log('Found order:', order)
 
     if (!order) {
       console.log('Creating new order for userId:', userId)
-      // Create new order
+      // Create new order - Fixed column name
       const result = await c.env.DB.prepare(`
-        INSERT INTO orders (userId, status, total, checkout) VALUES (?, 'pending', 0, NULL)
+        INSERT INTO orders (user_id, checkout) VALUES (?, 0)
       `).bind(userId).run()
       
       console.log('Insert result:', result)
-      order = { id: result.meta.last_row_id, userId: userId, checkout: null, status: 'pending', total: 0 }
+      order = { id: result.meta.last_row_id, user_id: userId, checkout: 0 }
     }
 
-    // Get order items with product details - FIXED COLUMN NAMES
+    // Get order items with product details - Fixed column names
     const orderItems = await c.env.DB.prepare(`
       SELECT 
         po.quantity,
@@ -338,15 +358,15 @@ app.get('/api/orders', async (c) => {
         p.image
       FROM product_orders po
       JOIN products p ON po.productId = p.id
-      WHERE po.orderId = ?
-      ORDER BY po.createdAt DESC
+      WHERE po.order_id = ?
+      ORDER BY po.created_at DESC
     `).bind(order.id).all()
 
     console.log('Order items:', orderItems)
 
     return c.json({
       ...order,
-      productOrders: orderItems.results
+      productOrders: orderItems.results || []
     })
   } catch (error) {
     console.error('Orders fetch error:', error)
@@ -358,10 +378,96 @@ app.get('/api/orders', async (c) => {
   }
 })
 
+// Add missing productOrders routes
+app.post('/api/productOrders/:productId/:orderId', async (c) => {
+  const productId = Number(c.req.param('productId'))
+  const orderId = Number(c.req.param('orderId'))
+  
+  if (!productId || !orderId) {
+    return c.json({ error: 'Invalid product or order ID' }, 400)
+  }
+  
+  try {
+    // Check if product order already exists
+    const existing = await c.env.DB.prepare(`
+      SELECT * FROM product_orders WHERE productId = ? AND order_id = ?
+    `).bind(productId, orderId).first()
+
+    if (existing) {
+      // Update quantity
+      await c.env.DB.prepare(`
+        UPDATE product_orders SET quantity = quantity + 1 WHERE productId = ? AND order_id = ?
+      `).bind(productId, orderId).run()
+    } else {
+      // Create new product order
+      await c.env.DB.prepare(`
+        INSERT INTO product_orders (productId, order_id, quantity) VALUES (?, ?, 1)
+      `).bind(productId, orderId).run()
+    }
+
+    // Return updated product order
+    const updated = await c.env.DB.prepare(`
+      SELECT * FROM product_orders WHERE productId = ? AND order_id = ?
+    `).bind(productId, orderId).first()
+
+    return c.json(updated)
+  } catch (error) {
+    console.error('ProductOrder create error:', error)
+    return c.json({ error: 'Failed to create product order', details: error.message }, 500)
+  }
+})
+
+app.put('/api/productOrders/:productId/:orderId', async (c) => {
+  const productId = Number(c.req.param('productId'))
+  const orderId = Number(c.req.param('orderId'))
+  
+  try {
+    const productOrder = await c.env.DB.prepare(`
+      SELECT * FROM product_orders WHERE productId = ? AND order_id = ?
+    `).bind(productId, orderId).first()
+
+    if (!productOrder) {
+      return c.json({ error: 'Product order not found' }, 404)
+    }
+
+    if (productOrder.quantity > 1) {
+      await c.env.DB.prepare(`
+        UPDATE product_orders SET quantity = quantity - 1 WHERE productId = ? AND order_id = ?
+      `).bind(productId, orderId).run()
+    }
+
+    const updated = await c.env.DB.prepare(`
+      SELECT * FROM product_orders WHERE productId = ? AND order_id = ?
+    `).bind(productId, orderId).first()
+
+    return c.json(updated)
+  } catch (error) {
+    console.error('ProductOrder update error:', error)
+    return c.json({ error: 'Failed to update product order', details: error.message }, 500)
+  }
+})
+
+app.delete('/api/productOrders/:productId/:orderId', async (c) => {
+  const productId = Number(c.req.param('productId'))
+  const orderId = Number(c.req.param('orderId'))
+  
+  try {
+    await c.env.DB.prepare(`
+      DELETE FROM product_orders WHERE productId = ? AND order_id = ?
+    `).bind(productId, orderId).run()
+
+    return c.json({ message: 'Product order deleted' })
+  } catch (error) {
+    console.error('ProductOrder delete error:', error)
+    return c.json({ error: 'Failed to delete product order', details: error.message }, 500)
+  }
+})
+
 // Health check
 app.get('/health', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
+
 app.get('/debug-schema', async (c) => {
   try {
     const tables = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()
@@ -375,6 +481,7 @@ app.get('/debug-schema', async (c) => {
     return c.json({ error: error.message }, 500)
   }
 })
+
 app.get('/debug-all-schemas', async (c) => {
   try {
     const tablesResult = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '*cf*%'").all()
@@ -391,6 +498,15 @@ app.get('/debug-all-schemas', async (c) => {
   }
 })
 
+// Test individual product route
+app.get('/test-product/:id', async (c) => {
+  const id = c.req.param('id')
+  return c.json({ 
+    message: `Testing product route with ID: ${id}`,
+    timestamp: new Date().toISOString() 
+  })
+})
+
 // Default route
 app.get('/', (c) => {
   return c.json({ 
@@ -402,13 +518,14 @@ app.get('/', (c) => {
       'PUT /api/products/:id/plus': 'Increase product inventory',
       'GET /api/users': 'List all users',
       'GET /api/orders': 'Get current user order',
+      'POST /api/productOrders/:productId/:orderId': 'Add product to order',
+      'PUT /api/productOrders/:productId/:orderId': 'Decrease product quantity in order',
+      'DELETE /api/productOrders/:productId/:orderId': 'Remove product from order',
       'GET /init-db': 'Initialize database tables',
       'POST /seed-products': 'Seed initial products'
     }
   })
-}
-
-)
+})
 
 export default app
 
