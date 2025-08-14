@@ -11,15 +11,15 @@ const getApiBaseUrl = () => {
       return 'http://localhost:8787';
     } else if (hostname.includes('pages.dev')) {
       // Cloudflare Pages preview/branch deployments
-      return 'https://billy-bass-api.bf2kc5fx4x.workers.dev/';
+      return 'https://billy-bass-api.bf2kc5fx4x.workers.dev';
     } else {
       // Production or custom domain
-      return 'https://billy-bass-api.bf2kc5fx4x.workers.dev/';
+      return 'https://billy-bass-api.bf2kc5fx4x.workers.dev';
     }
   }
   
   // Server-side or fallback
-  return process.env.REACT_APP_API_URL || 'https://billy-bass-api.bf2kc5fx4x.workers.dev/';
+  return process.env.REACT_APP_API_URL || 'https://billy-bass-api.bf2kc5fx4x.workers.dev';
 };
 
 const API_BASE_URL = getApiBaseUrl();
