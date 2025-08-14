@@ -199,7 +199,10 @@ const mapDispatch = (dispatch) => {
   return {
     handleSubmit(evt, email, password, name) {
       const formName = evt.target.getAttribute('name');
-      console.log(formName, name)
+      const currentUrl = new URL(window.location.href);
+    const path = currentUrl.pathname; // Gets the path part of the URL (e.g., /path/to/page.html)
+    const lastSegment = path.split('/').pop(); // Gets the last segment of the path
+      console.log(formName, name, lastSegment)
 
       return dispatch(auth(email, password, formName));
     },
