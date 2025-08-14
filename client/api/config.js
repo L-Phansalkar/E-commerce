@@ -7,10 +7,10 @@ const getApiBaseUrl = () => {
     const hostname = window.location.hostname;
     
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      // Local development
-      return 'http://localhost:8787';
+      // Local development - use your worker URL for testing
+      return 'https://billy-bass-api.bf2kc5fx4x.workers.dev';
     } else if (hostname.includes('pages.dev')) {
-      // Cloudflare Pages preview/branch deployments
+      // Cloudflare Pages deployment - use your worker URL
       return 'https://billy-bass-api.bf2kc5fx4x.workers.dev';
     } else {
       // Production or custom domain
@@ -41,12 +41,11 @@ const apiCall = async (url, options = {}) => {
       headers['Authorization'] = `Bearer ${token}`;
     }
     
-    // Make the request
+    // Make the request - REMOVE credentials: 'include'
     const response = await fetch(url, {
       ...options,
       headers,
-      // Include credentials for CORS
-     
+      // Don't include credentials since we're using JWT tokens
     });
     
     // Handle non-OK responses
@@ -57,8 +56,6 @@ const apiCall = async (url, options = {}) => {
         // Remove it from localStorage
         if (typeof window !== 'undefined') {
           localStorage.removeItem('authToken');
-          // Optional: dispatch a logout action if you have access to Redux store
-          // store.dispatch({ type: 'REMOVE_USER' });
         }
       }
       
