@@ -204,7 +204,7 @@ const mapDispatch = (dispatch) => {
     const lastSegment = path.split('/').pop(); // Gets the last segment of the path
       console.log(formName, name, lastSegment)
 
-      return dispatch(auth(email, password, formName));
+      return dispatch(auth(email, password, lastSegment));
     },
   };
 };
