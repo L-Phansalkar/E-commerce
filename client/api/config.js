@@ -46,7 +46,7 @@ const apiCall = async (url, options = {}) => {
       ...options,
       headers,
       // Include credentials for CORS
-      credentials: 'include',
+     
     });
     
     // Handle non-OK responses

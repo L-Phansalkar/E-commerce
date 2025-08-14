@@ -48,12 +48,34 @@ interface Env {
 const app = new Hono<{ Bindings: Env }>()
 
 // Enhanced CORS middleware
+// In your src/index.ts file, replace the CORS middleware with this:
+
+// Enhanced CORS middleware with proper origin handling
+app.use('/*', cors({
+  origin: (origin) => {
+    // Allow requests from localhost (development)
+    if (!origin || 
+        origin.includes('localhost') || 
+        origin.includes('127.0.0.1') ||
+        origin.includes('pages.dev') ||
+        origin.includes('your-production-domain.com')) {
+      return origin || '*';
+    }
+    return false;
+  },
+  allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  exposeHeaders: ['Content-Length'],
+  credentials: false // Set to false since you're using JWT tokens, not cookies
+}))
+
+// Alternative simpler approach - remove credentials entirely:
 app.use('/*', cors({
   origin: '*',
   allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   exposeHeaders: ['Content-Length'],
-  credentials: true
+  // Remove credentials: true completely
 }))
 
 // Password hashing utilities using Web Crypto API
