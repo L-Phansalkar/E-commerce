@@ -11,6 +11,7 @@ database_id = "83033385-c6b6-4e68-941e-c073640d2d52"
 # Environment variables (optional)
 [vars]
 ENVIRONMENT = "production"
+JWT_SECRET = "36b8f84d-df4e-4d49-b662-bcde71a8764ff85e4c69-234a-4e78-b11c-d78a90bc1234"
 
 # For local development, you can add:
 # [env.dev.vars]
