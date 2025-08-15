@@ -9,8 +9,7 @@ export {default as Home} from './home';
 export {default as Confirm} from './Confirm';
 export {default as AllProducts} from './allProducts';
 export {default as SingleProduct} from './SingleProduct';
-export {default as Cart} from './Cart';
-export {default as CartFunctional} from './CartFunctional';
+export {default as CartFunctional} from './cartFunctional';
 
 export {default as CheckoutForm} from './CheckoutForm';
 export {Login, Signup} from './auth-form';

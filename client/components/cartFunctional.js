@@ -1,4 +1,4 @@
-import React, {useEffect, useState, setState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {getCurrOrder, stripeCheckout} from '../store/orders';
 import {subtractProductInv, addProductInv} from '../store/singleProduct';
@@ -16,23 +16,87 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {Button} from '@mui/material';
 import toast, {Toaster} from 'react-hot-toast';
+import {
+  getLocalCart,
+  setLocalCart,
+  clearLocalCart,
+  updateLocalCartQuantity,
+  removeFromLocalCart,
+  transferCartToDatabase,
+  isUserLoggedIn
+} from '../utils/cartUtils';
 
-const CartFunctional = ({openOrder, dispatch}) => {
+const CartFunctional = ({openOrder, dispatch, user}) => {
   let [cart, setCart] = useState([]);
+  let [isLoading, setIsLoading] = useState(false);
+  let [hasTransferredCart, setHasTransferredCart] = useState(false);
 
-  async function init() {
-    const data = await localStorage.getItem('cart');
-    setCart(JSON.parse(data));
-  }
-  useEffect(
-    () => {
+  // Check if user is logged in
+  const isLoggedIn = isUserLoggedIn(user);
+
+  // Load localStorage cart
+  const loadLocalCart = () => {
+    const localCart = getLocalCart();
+    setCart(localCart);
+  };
+
+  // Transfer localStorage cart to database when user logs in
+  const handleCartTransfer = async () => {
+    if (hasTransferredCart || !isLoggedIn || !openOrder.id) return;
+    
+    const localCart = getLocalCart();
+    if (!localCart || localCart.length === 0) return;
+
+    setIsLoading(true);
+    try {
+      const actions = {
+        updateCurrOrder,
+        subtractProductInv
+      };
+      
+      const result = await transferCartToDatabase(
+        localCart, 
+        dispatch, 
+        actions, 
+        openOrder.id
+      );
+      
+      if (result.success) {
+        setCart([]);
+        setHasTransferredCart(true);
+        toast.success(result.message);
+        
+        // Refresh the order to show updated items
+        await dispatch(getCurrOrder());
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error('Error transferring cart:', error);
+      toast.error('Failed to transfer cart items');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // User is logged in - get their order
       dispatch(getCurrOrder());
-      init();
-    },
-    [dispatch],
-    cart
-  );
+    } else {
+      // User is not logged in - load localStorage cart
+      loadLocalCart();
+    }
+  }, [dispatch, isLoggedIn]);
 
+  // Handle cart transfer when order is available and user is logged in
+  useEffect(() => {
+    if (isLoggedIn && openOrder.id && !hasTransferredCart) {
+      handleCartTransfer();
+    }
+  }, [isLoggedIn, openOrder.id, hasTransferredCart]);
+
+  // Logged-in user cart functions
   const subtractItem = (item) => {
     dispatch(decreaseCurrProd(item.product.id, openOrder.id));
     dispatch(addProductInv(item.product.id));
@@ -48,64 +112,45 @@ const CartFunctional = ({openOrder, dispatch}) => {
     toast.success('Item Deleted From Cart');
   };
 
-  const checkoutOrder = (id) => {
-    console.log(id);
-    dispatch(stripeCheckout(id));
-  };
-
+  // Guest user cart functions
   const subtractGuestItem = (item) => {
-    let existingCart = cart;
-    let [updateQuant] = existingCart.filter(
-      (e) => e.productId === item.productId
-    );
-    //need to check if the posterId already exists, if it does just update quantit
-    updateQuant.quantity--;
-    console.log(cart);
-    setCart(existingCart);
-    console.log(cart);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    init();
+    const updatedCart = updateLocalCartQuantity(item.productId, -1);
+    setCart(updatedCart);
   };
 
   const addGuestItem = (item) => {
-    let existingCart = cart;
-    let [updateQuant] = existingCart.filter(
-      (e) => e.productId === item.productId
-    );
-    console.log(updateQuant);
-    //need to check if the posterId already exists, if it does just update quantit
-    updateQuant.quantity++;
-    console.log(cart);
-    setCart(existingCart);
-    console.log(cart);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    init();
+    const updatedCart = updateLocalCartQuantity(item.productId, 1);
+    setCart(updatedCart);
   };
 
   const deleteGuestItem = (item) => {
-    let existingCart = cart;
-    let index = existingCart.findIndex((e) => e.productId === item.productId);
-    existingCart.splice(index, 1);
-    if (existingCart.length === 0) {
-      setCart(null);
-      localStorage.removeItem('cart');
-    } else {
-      setCart(existingCart);
-      console.log(cart);
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-    init();
+    const updatedCart = removeFromLocalCart(item.productId);
+    setCart(updatedCart);
   };
+
+  const checkoutOrder = (id) => {
+    dispatch(stripeCheckout(id));
+  };
+
+  // Loading state during cart transfer
+  if (isLoading) {
+    return (
+      <div id="cart" style={{ textAlign: 'center', padding: '20px' }}>
+        <h2>Transferring your cart...</h2>
+        <Typography variant="body1">Please wait while we sync your items.</Typography>
+      </div>
+    );
+  }
 
   return (
     <div id="cart">
-      {/* this is for logged in guest */}
-     DTS DT CART FUNCTIONAL YO BAYBEE
-      {openOrder.productOrders && (
+      <Toaster />
+      
+      {/* Logged in user with items in cart */}
+      {isLoggedIn && openOrder.productOrders && openOrder.productOrders.length > 0 && (
         <List sx={{bgcolor: 'background.paper', p: 2}}>
           {openOrder.productOrders.map((item) => {
             const {quantity, product} = item;
-
             const showMinus = quantity > 1;
 
             return (
@@ -121,13 +166,15 @@ const CartFunctional = ({openOrder, dispatch}) => {
                   sx={{display: 'inline', p: 3}}
                   primary={<h3>{product.name}</h3>}
                   secondary={
-                    <Typography
-                      sx={{display: 'inline', alignItems: 'flex-end'}}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {quantity}
+                    <React.Fragment>
+                      <Typography
+                        sx={{display: 'inline'}}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {quantity}
+                      </Typography>
                       {`    at  $${product.price} each`}
                       <br />
                       {showMinus && (
@@ -140,7 +187,6 @@ const CartFunctional = ({openOrder, dispatch}) => {
                           -
                         </Button>
                       )}
-
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -149,7 +195,6 @@ const CartFunctional = ({openOrder, dispatch}) => {
                       >
                         +
                       </Button>
-
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -158,90 +203,101 @@ const CartFunctional = ({openOrder, dispatch}) => {
                       >
                         REMOVE FROM CART
                       </Button>
-                    </Typography>
+                    </React.Fragment>
                   }
                 />
               </ListItem>
             );
           })}
-          <Button
-            variant="contained"
-            onClick={() => {
-              checkoutOrder(openOrder.id);
-            }}
+          <Button 
+            variant="contained" 
+            onClick={() => checkoutOrder(openOrder.id)}
+            sx={{ mt: 2 }}
           >
             Checkout With Stripe
           </Button>
         </List>
       )}
 
-      {/* this is for not logged in guest  */}
-
-      {cart && (
-        <List sx={{bgcolor: 'background.paper'}}>
-          {cart.map((item) => (
-            <ListItem alignItems="flex-start" key={item.name}>
-              <ListItemAvatar>
-                <Avatar
-                  sx={{width: 100, height: 100}}
-                  alt={item.name}
-                  src={item.image}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={item.name}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{display: 'inline'}}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {item.quantity}
-                    </Typography>
-                    {`    at  $${item.price} each`}
-                    {item.quantity > 1 && (
+      {/* Guest user with items in localStorage */}
+      {!isLoggedIn && cart && cart.length > 0 && (
+        <List sx={{bgcolor: 'background.paper', p: 2}}>
+          {cart.map((item) => {
+            return (
+              <ListItem alignItems="flex-start" key={item.name}>
+                <ListItemAvatar>
+                  <Avatar
+                    sx={{width: 100, height: 100}}
+                    alt={item.name}
+                    src={item.image}
+                  />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={item.name}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{display: 'inline'}}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {item.quantity}
+                      </Typography>
+                      {`    at  $${item.price} each`}
+                      {item.quantity > 1 && (
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            subtractGuestItem(item);
+                          }}
+                        >
+                          -
+                        </Button>
+                      )}
                       <Button
                         variant="contained"
                         onClick={() => {
-                          subtractGuestItem(item);
+                          addGuestItem(item);
                         }}
                       >
-                        -
+                        +
                       </Button>
-                    )}
-
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        addGuestItem(item);
-                      }}
-                    >
-                      +
-                    </Button>
-
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        deleteGuestItem(item);
-                      }}
-                    >
-                      REMOVE FROM CART
-                    </Button>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-          ))}
-          <Button variant="contained">
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          deleteGuestItem(item);
+                        }}
+                      >
+                        REMOVE FROM CART
+                      </Button>
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            );
+          })}
+          <Button variant="contained" sx={{ mt: 2 }}>
             <Link to="/login">Log In to Check Out</Link>
           </Button>
         </List>
       )}
-      {!cart && !openOrder.productOrders && (
+
+      {/* Empty cart states */}
+      {/* Logged in user with no items */}
+      {isLoggedIn && (!openOrder.productOrders || openOrder.productOrders.length === 0) && (
         <div>
-          <h1>Nothing here yet! </h1>
+          <h1>Your cart is empty!</h1>
+          <Button variant="contained">
+            <Link to="/products">Click here to see All Products</Link>
+          </Button>
+        </div>
+      )}
+
+      {/* Guest user with no items */}
+      {!isLoggedIn && (!cart || cart.length === 0) && (
+        <div>
+          <h1>Nothing here yet!</h1>
           <Button variant="contained">
             <Link to="/products">Click here to see All Products</Link>
           </Button>
@@ -254,6 +310,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
 const mapState = (state) => ({
   openOrder: state.order,
   cart: state.cart,
+  user: state.user, // Add user to props
 });
 
 export default connect(mapState)(CartFunctional);
