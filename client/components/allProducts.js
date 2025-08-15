@@ -1,242 +1,137 @@
+// Update your main component to have the EXACT hero content
+// Replace your home/products page content with this:
+
 import React from 'react';
-import { connect } from 'react-redux';
-import { getAllProducts } from '../store/products';
-import { Link } from 'react-router-dom';
-import {
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  Container,
-  Chip,
-  Button,
-  Fade,
-} from '@mui/material';
-import { Storefront, AttachMoney } from '@mui/icons-material';
+import { Container, Typography, Grid, Card, CardMedia, CardContent, Chip } from '@mui/material';
 
-export class ModernAllProducts extends React.Component {
-  componentDidMount() {
-    this.props.getProducts();
-  }
+const ProductsPage = () => {
+  return (
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* Hero Section - EXACT match */}
+      <div className="hero-section" style={{ 
+        textAlign: 'center',
+        marginBottom: '50px',
+        padding: '60px 20px',
+        background: 'transparent'
+      }}>
+        <Typography 
+          variant="h1" 
+          className="hero-title"
+          sx={{
+            fontFamily: 'Orbitron, monospace',
+            fontSize: '4rem',
+            fontWeight: 900,
+            background: 'linear-gradient(45deg, #ff0040, #ff6600, #ffff00, #00ff40, #00ffff, #8000ff)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            textTransform: 'uppercase',
+            letterSpacing: '8px',
+            marginBottom: '20px',
+            animation: 'neonPulse 2s ease-in-out infinite alternate'
+          }}
+        >
+          MEME CAPS
+        </Typography>
+        
+        <Typography 
+          variant="body1" 
+          className="hero-subtitle"
+          sx={{
+            fontFamily: 'VT323, monospace',
+            fontSize: '1.8rem',
+            color: '#ffff00',
+            textTransform: 'uppercase',
+            letterSpacing: '4px',
+            textShadow: '0 0 10px #ff6600',
+            margin: '0 auto',
+            maxWidth: '800px'
+          }}
+        >
+          EXISTENTIAL HEADWEAR FOR THE DIGITAL AGE
+        </Typography>
+      </div>
 
-  render() {
-    const { products } = this.props;
-
-    return (
-      <Box
-        sx={{
-          backgroundColor: 'background.default',
-          minHeight: '100vh',
-          py: 6,
-        }}
-      >
-        <Container maxWidth="xl">
-          {/* Header Section */}
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
-            <Typography
-              variant="h2"
-              component="h1"
+      {/* Products Grid */}
+      <Grid container spacing={4}>
+        {/* You can map your actual products here, but for now here's the structure */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card className="product-card" sx={{ position: 'relative' }}>
+            <Chip 
+              label="CLASSIC" 
+              className="vaporwave-badge"
               sx={{
-                fontWeight: 700,
-                color: 'text.primary',
-                mb: 2,
-                background: 'linear-gradient(45deg, #1a1a1a 30%, #2563eb 90%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                position: 'absolute',
+                top: 15,
+                right: 15,
+                background: 'linear-gradient(45deg, #00ff40, #00ffff)',
+                color: '#0a0020',
+                fontFamily: 'VT323, monospace',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                zIndex: 10
               }}
-            >
-              Fishing Wisdom Collection
-            </Typography>
-            <Typography
-              variant="h6"
-              color="text.secondary"
-              sx={{ maxWidth: 600, mx: 'auto', lineHeight: 1.6 }}
-            >
-              Premium fishing-themed apparel that speaks to the soul of every angler.
-              Wear your passion with pride.
-            </Typography>
-          </Box>
-
-          {/* Products Grid */}
-          <Grid container spacing={4}>
-            {products.map((product, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                <Fade in={true} timeout={300 + index * 100}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      transition: 'all 0.3s ease-in-out',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-                      },
-                    }}
-                    component={Link}
-                    to={`/products/${product.id}`}
-                    style={{ textDecoration: 'none', color: 'inherit' }}
-                  >
-                    {/* Product Image */}
-                    <Box
-                      sx={{
-                        position: 'relative',
-                        pt: '100%', // 1:1 Aspect Ratio
-                        overflow: 'hidden',
-                        backgroundColor: 'grey.50',
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        image={product.image}
-                        alt={product.name}
-                        sx={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          transition: 'transform 0.3s ease-in-out',
-                          '&:hover': {
-                            transform: 'scale(1.05)',
-                          },
-                        }}
-                      />
-                      
-                      {/* Stock Status Chip */}
-                      <Chip
-                        label={product.inventory > 0 ? 'In Stock' : 'Out of Stock'}
-                        size="small"
-                        color={product.inventory > 0 ? 'success' : 'error'}
-                        sx={{
-                          position: 'absolute',
-                          top: 12,
-                          right: 12,
-                          backgroundColor: product.inventory > 0 ? '#10b981' : '#ef4444',
-                          color: 'white',
-                          fontWeight: 600,
-                        }}
-                      />
-                    </Box>
-
-                    {/* Product Info */}
-                    <CardContent
-                      sx={{
-                        flexGrow: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        p: 3,
-                      }}
-                    >
-                      <Typography
-                        variant="h6"
-                        component="h3"
-                        sx={{
-                          fontWeight: 600,
-                          color: 'text.primary',
-                          mb: 2,
-                          lineHeight: 1.3,
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {product.name}
-                      </Typography>
-
-                      {/* Price */}
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          mt: 'auto',
-                          pt: 2,
-                        }}
-                      >
-                        <AttachMoney
-                          sx={{ color: 'secondary.main', fontSize: 20 }}
-                        />
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontWeight: 700,
-                            color: 'text.primary',
-                            ml: 0.5,
-                          }}
-                        >
-                          {product.price}
-                        </Typography>
-                      </Box>
-
-                      {/* Quick View Button */}
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        sx={{
-                          mt: 2,
-                          borderRadius: 2,
-                          textTransform: 'none',
-                          fontWeight: 500,
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault(); // Prevent card link navigation
-                          // Quick view logic here
-                        }}
-                      >
-                        Quick View
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Fade>
-              </Grid>
-            ))}
-          </Grid>
-
-          {/* Empty State */}
-          {products.length === 0 && (
-            <Box
-              sx={{
-                textAlign: 'center',
-                py: 8,
-              }}
-            >
-              <Storefront
+            />
+            <CardMedia
+              component="img"
+              height="280"
+              image="/fishandwomen/womenwantme-cap.jpg"
+              alt="Women Want Me Cap"
+              className="product-image"
+            />
+            <CardContent>
+              <Typography 
+                variant="h5" 
+                className="product-name"
                 sx={{
-                  fontSize: 80,
-                  color: 'grey.400',
-                  mb: 2,
+                  fontFamily: 'Orbitron, monospace',
+                  fontWeight: 700,
+                  color: '#00ffff',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '0 0 15px #00ff40',
+                  fontSize: '1.3rem'
                 }}
-              />
-              <Typography
-                variant="h5"
-                color="text.secondary"
-                sx={{ mb: 1 }}
               >
-                No products available
+                WOMEN WANT ME CAP
               </Typography>
-              <Typography color="text.secondary">
-                Check back soon for new fishing wisdom!
+              
+              <Typography 
+                variant="body2" 
+                className="product-description"
+                sx={{
+                  fontFamily: 'VT323, monospace',
+                  fontSize: '1.1rem',
+                  color: '#ffff00',
+                  lineHeight: 1.4,
+                  mb: 2
+                }}
+              >
+                The original. The legend. "WOMEN WANT ME FISH FEAR ME" in all caps glory.
               </Typography>
-            </Box>
-          )}
-        </Container>
-      </Box>
-    );
-  }
-}
+              
+              <Typography 
+                className="product-price"
+                sx={{
+                  fontFamily: 'Press Start 2P, monospace',
+                  fontSize: '1.5rem',
+                  background: 'linear-gradient(45deg, #ff6600, #ff0040)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  animation: 'thermalPriceGlow 2s ease-in-out infinite alternate'
+                }}
+              >
+                $24.99
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        
+        {/* Repeat similar structure for other products... */}
+      </Grid>
+    </Container>
+  );
+};
 
-const mapState = (state) => ({
-  products: state.products,
-});
-
-const mapDispatch = (dispatch) => ({
-  getProducts: () => dispatch(getAllProducts()),
-});
-
-export default connect(mapState, mapDispatch)(ModernAllProducts);
+export default ProductsPage;

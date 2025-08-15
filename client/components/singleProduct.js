@@ -1,403 +1,295 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { getOneProduct, subtractProductInv } from '../store/singleProduct';
-import { getCurrOrder } from '../store/orders';
-import { updateCurrOrder } from '../store/productOrders';
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Button,
-  Chip,
-  Card,
-  CardMedia,
-  Breadcrumbs,
-  Link,
-  Divider,
-  Fade,
-  Skeleton,
-} from '@mui/material';
-import {
-  AddShoppingCart,
-  Inventory,
-  AttachMoney,
-  Home,
-  Storefront,
-  Star,
-  LocalShipping,
-  Security,
-  Replay,
-} from '@mui/icons-material';
-import { Link as RouterLink } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+// Update your SingleProduct.js component with thermal vision styling
+// Replace the button text and add thermal styling
 
-export class ModernSingleProduct extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      imageLoaded: false,
-      quantity: 1,
-    };
-    this.updateInventory = this.updateInventory.bind(this);
-  }
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getProduct} from '../store/singleProduct';
+import {subtractProductInv} from '../store/singleProduct';
+import {updateCurrOrder} from '../store/productOrders';
+import {getCurrOrder} from '../store/orders';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import toast, {Toaster} from 'react-hot-toast';
 
-  productId = window.location.href.split('/')[4];
-
+class SingleProduct extends Component {
   componentDidMount() {
-    this.props.getProduct(this.productId);
-    if (this.props.user.id) {
-      this.props.getOpenOrder();
-    }
+    this.props.getProduct(this.props.match.params.id);
+    this.props.getOrder();
   }
 
-  async updateInventory() {
-    const user_id = this.props.user.id;
-
-    if (user_id) {
-      try {
-        await this.props.getOpenOrder();
-        await this.props.updateProductInventory(this.productId);
-        await this.props.updateCurrentOrder(this.productId, this.props.openOrder.id);
-        toast.success('Added to cart!', {
-          style: {
-            background: '#10b981',
-            color: 'white',
-          },
-        });
-      } catch (error) {
-        console.error('Error adding to cart:', error);
-        toast.error('Failed to add item to cart');
-      }
+  updateInventory() {
+    if (this.props.id) {
+      this.props.subtractInventory(this.props.singleProduct.id);
+      this.props.updateOrder(
+        this.props.singleProduct.id,
+        this.props.openOrder.id
+      );
     } else {
-      try {
-        const existing = JSON.parse(localStorage.getItem('cart')) || [];
-        const productToAdd = {
-          productId: this.props.singleProduct.id,
-          name: this.props.singleProduct.name,
-          quantity: 1,
-          price: this.props.singleProduct.price,
-          image: this.props.singleProduct.image,
-        };
-
-        const existingItemIndex = existing.findIndex(
-          (item) => item.productId === productToAdd.productId
+      //handle guest users
+      let cart = JSON.parse(localStorage.getItem('cart'));
+      if (cart) {
+        let currentItem = cart.find(
+          (item) => item.productId === this.props.singleProduct.id
         );
-
-        if (existingItemIndex !== -1) {
-          existing[existingItemIndex].quantity++;
+        if (currentItem) {
+          currentItem.quantity++;
+          localStorage.setItem('cart', JSON.stringify(cart));
         } else {
-          existing.push(productToAdd);
+          cart.push({
+            productId: this.props.singleProduct.id,
+            name: this.props.singleProduct.name,
+            quantity: 1,
+            price: this.props.singleProduct.price,
+            image: this.props.singleProduct.image,
+          });
+          localStorage.setItem('cart', JSON.stringify(cart));
         }
-
-        localStorage.setItem('cart', JSON.stringify(existing));
-        toast.success('Added to cart!', {
-          style: {
-            background: '#10b981',
-            color: 'white',
-          },
-        });
-      } catch (error) {
-        console.error('Error adding to localStorage cart:', error);
-        toast.error('Failed to add item to cart');
+      } else {
+        localStorage.setItem(
+          'cart',
+          JSON.stringify([
+            {
+              productId: this.props.singleProduct.id,
+              name: this.props.singleProduct.name,
+              quantity: 1,
+              price: this.props.singleProduct.price,
+              image: this.props.singleProduct.image,
+            },
+          ])
+        );
       }
+      console.log(localStorage.getItem('cart'));
     }
+    // Updated success message for thermal theme
+    toast.success('Added to Reality! 🔥', {
+      style: {
+        background: 'linear-gradient(45deg, #00ff40, #00ffff)',
+        color: '#0a0020',
+        fontFamily: 'Orbitron, monospace',
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        letterSpacing: '2px',
+      },
+    });
   }
 
   render() {
-    const { singleProduct, user } = this.props;
-    const { imageLoaded } = this.state;
-
-    if (!singleProduct || !singleProduct.id) {
-      return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
-              <Skeleton variant="rectangular" height={500} sx={{ borderRadius: 2 }} />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Skeleton variant="text" height={60} />
-              <Skeleton variant="text" height={40} width="60%" />
-              <Skeleton variant="text" height={120} />
-              <Skeleton variant="rectangular" height={56} sx={{ mt: 3, borderRadius: 2 }} />
-            </Grid>
-          </Grid>
-        </Container>
-      );
-    }
-
+    const product = this.props.singleProduct;
     return (
-      <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh' }}>
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          {/* Breadcrumbs */}
-          <Breadcrumbs sx={{ mb: 4 }}>
-            <Link
-              component={RouterLink}
-              to="/home"
-              sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
-            >
-              <Home sx={{ mr: 0.5, fontSize: 20 }} />
-              Home
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/products"
-              sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
-            >
-              <Storefront sx={{ mr: 0.5, fontSize: 20 }} />
-              Products
-            </Link>
-            <Typography color="text.primary">{singleProduct.name}</Typography>
-          </Breadcrumbs>
-
-          <Grid container spacing={6}>
-            {/* Product Image */}
-            <Grid item xs={12} md={6}>
-              <Fade in={true} timeout={500}>
-                <Card
-                  sx={{
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                  }}
-                >
-                  {!imageLoaded && (
-                    <Skeleton variant="rectangular" height={500} />
-                  )}
-                  <CardMedia
-                    component="img"
-                    image={singleProduct.image}
-                    alt={singleProduct.name}
-                    onLoad={() => this.setState({ imageLoaded: true })}
-                    sx={{
-                      width: '100%',
-                      height: 'auto',
-                      aspectRatio: '1/1',
-                      objectFit: 'cover',
-                      display: imageLoaded ? 'block' : 'none',
-                    }}
-                  />
-                </Card>
-              </Fade>
+      <div id="singleProduct">
+        <Paper sx={{
+          p: 2, 
+          margin: 'auto', 
+          flexGrow: 1, 
+          bgcolor: 'background.paper',
+          background: 'rgba(10, 0, 32, 0.8)',
+          border: '2px solid #ff0040',
+          borderRadius: '15px',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 0 20px #ff6600',
+          mt: 4
+        }}>
+          <Grid container spacing={1}>
+            <Grid item>
+              <CardMedia
+                sx={{
+                  width: 500,
+                  height: 500,
+                  margin: 2,
+                  borderRadius: '8px',
+                  border: '2px solid #ff0040',
+                  filter: 'contrast(1.3) saturate(1.3) hue-rotate(10deg) brightness(1.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    filter: 'contrast(1.4) saturate(1.5) hue-rotate(30deg) brightness(1.2)',
+                    transform: 'scale(1.02)',
+                  }
+                }}
+                image={product.image}
+                title={product.name}
+              />
             </Grid>
-
-            {/* Product Details */}
-            <Grid item xs={12} md={6}>
-              <Fade in={true} timeout={700}>
-                <Box>
-                  {/* Stock Status */}
-                  <Chip
-                    icon={<Inventory />}
-                    label={singleProduct.inventory > 0 ? `${singleProduct.inventory} in stock` : 'Out of stock'}
-                    color={singleProduct.inventory > 0 ? 'success' : 'error'}
-                    sx={{ mb: 2 }}
-                  />
-
-                  {/* Product Title */}
-                  <Typography
-                    variant="h3"
-                    component="h1"
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography 
+                    gutterBottom 
+                    variant="subtitle1" 
+                    component="div"
                     sx={{
-                      fontWeight: 700,
-                      color: 'text.primary',
-                      mb: 2,
-                      lineHeight: 1.2,
+                      fontFamily: 'Orbitron, monospace',
+                      color: '#00ffff',
+                      textTransform: 'uppercase',
+                      letterSpacing: '2px',
+                      textShadow: '0 0 15px #00ff40',
+                      fontSize: '2rem',
+                      fontWeight: 'bold'
                     }}
                   >
-                    {singleProduct.name}
+                    {product.name}
                   </Typography>
-
-                  {/* Price */}
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                    <AttachMoney sx={{ color: 'secondary.main', fontSize: 32 }} />
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        fontWeight: 700,
-                        color: 'text.primary',
-                        ml: 0.5,
-                      }}
-                    >
-                      {singleProduct.price}
-                    </Typography>
-                  </Box>
-
-                  {/* Description */}
-                  {singleProduct.description && (
-                    <Box sx={{ mb: 4 }}>
-                      <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        sx={{ lineHeight: 1.6, mb: 2 }}
-                      >
-                        {singleProduct.description}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {/* Product Details */}
-                  <Box sx={{ mb: 4 }}>
-                    <Grid container spacing={2}>
-                      {singleProduct.songs && (
-                        <Grid item xs={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            Songs
-                          </Typography>
-                          <Typography variant="body1" fontWeight={500}>
-                            {singleProduct.songs}
-                          </Typography>
-                        </Grid>
-                      )}
-                      {singleProduct.year && (
-                        <Grid item xs={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            Year Created
-                          </Typography>
-                          <Typography variant="body1" fontWeight={500}>
-                            {singleProduct.year}
-                          </Typography>
-                        </Grid>
-                      )}
-                    </Grid>
-                  </Box>
-
-                  <Divider sx={{ mb: 4 }} />
-
-                  {/* Add to Cart Section */}
-                  <Box sx={{ mb: 4 }}>
-                    {singleProduct.inventory > 0 ? (
-                      <Button
-                        variant="contained"
-                        size="large"
-                        startIcon={<AddShoppingCart />}
-                        onClick={this.updateInventory}
+                  
+                  <Typography 
+                    variant="body1" 
+                    sx={{
+                      fontFamily: 'VT323, monospace',
+                      color: '#ffff00',
+                      fontSize: '1.3rem',
+                      mb: 2,
+                      lineHeight: 1.4
+                    }}
+                  >
+                    {product.description}
+                  </Typography>
+                  
+                  <br />
+                  
+                  <Typography 
+                    variant="body1"
+                    sx={{
+                      fontFamily: 'VT323, monospace',
+                      color: '#ffff00',
+                      fontSize: '1.2rem'
+                    }}
+                  >
+                    Meme Energy: {product.songs}
+                  </Typography>
+                  
+                  <Typography 
+                    variant="body1"
+                    sx={{
+                      fontFamily: 'VT323, monospace',
+                      color: '#ffff00',
+                      fontSize: '1.2rem'
+                    }}
+                  >
+                    Year Manifested: {product.year}
+                  </Typography>
+                  
+                  <br />
+                  
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary"
+                    sx={{
+                      fontFamily: 'VT323, monospace',
+                      color: '#00ffff',
+                      fontSize: '1.1rem'
+                    }}
+                  >
+                    In stock: {product.inventory}
+                  </Typography>
+                  
+                  <Typography 
+                    variant="h4" 
+                    component="div"
+                    sx={{
+                      fontFamily: 'Press Start 2P, monospace',
+                      background: 'linear-gradient(45deg, #ff6600, #ff0040)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      fontSize: '1.8rem',
+                      mt: 2,
+                      mb: 2,
+                      animation: 'thermalPriceGlow 2s ease-in-out infinite alternate'
+                    }}
+                  >
+                    ${product.price}
+                  </Typography>
+                </Grid>
+                
+                {product.inventory > 0 ? (
+                  <Grid item>
+                    <Typography sx={{cursor: 'pointer'}} variant="body2">
+                      <Button 
+                        variant="contained" 
+                        onClick={() => this.updateInventory()}
                         sx={{
-                          width: '100%',
-                          py: 2,
+                          background: 'linear-gradient(45deg, #ff0040, #ff6600)',
+                          color: 'white',
+                          fontFamily: 'Orbitron, monospace',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '2px',
                           fontSize: '1.1rem',
-                          fontWeight: 600,
-                          borderRadius: 2,
-                          textTransform: 'none',
-                          backgroundColor: 'primary.main',
+                          px: 4,
+                          py: 2,
+                          borderRadius: '8px',
+                          boxShadow: '0 0 20px #ff0040',
+                          border: 'none',
+                          transition: 'all 0.3s ease',
+                          position: 'relative',
+                          overflow: 'hidden',
                           '&:hover': {
-                            backgroundColor: 'primary.dark',
+                            background: 'linear-gradient(45deg, #ff6600, #ffff00)',
                             transform: 'translateY(-2px)',
-                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.2)',
+                            boxShadow: '0 10px 30px #ff6600',
                           },
-                          transition: 'all 0.2s ease-in-out',
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: '-100%',
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+                            transition: 'left 0.5s ease',
+                          },
+                          '&:hover::before': {
+                            left: '100%',
+                          }
                         }}
                       >
-                        Add to Cart
+                        ADD TO REALITY
                       </Button>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        size="large"
-                        disabled
-                        sx={{
-                          width: '100%',
-                          py: 2,
-                          fontSize: '1.1rem',
-                          fontWeight: 600,
-                          borderRadius: 2,
-                          textTransform: 'none',
-                        }}
-                      >
-                        Out of Stock
-                      </Button>
-                    )}
-                  </Box>
-
-                  {/* Features */}
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <LocalShipping sx={{ color: 'secondary.main', mr: 2 }} />
-                      <Typography variant="body2" color="text.secondary">
-                        Free shipping on orders over $50
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Security sx={{ color: 'secondary.main', mr: 2 }} />
-                      <Typography variant="body2" color="text.secondary">
-                        Secure checkout guaranteed
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Replay sx={{ color: 'secondary.main', mr: 2 }} />
-                      <Typography variant="body2" color="text.secondary">
-                        30-day return policy
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </Fade>
+                    </Typography>
+                  </Grid>
+                ) : (
+                  <Typography 
+                    variant="h4"
+                    sx={{
+                      fontFamily: 'Press Start 2P, monospace',
+                      color: '#ff0040',
+                      textTransform: 'uppercase',
+                      letterSpacing: '2px',
+                      fontSize: '1.2rem',
+                      textShadow: '0 0 10px #ff0040',
+                      animation: 'glitchText 1s ease-in-out infinite'
+                    }}
+                  >
+                    OUT OF STOCK
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
           </Grid>
-
-          {/* Additional Product Information */}
-          <Box sx={{ mt: 8 }}>
-            <Typography
-              variant="h5"
-              component="h2"
-              sx={{ fontWeight: 600, mb: 3, textAlign: 'center' }}
-            >
-              Why Choose Our Fishing Apparel?
-            </Typography>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={4}>
-                <Box sx={{ textAlign: 'center', p: 3 }}>
-                  <Star sx={{ fontSize: 48, color: 'secondary.main', mb: 2 }} />
-                  <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
-                    Premium Quality
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    High-quality materials that last through countless fishing adventures
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box sx={{ textAlign: 'center', p: 3 }}>
-                  <Storefront sx={{ fontSize: 48, color: 'secondary.main', mb: 2 }} />
-                  <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
-                    Unique Designs
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Exclusive fishing-themed designs you won't find anywhere else
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box sx={{ textAlign: 'center', p: 3 }}>
-                  <LocalShipping sx={{ fontSize: 48, color: 'secondary.main', mb: 2 }} />
-                  <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
-                    Fast Shipping
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Quick delivery so you can start wearing your fishing pride
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-        </Container>
-        <Toaster position="bottom-right" />
-      </Box>
+        </Paper>
+        <Toaster position="top-center" />
+      </div>
     );
   }
 }
 
-const mapState = (state) => ({
-  singleProduct: state.product,
-  user: state.user,
-  openOrder: state.order,
-});
+const mapStateToProps = (state) => {
+  return {
+    singleProduct: state.product,
+    id: state.user.id,
+    openOrder: state.order,
+  };
+};
 
-const mapDispatch = (dispatch) => ({
-  getProduct: (id) => dispatch(getOneProduct(id)),
-  updateProductInventory: (id) => dispatch(subtractProductInv(id)),
-  updateCurrentOrder: (productId, openOrderId) =>
-    dispatch(updateCurrOrder(productId, openOrderId)),
-  getOpenOrder: () => dispatch(getCurrOrder()),
-});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getProduct: (id) => dispatch(getProduct(id)),
+    subtractInventory: (id) => dispatch(subtractProductInv(id)),
+    updateOrder: (productId, orderId) =>
+      dispatch(updateCurrOrder(productId, orderId)),
+    getOrder: () => dispatch(getCurrOrder()),
+  };
+};
 
-export default connect(mapState, mapDispatch)(ModernSingleProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);
