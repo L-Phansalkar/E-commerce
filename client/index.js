@@ -18,13 +18,3 @@ root.render(
   </Provider>
 );
 
-// establishes socket connection
-
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <Router history={history}>
-//       <App />
-//     </Router>
-//   </Provider>,
-//   document.getElementById('root')
-// );

@@ -1,16 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width initial-scale=1.0'>
-    <title>Billy Bass</title>
-    <link rel="stylesheet" href="/style.css" />
-   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Billy Bass Pro Shop - Premium fishing-themed apparel with hilarious designs">
+    <title>Billy Bass Pro Shop | Fish Fear Me, Women Want Me</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/style.css" as="style">
+    <link rel="preload" href="/bundle.js" as="script">
+    
+    <!-- Modern CSS -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- Modern fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#8b5cf6">
+    
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="Billy Bass Pro Shop">
+    <meta property="og:description" content="Premium fishing-themed apparel with hilarious designs">
+    <meta property="og:type" content="website">
+    
+    <!-- Performance and loading optimization -->
+    <meta name="format-detection" content="telephone=no">
   </head>
   <body>
-    <div id="billy-bass-pro-shop"></div>
+    <!-- Main app container -->
+    <div id="billy-bass-pro-shop" role="main"></div>
+    
+    <!-- Loading fallback for users with JS disabled -->
+    <noscript>
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #10b981 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        z-index: 9999;
+      ">
+        <div>
+          <h1 style="font-size: 2rem; margin-bottom: 1rem;">Billy Bass Pro Shop</h1>
+          <p style="font-size: 1rem; opacity: 0.9;">Please enable JavaScript to experience our store.</p>
+        </div>
+      </div>
+    </noscript>
+    
+    <!-- Loading indicator -->
+    <div id="loading-indicator" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #10b981 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      transition: opacity 0.5s ease-out;
+    ">
+      <div style="text-align: center; color: white;">
+        <div style="
+          width: 50px;
+          height: 50px;
+          border: 3px solid rgba(255,255,255,0.3);
+          border-radius: 50%;
+          border-top-color: white;
+          animation: spin 1s ease-in-out infinite;
+          margin: 0 auto 1rem;
+        "></div>
+        <p style="font-family: 'Inter', sans-serif; font-size: 1rem;">Loading Billy Bass...</p>
+      </div>
+    </div>
+    
+    <!-- Main JavaScript bundle -->
     <script type="text/javascript" async src="/bundle.js"></script>
-
+    
+    <!-- Hide loading indicator when app loads -->
+    <script>
+      // Simple loading indicator management
+      window.addEventListener('load', function() {
+        const loader = document.getElementById('loading-indicator');
+        if (loader) {
+          setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+              loader.style.display = 'none';
+            }, 500);
+          }, 1000);
+        }
+      });
+      
+      // Keyframes for loading animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
   </body>
 </html>
-

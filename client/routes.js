@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {withRouter, Route, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Login,
@@ -11,8 +11,12 @@ import {
   Cart,
   CartFunctional,
   Confirm,
+  MinimalEntrancePage
 } from './components';
-import {me} from './store';
+import { me } from './store';
+
+// For now, let's use your existing components until you create the new ones
+// You can replace these imports one by one as you create the new components
 
 /**
  * COMPONENT
@@ -23,7 +27,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props;
+    const { isLoggedIn } = this.props;
 
     const useNewCart = true;
 
@@ -35,6 +39,8 @@ class Routes extends Component {
         <Route path="/cart" component={useNewCart ? CartFunctional : Cart} />
         <Route path="/confirm" component={Confirm} />
         <Route exact path="/products" component={AllProducts} />
+         <Route path="/home" component={MinimalEntrancePage} />
+         <Route path="/" component={MinimalEntrancePage} />
         <Route exact path="/products/:id" component={SingleProduct} />
         {isLoggedIn && (
           <Switch>
@@ -43,7 +49,7 @@ class Routes extends Component {
             <Route exact path="/products/:id" component={SingleProduct} />
           </Switch>
         )}
-        {/* Displays our Login component as a fallback */}s
+        {/* Displays our Login component as a fallback */}
         <Route component={Login} />
       </Switch>
     );
@@ -55,8 +61,6 @@ class Routes extends Component {
  */
 const mapState = (state) => {
   return {
-    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
-    // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
   };
 };
@@ -69,13 +73,8 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-// The `withRouter` wrapper makes sure that updates are not blocked
-// when the url changes
 export default withRouter(connect(mapState, mapDispatch)(Routes));
 
-/**
- * PROP TYPES
- */
 Routes.propTypes = {
   loadInitialData: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,

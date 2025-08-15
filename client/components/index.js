@@ -10,6 +10,7 @@ export {default as Confirm} from './Confirm';
 export {default as AllProducts} from './allProducts';
 export {default as SingleProduct} from './SingleProduct';
 export {default as CartFunctional} from './cartFunctional';
+export {default as MinimalEntrancePage} from './entrancePage'
 
 export {default as CheckoutForm} from './CheckoutForm';
 export {Login, Signup} from './auth-form';

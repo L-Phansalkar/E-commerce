@@ -1,37 +1,22 @@
 import React from 'react';
-import {blue, pink} from '@mui/material/colors';
-import {createTheme} from '@mui/material/styles';
-import {ThemeProvider} from '@mui/material';
-
-export const appTheme = createTheme({
-  palette: {
-    type: 'light',
-    primary: {
-      main: '#283593',
-    },
-    secondary: {
-      main: '#fbc02d',
-    },
-    warning: {
-      main: '#ad1457',
-    },
-    background: {
-      default: pink,
-      paper: '#ffb74d',
-    },
-  },
-  typography: {
-    fontFamily: 'PT Sans Caption',
-  },
-});
-import {Navbar} from './components';
+import { useLocation } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { modernTheme } from './theme/modernTheme';
+import ModernNavbar from './components/navbar';
 import Routes from './routes';
 
 const App = () => {
+  const location = useLocation();
+  
+  // Pages where we don't want to show the navbar
+  const hideNavbarPaths = ['/'];
+  const shouldHideNavbar = hideNavbarPaths.includes(location.pathname);
+
   return (
-    <ThemeProvider theme={appTheme}>
+    <ThemeProvider theme={modernTheme}>
+      <CssBaseline />
       <div>
-        <Navbar />
+        {!shouldHideNavbar && <ModernNavbar />}
         <Routes />
       </div>
     </ThemeProvider>
