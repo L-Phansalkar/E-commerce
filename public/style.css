@@ -1,5 +1,8 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&family=Press+Start+2P&display=swap');
+
+/* Root Variables - Thermal Vision Color Palette */
 :root {
-    /* Thermal Vision Color Palette */
     --thermal-red: #ff0040;
     --thermal-orange: #ff6600;
     --thermal-yellow: #ffff00;
@@ -14,6 +17,7 @@
     --thermal-gradient: radial-gradient(circle, #ff0040 0%, #ff6600 20%, #ffff00 40%, #00ff40 60%, #00ffff 80%, #8000ff 100%);
 }
 
+/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -26,13 +30,14 @@ body {
         radial-gradient(circle at 70% 30%, rgba(255, 102, 0, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 10% 10%, rgba(255, 255, 0, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 90% 90%, rgba(0, 255, 64, 0.05) 0%, transparent 40%),
-        linear-gradient(135deg, var(--deep-space) 0%, var(--thermal-black) 50%, var(--deep-space) 100%);
-    font-family: 'Orbitron', monospace;
-    color: var(--thermal-cyan);
+        linear-gradient(135deg, var(--deep-space) 0%, var(--thermal-black) 50%, var(--deep-space) 100%) !important;
+    font-family: 'Orbitron', monospace !important;
+    color: var(--thermal-cyan) !important;
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
     animation: subtleThermalShift 20s ease-in-out infinite alternate;
+    background-image: none !important; /* Override your fish gif */
 }
 
 @keyframes subtleThermalShift {
@@ -41,7 +46,7 @@ body {
     100% { filter: hue-rotate(120deg) saturate(1.1); }
 }
 
-/* Subtle thermal grid background */
+/* Thermal Grid Overlay */
 body::before {
     content: '';
     position: fixed;
@@ -70,37 +75,47 @@ body::before {
     }
 }
 
-/* Header */
-.header {
-    background: rgba(10, 0, 32, 0.9);
+/* Scanlines Effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 50%, rgba(255, 0, 64, 0.01) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: subtleThermalScanlines 0.2s linear infinite;
+}
+
+@keyframes subtleThermalScanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+/* Override MUI AppBar / Navigation */
+.MuiAppBar-root {
+    background: rgba(10, 0, 32, 0.9) !important;
     backdrop-filter: blur(10px);
-    border-bottom: 2px solid var(--thermal-red);
-    padding: 20px 0;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 0 30px var(--thermal-orange);
+    border-bottom: 2px solid var(--thermal-red) !important;
+    box-shadow: 0 0 30px var(--thermal-orange) !important;
 }
 
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
-}
-
-.logo {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 1.5rem;
+/* Style the title */
+.MuiToolbar-root h2 {
+    font-family: 'Press Start 2P', monospace !important;
+    font-size: 1.2rem !important;
     background: var(--hologram);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 3px;
     animation: glitchText 3s ease-in-out infinite;
+    margin: 0;
+    padding: 10px 0;
 }
 
 @keyframes glitchText {
@@ -111,60 +126,58 @@ body::before {
     100% { transform: translate(0); }
 }
 
-.nav {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-}
-
-.nav-link {
-    color: var(--thermal-cyan);
-    text-decoration: none;
-    font-family: 'VT323', monospace;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+/* Navigation Links */
+.MuiButton-root {
+    font-family: 'VT323', monospace !important;
+    font-size: 1.2rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
     position: relative;
-    transition: all 0.3s ease;
+    color: var(--thermal-cyan) !important;
 }
 
-.nav-link:hover {
-    color: var(--thermal-red);
+.MuiButton-root a {
+    color: var(--thermal-cyan) !important;
+    text-decoration: none !important;
+}
+
+.MuiButton-root:hover {
+    background-color: transparent !important;
+}
+
+.MuiButton-root:hover a {
+    color: var(--thermal-red) !important;
     text-shadow: 0 0 15px var(--thermal-orange);
 }
 
-.nav-link::after {
+.MuiButton-root::after {
     content: '';
     position: absolute;
-    bottom: -5px;
-    left: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
     height: 2px;
     background: linear-gradient(90deg, var(--thermal-red), var(--thermal-yellow), var(--thermal-green));
     transition: width 0.3s ease;
 }
 
-.nav-link:hover::after {
-    width: 100%;
+.MuiButton-root:hover::after {
+    width: 80%;
 }
 
-/* Main Content */
-.main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 40px;
+/* Hero/Home Section */
+#home {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    z-index: 5;
+    margin: 60px 0;
 }
 
-/* Hero Section */
-.hero {
-    text-align: center;
-    margin-bottom: 80px;
-    position: relative;
-}
-
-.hero-title {
+#home::before {
+    content: 'W O M E N  F I S H  &  M E';
     font-family: 'Orbitron', monospace;
     font-size: 4rem;
     font-weight: 900;
@@ -174,9 +187,20 @@ body::before {
     background-clip: text;
     text-transform: uppercase;
     letter-spacing: 8px;
-    margin-bottom: 20px;
-    position: relative;
     animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+#home::after {
+    content: '自己探求 - EXISTENTIAL HEADWEAR FOR THE DIGITAL AGE';
+    position: absolute;
+    bottom: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 1.8rem;
+    color: var(--thermal-yellow);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    animation: thermalTypewriter 3s steps(30) infinite;
+    text-shadow: 0 0 10px var(--thermal-orange);
 }
 
 @keyframes neonPulse {
@@ -194,16 +218,6 @@ body::before {
     }
 }
 
-.hero-subtitle {
-    font-family: 'VT323', monospace;
-    font-size: 1.8rem;
-    color: var(--thermal-yellow);
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    animation: thermalTypewriter 3s steps(30) infinite;
-    text-shadow: 0 0 10px var(--thermal-orange);
-}
-
 @keyframes thermalTypewriter {
     0%, 50% { 
         opacity: 1;
@@ -215,29 +229,37 @@ body::before {
     }
 }
 
-/* Products Grid */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 40px;
-    margin-top: 60px;
+/* Products Container */
+#allProducts {
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
 }
 
-/* Thermal Vision Product Cards */
-.product-card {
-    background: rgba(10, 0, 32, 0.8);
-    border: 2px solid var(--thermal-red);
-    border-radius: 15px;
-    overflow: hidden;
-    position: relative;
-    transition: all 0.4s ease;
+/* Override MUI ImageList */
+.MuiImageList-root {
+    gap: 40px !important;
+    padding: 0 !important;
+}
+
+/* Product Cards - Override MUI ImageListItem */
+.MuiImageListItem-root {
+    background: rgba(10, 0, 32, 0.8) !important;
+    border: 2px solid var(--thermal-red) !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    transition: all 0.4s ease !important;
     backdrop-filter: blur(10px);
     box-shadow: 
         0 0 20px var(--thermal-orange),
-        inset 0 0 20px rgba(255, 102, 0, 0.1);
+        inset 0 0 20px rgba(255, 102, 0, 0.1) !important;
 }
 
-.product-card::before {
+/* Thermal border animation */
+.MuiImageListItem-root::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -257,45 +279,47 @@ body::before {
     50% { filter: hue-rotate(120deg); }
 }
 
-.product-card:hover::before {
+.MuiImageListItem-root:hover::before {
     opacity: 1;
 }
 
-.product-card:hover {
-    transform: translateY(-10px) scale(1.02);
+.MuiImageListItem-root:hover {
+    transform: translateY(-10px) scale(1.02) !important;
     box-shadow: 
         0 20px 40px var(--thermal-red),
-        0 0 60px var(--thermal-yellow);
+        0 0 60px var(--thermal-yellow) !important;
 }
 
-.image-container {
-    position: relative;
-    height: 250px;
-    overflow: hidden;
-    background: var(--thermal-gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Product Images */
+.MuiImageListItem-root img {
+    width: 100% !important;
+    height: 250px !important;
+    object-fit: cover !important;
+    filter: 
+        contrast(1.3) 
+        saturate(1.3) 
+        hue-rotate(10deg)
+        brightness(1.1) !important;
+    transition: all 0.3s ease !important;
 }
 
-.image-placeholder {
-    font-family: 'VT323', monospace;
-    font-size: 1.5rem;
-    color: var(--thermal-black);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-align: center;
-    padding: 20px;
+.MuiImageListItem-root:hover img {
+    filter: 
+        contrast(1.4) 
+        saturate(1.5) 
+        hue-rotate(30deg)
+        brightness(1.2) !important;
+    transform: scale(1.05) !important;
 }
 
-/* Subtle thermal glitch overlay effect */
-.image-container::after {
+/* Thermal sweep effect on images */
+.MuiImageListItem-root::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: 250px;
     background: 
         linear-gradient(45deg, 
             transparent 40%, 
@@ -318,38 +342,40 @@ body::before {
     }
 }
 
-.product-info {
-    padding: 25px;
-    position: relative;
+/* Product Info Bar */
+.MuiImageListItemBar-root {
+    background: rgba(10, 0, 32, 0.95) !important;
+    padding: 15px !important;
 }
 
-.product-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--thermal-cyan);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 15px var(--thermal-green);
+.MuiImageListItemBar-title {
+    font-family: 'Orbitron', monospace !important;
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
 }
 
-.product-description {
-    font-family: 'VT323', monospace;
-    font-size: 1.1rem;
-    color: var(--thermal-yellow);
-    margin-bottom: 20px;
-    line-height: 1.4;
+.MuiImageListItemBar-root a {
+    color: var(--thermal-cyan) !important;
+    text-decoration: none !important;
+    text-shadow: 0 0 15px var(--thermal-green) !important;
+    transition: all 0.3s ease;
 }
 
-.product-price {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 1.5rem;
+.MuiImageListItemBar-root a:hover {
+    color: var(--thermal-yellow) !important;
+    text-shadow: 0 0 20px var(--thermal-orange) !important;
+}
+
+.MuiImageListItemBar-subtitle {
+    font-family: 'Press Start 2P', monospace !important;
+    font-size: 1.2rem !important;
     background: linear-gradient(45deg, var(--thermal-orange), var(--thermal-red));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 25px;
+    margin-top: 10px !important;
     animation: thermalPriceGlow 2s ease-in-out infinite alternate;
 }
 
@@ -364,26 +390,61 @@ body::before {
     }
 }
 
-.add-to-cart {
-    width: 100%;
-    background: linear-gradient(45deg, var(--thermal-red), var(--thermal-orange));
-    border: none;
-    color: white;
-    padding: 15px;
-    font-family: 'Orbitron', monospace;
-    font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border-radius: 8px;
-    cursor: pointer;
+/* Single Product Page */
+#singleProduct {
+    padding: 40px;
     position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px var(--thermal-red);
+    z-index: 5;
 }
 
-.add-to-cart::before {
+.MuiPaper-root {
+    background: rgba(10, 0, 32, 0.8) !important;
+    border: 2px solid var(--thermal-red) !important;
+    border-radius: 15px !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 
+        0 0 30px var(--thermal-orange),
+        inset 0 0 20px rgba(255, 102, 0, 0.1) !important;
+}
+
+#singleProduct h2 {
+    font-family: 'Orbitron', monospace !important;
+    font-size: 2rem !important;
+    background: var(--hologram);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase !important;
+    letter-spacing: 3px !important;
+    text-shadow: 0 0 20px var(--thermal-cyan);
+}
+
+#singleProduct .MuiTypography-root {
+    color: var(--thermal-yellow) !important;
+    font-family: 'VT323', monospace !important;
+    font-size: 1.2rem !important;
+    line-height: 1.6 !important;
+}
+
+#singleProduct .MuiButton-contained {
+    background: linear-gradient(45deg, var(--thermal-red), var(--thermal-orange)) !important;
+    border: none !important;
+    color: white !important;
+    padding: 15px 30px !important;
+    font-family: 'Orbitron', monospace !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 0 20px var(--thermal-red) !important;
+}
+
+#singleProduct .MuiButton-contained::before {
     content: '';
     position: absolute;
     top: 0;
@@ -394,48 +455,135 @@ body::before {
     transition: left 0.5s ease;
 }
 
-.add-to-cart:hover::before {
+#singleProduct .MuiButton-contained:hover::before {
     left: 100%;
 }
 
-.add-to-cart:hover {
-    background: linear-gradient(45deg, var(--thermal-orange), var(--thermal-yellow));
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px var(--thermal-orange);
+#singleProduct .MuiButton-contained:hover {
+    background: linear-gradient(45deg, var(--thermal-orange), var(--thermal-yellow)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px var(--thermal-orange) !important;
 }
 
-/* Thermal vision badges */
-.vaporwave-badge {
+/* Cart Styles */
+#cart, #checkoutform {
+    padding: 40px;
+    min-height: 70vh;
+    position: relative;
+    z-index: 5;
+}
+
+#cart h1, #checkoutform h1 {
+    font-family: 'Orbitron', monospace !important;
+    font-size: 3rem !important;
+    background: var(--hologram);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase !important;
+    text-align: center;
+    margin-bottom: 40px !important;
+}
+
+/* Form Styles */
+form {
+    background: rgba(10, 0, 32, 0.8);
+    border: 2px solid var(--thermal-cyan);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px var(--thermal-cyan);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form div {
+    margin: 20px 0 !important;
+    display: block !important;
+}
+
+label {
+    color: var(--thermal-cyan) !important;
+    font-family: 'VT323', monospace !important;
+    font-size: 1.2rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    display: block !important;
+    margin-bottom: 10px !important;
+}
+
+input, .MuiInput-root input {
+    background: rgba(0, 255, 255, 0.05) !important;
+    border: 1px solid var(--thermal-cyan) !important;
+    border-radius: 5px !important;
+    color: var(--thermal-yellow) !important;
+    font-family: 'VT323', monospace !important;
+    font-size: 1.1rem !important;
+    padding: 10px !important;
+    width: 100% !important;
+    transition: all 0.3s ease !important;
+}
+
+input:focus, .MuiInput-root input:focus {
+    outline: none !important;
+    border-color: var(--thermal-orange) !important;
+    box-shadow: 0 0 15px var(--thermal-orange) !important;
+    background: rgba(255, 102, 0, 0.05) !important;
+}
+
+/* All Buttons */
+button, .MuiButton-contained {
+    background: linear-gradient(45deg, var(--thermal-red), var(--thermal-orange)) !important;
+    border: none !important;
+    color: white !important;
+    padding: 15px 32px !important;
+    font-family: 'Orbitron', monospace !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 0 20px var(--thermal-red) !important;
+    margin: 10px 0 !important;
+}
+
+button::before, .MuiButton-contained::before {
+    content: '';
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: linear-gradient(45deg, var(--thermal-green), var(--thermal-cyan));
-    color: var(--deep-space);
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-family: 'VT323', monospace;
-    font-size: 1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    z-index: 10;
-    box-shadow: 0 0 15px var(--thermal-green);
-    animation: thermalBadgeFloat 3s ease-in-out infinite;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
 }
 
-@keyframes thermalBadgeFloat {
-    0%, 100% { 
-        transform: translateY(0px);
-        filter: hue-rotate(0deg);
-    }
-    50% { 
-        transform: translateY(-3px);
-        filter: hue-rotate(60deg);
-    }
+button:hover::before, .MuiButton-contained:hover::before {
+    left: 100%;
 }
 
-/* Footer */
-.footer {
+button:hover, .MuiButton-contained:hover {
+    background: linear-gradient(45deg, var(--thermal-orange), var(--thermal-yellow)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px var(--thermal-orange) !important;
+}
+
+/* Special button variants */
+#goog, #confirm, #userhome, #logsub {
+    background: linear-gradient(45deg, var(--thermal-cyan), var(--thermal-green)) !important;
+}
+
+#goog:hover, #confirm:hover, #userhome:hover, #logsub:hover {
+    background: linear-gradient(45deg, var(--thermal-green), var(--thermal-yellow)) !important;
+    box-shadow: 0 10px 30px var(--thermal-green) !important;
+}
+
+/* Footer styles if you add one */
+footer {
     background: rgba(10, 0, 32, 0.9);
     border-top: 2px solid var(--thermal-green);
     padding: 40px 0;
@@ -444,7 +592,7 @@ body::before {
     position: relative;
 }
 
-.footer-text {
+footer p {
     font-family: 'VT323', monospace;
     font-size: 1.2rem;
     color: var(--thermal-cyan);
@@ -452,58 +600,88 @@ body::before {
     letter-spacing: 3px;
 }
 
-/* Subtle thermal scanlines effect */
-.scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        linear-gradient(transparent 50%, rgba(255, 0, 64, 0.01) 50%);
-    background-size: 100% 4px;
-    pointer-events: none;
-    z-index: 100;
-    animation: subtleThermalScanlines 0.2s linear infinite;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .MuiToolbar-root {
+        flex-direction: column;
+        padding: 20px !important;
+    }
+    
+    .MuiToolbar-root h2 {
+        font-size: 0.9rem !important;
+        text-align: center;
+        margin-bottom: 20px !important;
+    }
+    
+    #home::before {
+        font-size: 2rem;
+        letter-spacing: 4px;
+        text-align: center;
+    }
+    
+    #home::after {
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .MuiImageList-root {
+        grid-template-columns: 1fr !important;
+    }
 }
 
-@keyframes subtleThermalScanlines {
+/* Loading animation */
+@keyframes thermalLoad {
     0% { 
-        transform: translateY(0);
+        background-position: -200% center;
     }
     100% { 
-        transform: translateY(4px);
+        background-position: 200% center;
     }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .header-content {
-        padding: 0 20px;
-        flex-direction: column;
-        gap: 20px;
-    }
+.loading {
+    background: linear-gradient(90deg, 
+        var(--thermal-red) 0%, 
+        var(--thermal-orange) 25%, 
+        var(--thermal-yellow) 50%, 
+        var(--thermal-green) 75%, 
+        var(--thermal-cyan) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: thermalLoad 2s linear infinite;
+}
 
-    .logo {
-        font-size: 1.2rem;
-    }
+/* Override any remaining default styles */
+a {
+    color: var(--thermal-cyan) !important;
+    text-decoration: none !important;
+}
 
-    .nav {
-        gap: 20px;
-        flex-wrap: wrap;
-    }
+a:visited {
+    color: var(--thermal-cyan) !important;
+}
 
-    .main {
-        padding: 40px 20px;
-    }
+a:hover {
+    color: var(--thermal-orange) !important;
+    text-shadow: 0 0 10px var(--thermal-orange);
+}
 
-    .hero-title {
-        font-size: 2.5rem;
-        letter-spacing: 4px;
-    }
+/* Typography overrides */
+.MuiTypography-h1,
+.MuiTypography-h2,
+.MuiTypography-h3,
+.MuiTypography-h4,
+.MuiTypography-h5,
+.MuiTypography-h6 {
+    font-family: 'Orbitron', monospace !important;
+    color: var(--thermal-cyan) !important;
+}
 
-    .products-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
+.MuiTypography-body1,
+.MuiTypography-body2 {
+    font-family: 'VT323', monospace !important;
+    color: var(--thermal-yellow) !important;
 }
