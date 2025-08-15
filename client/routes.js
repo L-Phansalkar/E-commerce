@@ -8,7 +8,6 @@ import {
   UserHome,
   AllProducts,
   SingleProduct,
-  Cart,
   CartFunctional,
   Confirm,
   MinimalEntrancePage

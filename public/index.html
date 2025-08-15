@@ -1,130 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>W O M E N , F I S H  &  M E </title>
+    <meta name="description" content="meme hats: into the void">
+    <title> Women, Fish & Me </title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/style.css" as="style">
+    <link rel="preload" href="/bundle.js" as="script">
+    
+    <!-- Modern CSS -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- Modern fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/thermal-style.css">
-</head>
-<body>
-    <!-- Scanlines -->
-    <div class="scanlines"></div>
-
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="#" class="logo">WOMEN, FISH & ME</a>
-            <nav class="nav">
-                <a href="#" class="nav-link">PRODUCTS</a>
-                <a href="#" class="nav-link">CART</a>
-                <a href="#" class="nav-link">ABOUT</a>
-                <a href="#" class="nav-link">LOGIN</a>
-            </nav>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#8b5cf6">
+    
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="Billy Bass Pro Shop">
+    <meta property="og:description" content="Premium fishing-themed apparel with hilarious designs">
+    <meta property="og:type" content="website">
+    
+    <!-- Performance and loading optimization -->
+    <meta name="format-detection" content="telephone=no">
+  </head>
+  <body>
+    <!-- Main app container -->
+    <div id="billy-bass-pro-shop" role="main"></div>
+    
+    <!-- Loading fallback for users with JS disabled -->
+    <noscript>
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #10b981 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        z-index: 9999;
+      ">
+        <div>
+          <h1 style="font-size: 2rem; margin-bottom: 1rem;">Billy Bass Pro Shop</h1>
+          <p style="font-size: 1rem; opacity: 0.9;">Please enable JavaScript to experience our store.</p>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 class="hero-title">MEME CAPS</h1>
-            <p class="hero-subtitle">EXISTENTIAL HEADWEAR FOR THE DIGITAL AGE</p>
-        </section>
-
-        <!-- Products Grid -->
-        <div class="products-grid">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <div class="vaporwave-badge">CLASSIC</div>
-                <div class="image-container">
-                    <div class="image-placeholder">CAP IMAGE</div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">WOMEN WANT ME CAP</h3>
-                    <p class="product-description">The original. The legend. "WOMEN WANT ME FISH FEAR ME" in all caps glory.</p>
-                    <div class="product-price">$24.99</div>
-                    <button class="add-to-cart" onclick="handleAddToCart(this)">ADD TO REALITY</button>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="vaporwave-badge">DEEP</div>
-                <div class="image-container">
-                    <div class="image-placeholder">CAP IMAGE</div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">HEALTHY RELATIONSHIP CAP</h3>
-                    <p class="product-description">"THE WOMEN FISH AND I ARE ALL IN A HEALTHY RELATIONSHIP SUPPORTED BY A REGULARLY RENEWED FISHING LICENSE"</p>
-                    <div class="product-price">$29.99</div>
-                    <button class="add-to-cart" onclick="handleAddToCart(this)">ADD TO REALITY</button>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="vaporwave-badge">SURREAL</div>
-                <div class="image-container">
-                    <div class="image-placeholder">CAP IMAGE</div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">VOID CAP</h3>
-                    <p class="product-description">"WOMEN PERCEIVE ME FISH ACKNOWLEDGE THE VOID WITHIN ME I ACCEPT BOTH"</p>
-                    <div class="product-price">$34.99</div>
-                    <button class="add-to-cart" onclick="handleAddToCart(this)">ADD TO REALITY</button>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="vaporwave-badge">META</div>
-                <div class="image-container">
-                    <div class="image-placeholder">CAP IMAGE</div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">SELF AWARE CAP</h3>
-                    <p class="product-description">"WOMEN WANT ME FISH FEAR ME HAT WEARING GUY CONFUSES EVERYONE"</p>
-                    <div class="product-price">$19.99</div>
-                    <button class="add-to-cart" onclick="handleAddToCart(this)">ADD TO REALITY</button>
-                </div>
-            </div>
-
-            <!-- Product 5 -->
-            <div class="product-card">
-                <div class="vaporwave-badge">CHAOS</div>
-                <div class="image-container">
-                    <div class="image-placeholder">CAP IMAGE</div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">INTERNET BRAIN CAP</h3>
-                    <p class="product-description">"WOMEN FEAR ME FISH WANT ME I AM BECOME MEME DESTROYER OF NORMALCY"</p>
-                    <div class="product-price">$27.99</div>
-                    <button class="add-to-cart" onclick="handleAddToCart(this)">ADD TO REALITY</button>
-                </div>
-            </div>
-
-            <!-- Product 6 -->
-            <div class="product-card">
-                <div class="vaporwave-badge">COSMIC</div>
-                <div class="image-container">
-                    <div class="image-placeholder">CAP IMAGE</div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">COSMIC UNITY CAP</h3>
-                    <p class="product-description">"WE ARE ALL WOMEN WE ARE ALL FISH WE ARE ALL ME IN THE GRAND SIMULATION"</p>
-                    <div class="product-price">$49.99</div>
-                    <button class="add-to-cart" onclick="handleAddToCart(this)">ADD TO REALITY</button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p class="footer-text">© 2024 WOMEN FISH & ME CORP • EXPLORING IDENTITY SINCE FOREVER</p>
-    </footer>
-
-    <script src="/thermal-script.js"></script>
-</body>
+      </div>
+    </noscript>
+    
+    <!-- Loading indicator -->
+    <div id="loading-indicator" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #10b981 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      transition: opacity 0.5s ease-out;
+    ">
+      <div style="text-align: center; color: white;">
+        <div style="
+          width: 50px;
+          height: 50px;
+          border: 3px solid rgba(255,255,255,0.3);
+          border-radius: 50%;
+          border-top-color: white;
+          animation: spin 1s ease-in-out infinite;
+          margin: 0 auto 1rem;
+        "></div>
+        <p style="font-family: 'Inter', sans-serif; font-size: 1rem;">Loading Billy Bass...</p>
+      </div>
+    </div>
+    
+    <!-- Main JavaScript bundle -->
+    <script type="text/javascript" async src="/bundle.js"></script>
+    
+    <!-- Hide loading indicator when app loads -->
+    <script>
+      // Simple loading indicator management
+      window.addEventListener('load', function() {
+        const loader = document.getElementById('loading-indicator');
+        if (loader) {
+          setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+              loader.style.display = 'none';
+            }, 500);
+          }, 1000);
+        }
+      });
+      
+      // Keyframes for loading animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+  </body>
 </html>

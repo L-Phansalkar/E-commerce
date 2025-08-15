@@ -685,3 +685,289 @@ a:hover {
     font-family: 'VT323', monospace !important;
     color: var(--thermal-yellow) !important;
 }
+
+/* Thermal Vision CSS - Women Fish & Me */
+/* Add this file as public/thermal-vision.css */
+
+:root {
+    /* Thermal Vision Color Palette */
+    --thermal-red: #ff0040;
+    --thermal-orange: #ff6600;
+    --thermal-yellow: #ffff00;
+    --thermal-green: #00ff40;
+    --thermal-cyan: #00ffff;
+    --thermal-blue: #0080ff;
+    --thermal-purple: #8000ff;
+    --thermal-magenta: #ff00ff;
+    --deep-space: #0a0020;
+    --thermal-black: #200020;
+    --hologram: linear-gradient(45deg, #ff0040, #ff6600, #ffff00, #00ff40, #00ffff, #8000ff);
+    --thermal-gradient: radial-gradient(circle, #ff0040 0%, #ff6600 20%, #ffff00 40%, #00ff40 60%, #00ffff 80%, #8000ff 100%);
+}
+
+/* Override Material-UI styles with thermal vision */
+body {
+    background: 
+        radial-gradient(circle at 30% 70%, rgba(255, 0, 64, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(255, 102, 0, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 10% 10%, rgba(255, 255, 0, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(0, 255, 64, 0.05) 0%, transparent 40%),
+        linear-gradient(135deg, var(--deep-space) 0%, var(--thermal-black) 50%, var(--deep-space) 100%) !important;
+    font-family: 'Orbitron', monospace !important;
+    color: var(--thermal-cyan) !important;
+    animation: subtleThermalShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes subtleThermalShift {
+    0% { filter: hue-rotate(0deg) saturate(1.1); }
+    50% { filter: hue-rotate(60deg) saturate(1.2); }
+    100% { filter: hue-rotate(120deg) saturate(1.1); }
+}
+
+/* Subtle thermal grid background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(255, 0, 64, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 102, 0, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.6;
+    animation: subtleThermalGrid 30s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes subtleThermalGrid {
+    0% { 
+        transform: translate(0, 0);
+        filter: hue-rotate(0deg);
+    }
+    100% { 
+        transform: translate(50px, 50px);
+        filter: hue-rotate(180deg);
+    }
+}
+
+/* Material-UI Component Overrides */
+.MuiAppBar-root {
+    background: rgba(10, 0, 32, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom: 2px solid var(--thermal-red) !important;
+    box-shadow: 0 0 30px var(--thermal-orange) !important;
+}
+
+.MuiToolbar-root h2 {
+    font-family: 'Press Start 2P', monospace !important;
+    background: var(--hologram) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-size: 1.5rem !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    animation: glitchText 3s ease-in-out infinite !important;
+}
+
+@keyframes glitchText {
+    0%, 90% { transform: translate(0); }
+    95% { transform: translate(-2px, 2px); }
+    97% { transform: translate(2px, -2px); }
+    99% { transform: translate(-1px, 1px); }
+    100% { transform: translate(0); }
+}
+
+.MuiButton-root {
+    background: linear-gradient(45deg, var(--thermal-red), var(--thermal-orange)) !important;
+    border: none !important;
+    color: white !important;
+    font-family: 'Orbitron', monospace !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 20px var(--thermal-red) !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.MuiButton-root::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.MuiButton-root:hover::before {
+    left: 100%;
+}
+
+.MuiButton-root:hover {
+    background: linear-gradient(45deg, var(--thermal-orange), var(--thermal-yellow)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px var(--thermal-orange) !important;
+}
+
+/* Navigation Links */
+.MuiButton-root a {
+    color: var(--thermal-cyan) !important;
+    text-decoration: none !important;
+    font-family: 'VT323', monospace !important;
+    font-size: 1.2rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.MuiButton-root:hover a {
+    color: var(--thermal-red) !important;
+    text-shadow: 0 0 15px var(--thermal-orange) !important;
+}
+
+/* Product Cards */
+.MuiCard-root, .MuiPaper-root {
+    background: rgba(10, 0, 32, 0.8) !important;
+    border: 2px solid var(--thermal-red) !important;
+    border-radius: 15px !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 0 20px var(--thermal-orange) !important;
+    transition: all 0.4s ease !important;
+    position: relative !important;
+}
+
+.MuiCard-root::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--thermal-gradient);
+    border-radius: 15px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: subtleThermalBorder 8s ease-in-out infinite;
+}
+
+@keyframes subtleThermalBorder {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(120deg); }
+}
+
+.MuiCard-root:hover::before {
+    opacity: 1;
+}
+
+.MuiCard-root:hover {
+    transform: translateY(-10px) scale(1.02) !important;
+    box-shadow: 0 20px 40px var(--thermal-red) !important;
+}
+
+/* Product Images */
+.MuiCard-root img {
+    filter: contrast(1.3) saturate(1.3) hue-rotate(10deg) brightness(1.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.MuiCard-root:hover img {
+    filter: contrast(1.4) saturate(1.5) hue-rotate(30deg) brightness(1.2) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Typography */
+.MuiTypography-h1, .MuiTypography-h2, .MuiTypography-h3 {
+    font-family: 'Orbitron', monospace !important;
+    color: var(--thermal-cyan) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    text-shadow: 0 0 15px var(--thermal-green) !important;
+}
+
+.MuiTypography-body1, .MuiTypography-body2 {
+    font-family: 'VT323', monospace !important;
+    color: var(--thermal-yellow) !important;
+    font-size: 1.1rem !important;
+}
+
+/* Price styling */
+.product-price, [class*="price"] {
+    font-family: 'Press Start 2P', monospace !important;
+    background: linear-gradient(45deg, var(--thermal-orange), var(--thermal-red)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: thermalPriceGlow 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes thermalPriceGlow {
+    0% { 
+        filter: brightness(1);
+        text-shadow: 0 0 10px var(--thermal-orange);
+    }
+    100% { 
+        filter: brightness(1.4);
+        text-shadow: 0 0 20px var(--thermal-red);
+    }
+}
+
+/* Form elements */
+.MuiTextField-root input, .MuiTextField-root textarea {
+    color: var(--thermal-cyan) !important;
+    font-family: 'VT323', monospace !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root {
+    border-color: var(--thermal-red) !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover {
+    border-color: var(--thermal-orange) !important;
+}
+
+/* Loading and success states */
+.success-message {
+    background: linear-gradient(45deg, var(--thermal-green), var(--thermal-cyan)) !important;
+    color: var(--deep-space) !important;
+    font-family: 'Orbitron', monospace !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+}
+
+/* Scanlines overlay */
+.thermal-scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 50%, rgba(255, 0, 64, 0.01) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1000;
+    animation: subtleThermalScanlines 0.2s linear infinite;
+}
+
+@keyframes subtleThermalScanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .MuiToolbar-root h2 {
+        font-size: 1.2rem !important;
+        letter-spacing: 2px !important;
+    }
+    
+    .MuiButton-root {
+        font-size: 0.9rem !important;
+    }
+}

@@ -13,7 +13,7 @@ const updateSingleProduct = (product) => ({
   product,
 });
 
-export const getOneProduct = (id) => {
+export const getProduct = (id) => {
   return async (dispatch) => {
     try {
       const data = await api.products.getById(id);
