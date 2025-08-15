@@ -100,7 +100,7 @@ const CartFunctional = ({openOrder, dispatch}) => {
   return (
     <div id="cart">
       {/* this is for logged in guest */}
-
+     DTS DT CART FUNCTIONAL YO BAYBEE
       {openOrder.productOrders && (
         <List sx={{bgcolor: 'background.paper', p: 2}}>
           {openOrder.productOrders.map((item) => {

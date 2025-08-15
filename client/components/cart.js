@@ -69,7 +69,7 @@ export class Cart extends React.Component {
     return (
       <div id="cart">
         {/* this is for logged in guest */}
-
+        PURE CART BAYBEE
         {openOrder.productOrders ? (
           <List sx={{bgcolor: 'background.paper', p: 2}}>
             {openOrder.productOrders.map((item) => (
