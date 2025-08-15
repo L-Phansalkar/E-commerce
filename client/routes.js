@@ -39,7 +39,7 @@ class Routes extends Component {
         <Route path="/confirm" component={Confirm} />
         <Route exact path="/products" component={AllProducts} />
          <Route path="/home" component={MinimalEntrancePage} />
-         <Route path="/" component={MinimalEntrancePage} />
+         {/* <Route exact path="/" component={MinimalEntrancePage} /> */}
         <Route exact path="/products/:id" component={SingleProduct} />
         {isLoggedIn && (
           <Switch>
