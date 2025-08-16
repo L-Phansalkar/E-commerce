@@ -80,6 +80,7 @@ class SingleProduct extends Component {
     const product = this.props.singleProduct;
     return (
       <div id="singleProduct">
+        
         <Paper sx={{
           p: 2, 
           margin: 'auto', 
@@ -108,8 +109,10 @@ class SingleProduct extends Component {
                     transform: 'scale(1.02)',
                   }
                 }}
-                image={product.image}
+                src={product.image}
                 title={product.name}
+               
+                
               />
             </Grid>
             <Grid item xs={12} sm container>

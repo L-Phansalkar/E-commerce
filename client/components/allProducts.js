@@ -29,8 +29,15 @@ export class AllProducts extends React.Component {
           <Grid container spacing={4} sx={{ p: 2 }}>
             {products.map((product) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                <Card className="product-card" sx={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column',  border: 'none',
-                  boxShadow: 'none',backgroundColor: 'transparent' }}>
+                <Card className="product-card" sx={{ 
+                  position: 'relative', 
+                  height: '100%', 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  border: 'none',
+                  boxShadow: 'none',
+                  backgroundColor: 'transparent'
+                }}>
                   <Chip
                     label="CLASSIC"
                     className="vaporwave-badge"
