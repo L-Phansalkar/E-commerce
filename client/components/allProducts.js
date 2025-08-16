@@ -1,137 +1,226 @@
-// Update your main component to have the EXACT hero content
-// Replace your home/products page content with this:
-
 import React from 'react';
-import { Container, Typography, Grid, Card, CardMedia, CardContent, Chip } from '@mui/material';
+import {connect} from 'react-redux';
+import {getAllProducts} from '../store/products';
+import {Link} from 'react-router-dom';
+import {
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  Chip,
+  Box
+} from '@mui/material';
 
-const ProductsPage = () => {
-  return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      {/* Hero Section - EXACT match */}
-      <div className="hero-section" style={{ 
-        textAlign: 'center',
-        marginBottom: '50px',
-        padding: '60px 20px',
-        background: 'transparent'
-      }}>
-        <Typography 
-          variant="h1" 
-          className="hero-title"
-          sx={{
-            fontFamily: 'Orbitron, monospace',
-            fontSize: '4rem',
-            fontWeight: 900,
-            background: 'linear-gradient(45deg, #ff0040, #ff6600, #ffff00, #00ff40, #00ffff, #8000ff)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            textTransform: 'uppercase',
-            letterSpacing: '8px',
-            marginBottom: '20px',
-            animation: 'neonPulse 2s ease-in-out infinite alternate'
-          }}
-        >
-          MEME CAPS
-        </Typography>
-        
-        <Typography 
-          variant="body1" 
-          className="hero-subtitle"
-          sx={{
-            fontFamily: 'VT323, monospace',
-            fontSize: '1.8rem',
-            color: '#ffff00',
-            textTransform: 'uppercase',
-            letterSpacing: '4px',
-            textShadow: '0 0 10px #ff6600',
-            margin: '0 auto',
-            maxWidth: '800px'
-          }}
-        >
-          EXISTENTIAL HEADWEAR FOR THE DIGITAL AGE
-        </Typography>
+export class AllProducts extends React.Component {
+  componentDidMount() {
+    this.props.getProducts();
+  }
+
+  render() {
+    const {products} = this.props;
+
+    return (
+      <div id="allProducts">
+        <div className="outerContainer">
+          {/* Products Grid */}
+          <Grid container spacing={4} sx={{ p: 2 }}>
+            {products.map((product) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                <Card className="product-card" sx={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Chip
+                    label="CLASSIC"
+                    className="vaporwave-badge"
+                    sx={{
+                      position: 'absolute',
+                      top: 15,
+                      right: 15,
+                      background: 'linear-gradient(45deg, #00ff40, #00ffff)',
+                      color: '#0a0020',
+                      fontFamily: 'VT323, monospace',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      zIndex: 10
+                    }}
+                  />
+                  
+                  <CardMedia
+                    component="img"
+                    height="250"
+                    image={product.image}
+                    alt={product.name}
+                    sx={{
+                      objectFit: 'cover',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                        transition: 'transform 0.3s ease-in-out'
+                      }
+                    }}
+                  />
+                  
+                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <Typography 
+                      gutterBottom 
+                      variant="h6" 
+                      component="h3"
+                      sx={{ 
+                        fontFamily: 'VT323, monospace',
+                        fontSize: '1.2rem',
+                        color: '#00ff40',
+                        textShadow: '0 0 10px #00ff40',
+                        minHeight: '2.4rem',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical'
+                      }}
+                    >
+                      <Link 
+                        to={`/products/${product.id}`} 
+                        style={{ 
+                          textDecoration: 'none', 
+                          color: 'inherit',
+                          '&:hover': {
+                            textShadow: '0 0 15px #00ff40'
+                          }
+                        }}
+                      >
+                        {product.name}
+                      </Link>
+                    </Typography>
+                    
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary" 
+                      sx={{ 
+                        mb: 2,
+                        flexGrow: 1,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical'
+                      }}
+                    >
+                      {product.description}
+                    </Typography>
+
+                    <Box sx={{ mt: 'auto' }}>
+                      {product.year && (
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: '#00ffff',
+                            fontFamily: 'VT323, monospace',
+                            fontSize: '0.9rem'
+                          }}
+                        >
+                          Year: {product.year}
+                        </Typography>
+                      )}
+                      
+                      {product.songs && (
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: '#ff00ff',
+                            fontFamily: 'VT323, monospace',
+                            fontSize: '0.9rem',
+                            mb: 1,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          Songs: {product.songs}
+                        </Typography>
+                      )}
+
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+                        <Typography 
+                          variant="h6" 
+                          sx={{ 
+                            color: '#00ff40',
+                            fontFamily: 'VT323, monospace',
+                            fontSize: '1.4rem',
+                            textShadow: '0 0 10px #00ff40'
+                          }}
+                        >
+                          ${product.price}
+                        </Typography>
+                        
+                        <Chip
+                          label={product.inventory > 0 ? `${product.inventory} in stock` : 'OUT OF STOCK'}
+                          size="small"
+                          sx={{
+                            backgroundColor: product.inventory > 0 ? '#00ff40' : '#ff0040',
+                            color: '#0a0020',
+                            fontFamily: 'VT323, monospace',
+                            fontWeight: 'bold'
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  </CardContent>
+                  
+                  <CardActions sx={{ p: 2, pt: 0 }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={product.inventory === 0}
+                      component={Link}
+                      to={`/products/${product.id}`}
+                      sx={{
+                        background: product.inventory > 0 
+                          ? 'linear-gradient(45deg, #ff00ff, #00ffff)' 
+                          : 'linear-gradient(45deg, #666, #333)',
+                        color: '#0a0020',
+                        fontFamily: 'VT323, monospace',
+                        fontWeight: 'bold',
+                        fontSize: '1rem',
+                        textTransform: 'uppercase',
+                        textDecoration: 'none',
+                        boxShadow: product.inventory > 0 ? '0 0 20px rgba(255, 0, 255, 0.5)' : 'none',
+                        '&:hover': {
+                          background: product.inventory > 0 
+                            ? 'linear-gradient(45deg, #ff40ff, #40ffff)' 
+                            : 'linear-gradient(45deg, #666, #333)',
+                          transform: product.inventory > 0 ? 'translateY(-2px)' : 'none',
+                          boxShadow: product.inventory > 0 ? '0 4px 25px rgba(255, 0, 255, 0.7)' : 'none',
+                          textDecoration: 'none'
+                        },
+                        '&:disabled': {
+                          background: 'linear-gradient(45deg, #666, #333)',
+                          color: '#999'
+                        }
+                      }}
+                    >
+                      {product.inventory > 0 ? 'View Details' : 'Sold Out'}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </div>
+    );
+  }
+}
 
-      {/* Products Grid */}
-      <Grid container spacing={4}>
-        {/* You can map your actual products here, but for now here's the structure */}
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Card className="product-card" sx={{ position: 'relative' }}>
-            <Chip 
-              label="CLASSIC" 
-              className="vaporwave-badge"
-              sx={{
-                position: 'absolute',
-                top: 15,
-                right: 15,
-                background: 'linear-gradient(45deg, #00ff40, #00ffff)',
-                color: '#0a0020',
-                fontFamily: 'VT323, monospace',
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                zIndex: 10
-              }}
-            />
-            <CardMedia
-              component="img"
-              height="280"
-              image="/fishandwomen/womenwantme-cap.jpg"
-              alt="Women Want Me Cap"
-              className="product-image"
-            />
-            <CardContent>
-              <Typography 
-                variant="h5" 
-                className="product-name"
-                sx={{
-                  fontFamily: 'Orbitron, monospace',
-                  fontWeight: 700,
-                  color: '#00ffff',
-                  textTransform: 'uppercase',
-                  letterSpacing: '2px',
-                  textShadow: '0 0 15px #00ff40',
-                  fontSize: '1.3rem'
-                }}
-              >
-                WOMEN WANT ME CAP
-              </Typography>
-              
-              <Typography 
-                variant="body2" 
-                className="product-description"
-                sx={{
-                  fontFamily: 'VT323, monospace',
-                  fontSize: '1.1rem',
-                  color: '#ffff00',
-                  lineHeight: 1.4,
-                  mb: 2
-                }}
-              >
-                The original. The legend. "WOMEN WANT ME FISH FEAR ME" in all caps glory.
-              </Typography>
-              
-              <Typography 
-                className="product-price"
-                sx={{
-                  fontFamily: 'Press Start 2P, monospace',
-                  fontSize: '1.5rem',
-                  background: 'linear-gradient(45deg, #ff6600, #ff0040)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  animation: 'thermalPriceGlow 2s ease-in-out infinite alternate'
-                }}
-              >
-                $24.99
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        
-        {/* Repeat similar structure for other products... */}
-      </Grid>
-    </Container>
-  );
+const mapState = (state) => {
+  return {
+    products: state.products,
+  };
 };
 
-export default ProductsPage;
+const mapDispatch = (dispatch) => {
+  return {
+    getProducts: () => dispatch(getAllProducts()),
+  };
+};
+
+export default connect(mapState, mapDispatch)(AllProducts);
