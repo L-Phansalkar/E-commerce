@@ -34,35 +34,58 @@ export const me = () => async (dispatch) => {
     dispatch(getUser(defaultUser));
   }
 };
-
-export const auth = (email, password, method) => async (dispatch) => {
+// Add this new thunk to handle cart transfer after login
+export const transferGuestCart = () => async dispatch => {
   try {
-    let res;
+    // Get cart from localStorage
+    const localCart = JSON.parse(localStorage.getItem('cart') || '[]');
     
-    if (method === 'login') {
-      res = await api.auth.login({ email, password });
-    } else if (method === 'signup') {
-      res = await api.auth.signup({ email, password });
-    } else {
-      throw new Error('Invalid auth method');
+    if (localCart.length > 0) {
+      // Get the current order
+      const orderResponse = await axios.get('/api/orders');
+      const orderId = orderResponse.data.id;
+      
+      // Add each item from localStorage to the database
+      for (const item of localCart) {
+        // Add product to order (this will handle quantity updates)
+        for (let i = 0; i < item.quantity; i++) {
+          await axios.post(`/api/productOrders/${item.productId}/${orderId}`);
+        }
+      }
+      
+      // Clear localStorage after successful transfer
+      localStorage.removeItem('cart');
+      
+      // Refresh the order to get updated cart
+      dispatch(getCurrOrder());
     }
-    
-    // Store the JWT token
-    if (res.token) {
-      setAuthToken(res.token);
-    }
-    
-    // Dispatch user data
-    dispatch(getUser(res.user || res));
-    
-    // Redirect to home page
-    history.push('/home');
-    
-  } catch (authError) {
-    console.error('Auth error:', authError);
-    return dispatch(getUser({error: authError}));
+  } catch (error) {
+    console.error('Error transferring cart:', error);
   }
 };
+
+// Update the auth thunk to transfer cart after login
+export const auth = (email, password, method) => async dispatch => {
+  let res;
+  try {
+    res = await axios.post(`/auth/${method}`, {email, password});
+  } catch (authError) {
+    return dispatch(getUser({error: authError}));
+  }
+
+  try {
+    dispatch(getUser(res.data));
+    
+    // Transfer guest cart to user account after successful login
+    await dispatch(transferGuestCart());
+    
+    history.push('/cart');
+  } catch (dispatchOrHistoryErr) {
+    console.error(dispatchOrHistoryErr);
+  }
+};
+
+
 
 export const logout = () => async (dispatch) => {
   try {
