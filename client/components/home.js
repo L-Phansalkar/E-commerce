@@ -40,6 +40,9 @@ const Home = () => {
           right: 0,
           bottom: 0,
           zIndex: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -74,19 +77,16 @@ const Home = () => {
           },
         }}
       >
-        {/* Otter Image as Background - Full Height */}
+        {/* Otter Image as Background - Centered and Fit to Screen */}
         <Box
           component="img"
           src="/fishandwomen/otter.png"
           alt="Psychedelic Otter - Women Want Me Fish Fear Me"
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 'auto',
-            height: '100vh',
+            maxHeight: '100vh',
             maxWidth: '100vw',
+            width: 'auto',
+            height: 'auto',
             objectFit: 'contain',
             filter: 'hue-rotate(0deg) saturate(1.2) brightness(1.1)',
             animation: 'colorChange 10s ease-in-out infinite',
@@ -128,6 +128,60 @@ const Home = () => {
         }}
       />
 
+      {/* Title/Branding (Optional) */}
+      <Fade in={showContent} timeout={800}>
+        <Typography
+          variant="h2"
+          sx={{
+            position: 'absolute',
+            top: { xs: '10%', sm: '15%', md: '20%' },
+            left: '50%',
+            transform: 'translateX(-50%)',
+            color: 'white',
+            fontWeight: 800,
+            fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+            textAlign: 'center',
+            textShadow: '2px 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(255,255,255,0.5)',
+            letterSpacing: '0.02em',
+            zIndex: 2,
+            fontFamily: '"Bebas Neue", "Impact", sans-serif',
+            animation: 'pulse 3s ease-in-out infinite',
+            '@keyframes pulse': {
+              '0%, 100%': {
+                transform: 'translateX(-50%) scale(1)',
+              },
+              '50%': {
+                transform: 'translateX(-50%) scale(1.05)',
+              },
+            },
+          }}
+        >
+          BIG MOUTH BILLY BASS
+        </Typography>
+      </Fade>
+
+      {/* Subtitle */}
+      <Fade in={showContent} timeout={1000} style={{ transitionDelay: '200ms' }}>
+        <Typography
+          variant="h5"
+          sx={{
+            position: 'absolute',
+            top: { xs: '20%', sm: '28%', md: '32%' },
+            left: '50%',
+            transform: 'translateX(-50%)',
+            color: 'white',
+            fontWeight: 600,
+            fontSize: { xs: '1rem', sm: '1.3rem', md: '1.6rem' },
+            textAlign: 'center',
+            textShadow: '1px 1px 4px rgba(0,0,0,0.8)',
+            zIndex: 2,
+            fontStyle: 'italic',
+            letterSpacing: '0.05em',
+          }}
+        >
+          Women Want Me • Fish Fear Me
+        </Typography>
+      </Fade>
 
       {/* Call to Action Button - Fixed at Bottom */}
       <Fade in={showContent} timeout={800} style={{ transitionDelay: '500ms' }}>
